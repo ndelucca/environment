@@ -1,0 +1,12 @@
+[user]
+name = ndelucca
+email = nazadelucca@gmail.com
+[push]
+default = simple
+[pull]
+rebase = True
+[core]
+autocrlf = False
+commentchar = ";"
+[color]
+ui = True
