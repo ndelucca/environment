@@ -5,6 +5,8 @@ email = nazadelucca@gmail.com
 default = simple
 [pull]
 rebase = True
+[alias]
+st = status
 [core]
 autocrlf = False
 commentchar = ";"

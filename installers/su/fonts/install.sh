@@ -18,7 +18,7 @@ function install_fonts() {
         JetBrainsMono
     )
 
-    fonts_path="${HOME}/.local/share/fonts"
+    fonts_path=/usr/share/fonts
 
     mkdir -p "${fonts_path}"
     for font in "${fonts[@]}"; do
@@ -28,6 +28,8 @@ function install_fonts() {
         tar -xf "${fonts_path}/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
         rm -f "${fonts_path}/${font}Nerd.tar.xz"
     done
+
+    fc-cache -f -v
 }
 
 install_fonts
