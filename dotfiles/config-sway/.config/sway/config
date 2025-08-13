@@ -25,11 +25,12 @@ bar {
     }
 }
 
+exec_always --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec_always swaync
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
 
 bindsym $mod+Return  exec $terminal
-bindsym $mod+d       exec wofi
+bindsym $mod+d       exec wofi --show run
 bindsym $mod+Shift+d exec wofi --show drun
 
 bindsym Print exec grim - | swappy -f -
@@ -96,8 +97,8 @@ set $mode_system (e) Logout | (r) Reboot | (CTRL+s) Shutdown
 bindsym $mod+BackSpace mode "$mode_system"
 mode "$mode_system" {
     bindsym e      exec --no-startup-id swaymsg exit, mode "default"
-    bindsym r      exec --no-startup-id swaymsg reboot, mode "default"
-    bindsym Ctrl+s exec --no-startup-id swaymsg shutdown, mode "default"
+    bindsym r      exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Ctrl+s exec --no-startup-id systemctl poweroff -i, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }

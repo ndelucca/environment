@@ -1,6 +1,5 @@
 show=drun
 location=center
-width=500
 allow_images=false
 insensitive=true
 hide_scroll=true

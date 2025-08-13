@@ -46,7 +46,8 @@ backup:
 	@echo "Creating backups for conflicting files in $(TARGET_DIR)..."
 	@for module in $(MODULES); do \
 		echo "Checking module '$$module' for conflicts..."; \
-		for file in $(find $(DOTFILES_DIR)/$$module -type f); do \
+		for file in $(find $(DOTFILES_DIR)/$$module -mindepth 1 -maxdepth 5 -type f); do \
+			echo "$$file"; \
 			target=$$(echo "$$file" | sed "s|^$(DOTFILES_DIR)/$$module/|$(TARGET_DIR)/|"); \
 			if [ -e "$$target" ] && [ ! -L "$$target" ]; then \
 				mv -v "$$target" "$$target".bak; \
