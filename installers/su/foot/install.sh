@@ -46,7 +46,7 @@ remove_previous_installation() {
 install_foot() {
   echo "Installing build dependencies..."
   apt-get update
-  apt-get install -y meson ninja-build scdoc libwayland-dev wayland-protocols libxkbcommon-dev git
+  apt-get install -y libfontconfig1-dev libstdc++-14-dev meson cmake pkg-config libpixman-1-dev ninja-build scdoc libwayland-dev wayland-protocols libxkbcommon-dev git
 
   echo "Cloning the foot repository into '$SCRIPT_TMP_DIR/foot'..."
   git clone "$FOOT_REPO" "$SCRIPT_TMP_DIR/foot"
