@@ -31,7 +31,7 @@ create_dev_directories() {
     log_info "Creating development directories..."
     
     local dev_dir="$HOME/dev"
-    local directories=("go" "rust" "node")
+    local directories=("go" "rust" "node" "python")
     
     mkdir -p "$dev_dir"
     
@@ -134,6 +134,41 @@ install_rust() {
     fi
 }
 
+# Install Python tools
+install_python_tools() {
+    log_info "Installing Python development tools..."
+    
+    # Check if python3 is available
+    if ! command -v python3 &> /dev/null; then
+        log_error "Python3 is not installed. Please install python3 first."
+        return 1
+    fi
+    
+    # Install pip if not available
+    if ! command -v pip3 &> /dev/null; then
+        log_info "Installing pip..."
+        sudo apt update
+        sudo apt install -y python3-pip
+    fi
+    
+    # Install uv (modern Python package manager)
+    if ! command -v uv &> /dev/null; then
+        log_info "Installing uv (modern Python package manager)..."
+        if curl -LsSf https://astral.sh/uv/install.sh | sh; then
+            log_success "uv installed successfully"
+            # Source the environment to make uv available
+            export PATH="$HOME/.cargo/bin:$PATH"
+        else
+            log_error "Failed to install uv"
+            return 1
+        fi
+    else
+        log_info "uv is already installed"
+    fi
+    
+    log_success "Python development tools installed"
+}
+
 # Install additional development tools
 install_dev_tools() {
     log_info "Installing additional development tools..."
@@ -181,6 +216,16 @@ verify_installations() {
         echo
     fi
     
+    if command -v python3 &> /dev/null; then
+        echo "Python version:"
+        python3 --version
+        if command -v uv &> /dev/null; then
+            echo "uv version:"
+            uv --version
+        fi
+        echo
+    fi
+    
     log_success "Installation verification complete"
 }
 
@@ -190,6 +235,7 @@ main() {
     
     create_dev_directories
     install_dev_tools
+    install_python_tools
     install_go
     install_rust
     verify_installations
