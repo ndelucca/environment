@@ -52,9 +52,9 @@ check_dependencies() {
     return 0
 }
 
-# Get all modules (subdirectories in dotfiles directory)
+# Get the single module (user-dotfiles)
 get_modules() {
-    find "${DOTFILES_DIR}" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+    echo "user-dotfiles"
 }
 
 # Create backups for conflicting files
@@ -116,7 +116,7 @@ install_dotfiles() {
     log_info "Running: stow -t ${TARGET_DIR} -d ${DOTFILES_DIR} ${modules[*]}"
     if stow -t "${TARGET_DIR}" -d "${DOTFILES_DIR}" "${modules[@]}"; then
         log_success "Dotfiles installed successfully"
-        log_info "Installed modules: ${modules[*]}"
+        log_info "Installed module: user-dotfiles"
     else
         log_error "Failed to install dotfiles"
         log_error "If there are conflicts, run './manage.sh backup' first or resolve them manually"
@@ -146,7 +146,7 @@ remove_dotfiles() {
     # Remove using stow
     if stow -D -t "${TARGET_DIR}" -d "${DOTFILES_DIR}" "${modules[@]}"; then
         log_success "Dotfiles removed successfully"
-        log_info "Removed modules: ${modules[*]}"
+        log_info "Removed module: user-dotfiles"
     else
         log_error "Failed to remove dotfiles"
         return 1
@@ -183,12 +183,12 @@ Usage: $(basename "$0") [COMMAND]
 Manage dotfiles using GNU Stow with idempotent operations.
 
 Commands:
-  install     Install all dotfiles (creates symlinks)
-  remove      Remove all dotfiles (removes symlinks)
+  install     Install dotfiles (creates symlinks)
+  remove      Remove dotfiles (removes symlinks)
   backup      Create backups for conflicting files only
   restore     Restore all .bak files to their original names
   check       Check if required dependencies are installed
-  list        List all available modules
+  list        Show available module
   help        Show this help message
 
 Environment:
@@ -209,10 +209,8 @@ list_modules() {
         return 0
     fi
     
-    log_info "Available modules in ${DOTFILES_DIR}:"
-    for module in "${modules[@]}"; do
-        echo "  - ${module}"
-    done
+    log_info "Available module in ${DOTFILES_DIR}:"
+    echo "  - user-dotfiles"
 }
 
 # Main function

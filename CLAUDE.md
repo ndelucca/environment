@@ -30,7 +30,7 @@ cd dotfiles && ./manage.sh restore
 # Check prerequisites (stow and age)
 cd dotfiles && ./manage.sh check
 
-# List available modules
+# List available module
 cd dotfiles && ./manage.sh list
 ```
 
@@ -76,14 +76,15 @@ sudo ./installers/su/localization/install.sh
 ## Architecture
 
 ### Dotfiles Structure
-The dotfiles are modularized and use GNU Stow for symlink management via bash scripts:
-- `bash-setup/`: Bash aliases, PS1 customization, and development environment setup
-- `config-sway/`: Sway window manager configuration
-- `config-tmux/`: Tmux terminal multiplexer configuration  
-- `config-git/`: Git configuration
-- `config-foot/`: Foot terminal emulator configuration
-- `cred-ssh/`: SSH credentials (encrypted with age)
-- `webapps-bin/`: Web application binaries
+The dotfiles are consolidated into a single package and use GNU Stow for symlink management via bash scripts:
+- `user-dotfiles/`: Consolidated user configuration files including:
+  - Bash aliases, PS1 customization, and development environment setup
+  - Sway window manager configuration
+  - Tmux terminal multiplexer configuration
+  - Git configuration
+  - Foot terminal emulator configuration
+  - SSH credentials (encrypted with age)
+  - Web application binaries
 - `manage.sh`: Idempotent bash script for dotfiles management
 
 ### Installation System
