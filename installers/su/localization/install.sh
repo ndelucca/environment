@@ -34,9 +34,9 @@ check_root() {
     fi
 }
 
-# Configure Spanish Latin America locale
+# Configure English US locale
 configure_locale() {
-    log_info "Configuring Spanish Latin America locale..."
+    log_info "Configuring English US locale..."
     
     # Install locales package if not already installed
     if ! dpkg -l | grep -q "^ii.*locales "; then
@@ -45,41 +45,39 @@ configure_locale() {
         apt install -y locales
     fi
     
-    # Generate Spanish locales
-    log_info "Generating Spanish locales..."
+    # Generate English US locales
+    log_info "Generating English US locales..."
     
-    # Uncomment Spanish locales in /etc/locale.gen
-    sed -i 's/^# *es_AR.UTF-8 UTF-8/es_AR.UTF-8 UTF-8/' /etc/locale.gen
-    sed -i 's/^# *es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen
+    # Uncomment English US locales in /etc/locale.gen
     sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
     
     # Generate locales
     locale-gen
     
-    # Set default locale to Spanish Argentina
-    log_info "Setting default locale to es_AR.UTF-8..."
-    update-locale LANG=es_AR.UTF-8 LC_ALL=es_AR.UTF-8
+    # Set default locale to English US
+    log_info "Setting default locale to en_US.UTF-8..."
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
     
     # Update /etc/default/locale
     cat > /etc/default/locale << EOF
-LANG=es_AR.UTF-8
-LANGUAGE=es_AR:es:en
-LC_ALL=es_AR.UTF-8
-LC_CTYPE=es_AR.UTF-8
-LC_NUMERIC=es_AR.UTF-8
-LC_TIME=es_AR.UTF-8
-LC_COLLATE=es_AR.UTF-8
-LC_MONETARY=es_AR.UTF-8
-LC_MESSAGES=es_AR.UTF-8
-LC_PAPER=es_AR.UTF-8
-LC_NAME=es_AR.UTF-8
-LC_ADDRESS=es_AR.UTF-8
-LC_TELEPHONE=es_AR.UTF-8
-LC_MEASUREMENT=es_AR.UTF-8
-LC_IDENTIFICATION=es_AR.UTF-8
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_ALL=en_US.UTF-8
+LC_CTYPE=en_US.UTF-8
+LC_NUMERIC=en_US.UTF-8
+LC_TIME=en_US.UTF-8
+LC_COLLATE=en_US.UTF-8
+LC_MONETARY=en_US.UTF-8
+LC_MESSAGES=en_US.UTF-8
+LC_PAPER=en_US.UTF-8
+LC_NAME=en_US.UTF-8
+LC_ADDRESS=en_US.UTF-8
+LC_TELEPHONE=en_US.UTF-8
+LC_MEASUREMENT=en_US.UTF-8
+LC_IDENTIFICATION=en_US.UTF-8
 EOF
     
-    log_success "Spanish Latin America locale configured successfully"
+    log_success "English US locale configured successfully"
 }
 
 # Configure timezone for Buenos Aires, Argentina
@@ -132,7 +130,7 @@ verify_configuration() {
 
 # Main installation function
 main() {
-    log_info "Starting localization configuration for Spanish Latin America and Buenos Aires timezone..."
+    log_info "Starting localization configuration for English US and Buenos Aires timezone..."
     
     check_root
     configure_locale
