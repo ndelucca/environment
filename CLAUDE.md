@@ -16,25 +16,43 @@ It is based on a bare Debian installation with Sway as desktop environment using
 ### Dotfiles Management
 ```bash
 # Install all dotfiles (creates symlinks)
-cd dotfiles && make stow
+cd dotfiles && ./manage.sh install
 
 # Remove dotfiles symlinks  
-cd dotfiles && make unstow
+cd dotfiles && ./manage.sh remove
 
 # Backup existing conflicting files
-cd dotfiles && make backup
+cd dotfiles && ./manage.sh backup
+
+# Restore backup files
+cd dotfiles && ./manage.sh restore
 
 # Check prerequisites (stow and age)
-cd dotfiles && make check
+cd dotfiles && ./manage.sh check
+
+# List available modules
+cd dotfiles && ./manage.sh list
 ```
 
 ### System Files Management
 ```bash
 # Install system-level configurations (requires root)
-cd systemfiles && sudo make stow
+cd systemfiles && sudo ./manage.sh install
 
 # Remove system-level configurations
-cd systemfiles && sudo make unstow
+cd systemfiles && sudo ./manage.sh remove
+
+# Backup existing conflicting files (requires root)
+cd systemfiles && sudo ./manage.sh backup
+
+# Restore backup files (requires root)
+cd systemfiles && sudo ./manage.sh restore
+
+# Check prerequisites (requires root)
+cd systemfiles && sudo ./manage.sh check
+
+# List available modules
+cd systemfiles && sudo ./manage.sh list
 ```
 
 ### Installation Scripts
@@ -52,7 +70,7 @@ sudo ./installers/su/sway/install.sh
 ## Architecture
 
 ### Dotfiles Structure
-The dotfiles are modularized and use GNU Stow for symlink management:
+The dotfiles are modularized and use GNU Stow for symlink management via bash scripts:
 - `bash-setup/`: Bash aliases, PS1 customization, and development environment setup
 - `config-sway/`: Sway window manager configuration
 - `config-tmux/`: Tmux terminal multiplexer configuration  
@@ -60,6 +78,7 @@ The dotfiles are modularized and use GNU Stow for symlink management:
 - `config-foot/`: Foot terminal emulator configuration
 - `cred-ssh/`: SSH credentials (encrypted with age)
 - `webapps-bin/`: Web application binaries
+- `manage.sh`: Idempotent bash script for dotfiles management
 
 ### Installation System
 Two-tier installation approach:
@@ -85,7 +104,10 @@ The bash setup includes:
 
 ## Important Notes
 
-- The systemfiles Makefile targets root filesystem (`TARGET_DIR := /`) and requires root privileges
-- The dotfiles Makefile targets user home directory (`TARGET_DIR := $(HOME)`)
-- Both systems include backup functionality to prevent data loss
+- The systemfiles management script targets root filesystem (`TARGET_DIR := /`) and requires root privileges
+- The dotfiles management script targets user home directory (`TARGET_DIR := $(HOME)`)
+- Both scripts are idempotent and include comprehensive backup functionality to prevent data loss
+- Scripts use colored output for better visibility and proper error handling
+- Systemfiles script automatically reloads systemd daemon when needed
+- All operations can be safely re-run without side effects
 - Encrypted SSH credentials use the `age` encryption tool
