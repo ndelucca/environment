@@ -63,6 +63,9 @@ sudo ./installers/su/basic-apps/install.sh
 # Install Sway window manager and related tools (requires root)
 sudo ./installers/su/sway/install.sh
 
+# Configure localization (Spanish Latin America locale and Buenos Aires timezone) (requires root)
+sudo ./installers/su/localization/install.sh
+
 # Install Node Version Manager (user-level)
 ./installers/user/nvm/install.sh
 ```
