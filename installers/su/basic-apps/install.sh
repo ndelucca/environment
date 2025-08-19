@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
-apt update
+apt-get update
 
 # PipeWire
-apt install pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol
+apt-get install -y pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol
 
 # Bluetooth
-apt install bluez blueman
+apt-get install -y bluez blueman
+
+apt-get install -y fortune cowsay
+
+# Development tools
+apt-get install -y direnv
+
+# Display manager
+apt-get install -y greetd

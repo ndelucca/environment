@@ -66,6 +66,9 @@ sudo ./installers/su/sway/install.sh
 # Configure localization (Spanish Latin America locale and Buenos Aires timezone) (requires root)
 sudo ./installers/su/localization/install.sh
 
+# Install development environment (Go, Rust, dev directories) (user-level)
+./installers/user/development/install.sh
+
 # Install Node Version Manager (user-level)
 ./installers/user/nvm/install.sh
 ```
