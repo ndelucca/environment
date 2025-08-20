@@ -1,0 +1,53 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
+    
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["clock"],
+    "modules-right": ["network", "battery", "cpu", "memory", "pulseaudio"],
+    
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true
+    },
+    
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    
+    "clock": {
+        "format": "{:%a %d %H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    
+    "network": {
+        "format-wifi": "{signalStrength}% WIFI",
+        "format-ethernet": "ETH",
+        "format-disconnected": "Disconnected",
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
+    },
+    
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "format-charging": "{capacity}% CHR",
+        "format-plugged": "{capacity}% POW"
+    },
+    
+    "cpu": {
+        "format": "{usage}% CPU",
+        "tooltip": false
+    },
+    
+    "memory": {
+        "format": "{}% MEM"
+    },
+    
+    "pulseaudio": {
+        "format": "{volume}% VOL",
+        "format-muted": "{volume}% VOL",
+        "on-click": "pavucontrol"
+    }
+}

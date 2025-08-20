@@ -18,14 +18,10 @@ hide_edge_borders smart
 workspace_auto_back_and_forth yes
 
 bar {
-    font pango:JetBrainsMono Nerd Font 10
-    status_command i3status
-    colors {
-        focused_workspace #004131 #004131 #EEEEEE
-    }
+    swaybar_command waybar
 }
 
-exec_always --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id lxpolkit
 exec_always swaync
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
 

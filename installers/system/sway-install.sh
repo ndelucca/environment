@@ -235,7 +235,7 @@ main() {
 
   check_pre_requisites
 
-  sudo apt install sway swaybg sway-notification-center swaylock i3status wofi wl-clipboard fonts-font-awesome
+  sudo apt install sway swaybg sway-notification-center swaylock waybar wofi wl-clipboard fonts-font-awesome
 
   # install_dependencies
 

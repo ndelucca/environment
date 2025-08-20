@@ -15,6 +15,12 @@ sudo apt-get install -y \
     fortune cowsay fortune-mod \
     direnv shellcheck curl ripgrep \
     greetd \
-    policykit-1 policykit-1-gnome
+    polkitd pkexec lxpolkit \
+    nautilus \
+    gnome-text-editor \
+    eog \
+    file-roller \
+    htop \
+    network-manager-gnome
 
 echo "Basic applications installed successfully"

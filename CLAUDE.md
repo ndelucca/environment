@@ -40,21 +40,41 @@ cd stow-files && ./manage.sh list
 ```
 
 ### Installation Scripts
+
+#### Managed Installation (Recommended)
+```bash
+# Install everything in correct order (excludes neovim compilation)
+./installers/manage-installers.sh all
+
+# Install only system components
+./installers/manage-installers.sh system
+
+# Install only user components  
+./installers/manage-installers.sh user
+
+# Install optional components (neovim compilation)
+./installers/manage-installers.sh optional
+
+# List all available installers
+./installers/manage-installers.sh list
+```
+
+#### Individual Installers
 ```bash
 # System-level installers (sudo included internally)
-./installers/system/basic-apps-install.sh
-./installers/system/sway-install.sh
-./installers/system/localization-install.sh
-./installers/system/fonts-install.sh
-./installers/system/foot-install.sh
-./installers/system/google-chrome-install.sh
-./installers/system/nvim-install.sh
-./installers/system/wayland-install.sh
+./installers/system/localization-install.sh    # Run first (locale setup)
+./installers/system/basic-apps-install.sh      # Core applications + GTK apps
+./installers/system/wayland-install.sh         # Wayland components
+./installers/system/fonts-install.sh           # Nerd Fonts
+./installers/system/foot-install.sh            # Terminal emulator
+./installers/system/sway-install.sh            # Sway window manager
+./installers/system/google-chrome-install.sh   # Web browser
+./installers/system/nvim-install.sh            # Neovim (compilation, optional)
 
-# User-level installers (sudo included internally when needed)
-./installers/user/development-install.sh
-./installers/user/nvm-install.sh
-./installers/user/nvim-config.sh
+# User-level installers
+./installers/user/development-install.sh       # Development tools (Go, Rust, Python)
+./installers/user/nvm-install.sh              # Node Version Manager
+./installers/user/nvim-config.sh              # Neovim configuration
 ```
 
 ## Architecture
