@@ -51,7 +51,7 @@ cd systemfiles && sudo ./manage.sh restore
 # Check prerequisites (requires root)
 cd systemfiles && sudo ./manage.sh check
 
-# List available modules
+# List available module
 cd systemfiles && sudo ./manage.sh list
 ```
 

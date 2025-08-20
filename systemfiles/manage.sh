@@ -62,9 +62,9 @@ check_dependencies() {
     return 0
 }
 
-# Get all modules (subdirectories in systemfiles directory)
+# Get the single module (system-dotfiles)
 get_modules() {
-    find "${SYSTEMFILES_DIR}" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+    echo "system-dotfiles"
 }
 
 # Create backups for conflicting files
@@ -137,7 +137,7 @@ install_systemfiles() {
     log_info "Running: stow -t ${TARGET_DIR} -d ${SYSTEMFILES_DIR} ${modules[*]}"
     if stow -t "${TARGET_DIR}" -d "${SYSTEMFILES_DIR}" "${modules[@]}"; then
         log_success "System files installed successfully"
-        log_info "Installed modules: ${modules[*]}"
+        log_info "Installed module: system-dotfiles"
         
         # Reload systemd if systemd files were installed
         if systemctl is-system-running &> /dev/null; then
@@ -178,7 +178,7 @@ remove_systemfiles() {
     # Remove using stow
     if stow -D -t "${TARGET_DIR}" -d "${SYSTEMFILES_DIR}" "${modules[@]}"; then
         log_success "System files removed successfully"
-        log_info "Removed modules: ${modules[*]}"
+        log_info "Removed module: system-dotfiles"
         
         # Reload systemd if systemd files were removed
         if systemctl is-system-running &> /dev/null; then
@@ -233,12 +233,12 @@ Manage system files using GNU Stow with idempotent operations.
 This script MUST be run as root (use sudo).
 
 Commands:
-  install     Install all system files (creates symlinks)
-  remove      Remove all system files (removes symlinks)
+  install     Install system files (creates symlinks)
+  remove      Remove system files (removes symlinks)
   backup      Create backups for conflicting files only
   restore     Restore all .bak files to their original names
   check       Check if required dependencies are installed
-  list        List all available modules
+  list        Show available module
   help        Show this help message
 
 Environment:
@@ -261,10 +261,8 @@ list_modules() {
         return 0
     fi
     
-    log_info "Available modules in ${SYSTEMFILES_DIR}:"
-    for module in "${modules[@]}"; do
-        echo "  - ${module}"
-    done
+    log_info "Available module in ${SYSTEMFILES_DIR}:"
+    echo "  - system-dotfiles"
 }
 
 # Main function
