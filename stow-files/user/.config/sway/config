@@ -24,6 +24,7 @@ bar {
 exec_always --no-startup-id lxpolkit
 exec_always swaync
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
+exec_always waybar
 
 bindsym $mod+Return  exec $terminal
 bindsym $mod+d       exec wofi --show run
