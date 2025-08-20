@@ -7,52 +7,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is my personal Linux system and environment configuration.
 It is based on a bare Debian installation with Sway as desktop environment using Wayland.
 
-- **dotfiles/**: User configuration files managed with GNU Stow
+- **stow-files/**: Unified configuration files managed with GNU Stow
+  - **user/**: User configuration files (target: $HOME)
+  - **system/**: System-level configuration files (target: /, requires sudo)
 - **installers/**: System and user-level installation scripts
-- **systemfiles/**: System-level configuration files also managed with GNU Stow but used with sudo privileges.
 
 ## Key Commands
 
-### Dotfiles Management
+### Configuration Management
 ```bash
-# Install all dotfiles (creates symlinks)
-cd dotfiles && ./manage.sh install
+# Install user configuration files (creates symlinks to $HOME)
+cd stow-files && ./manage.sh install user
 
-# Remove dotfiles symlinks  
-cd dotfiles && ./manage.sh remove
+# Install system configuration files (creates symlinks to /, requires sudo)
+cd stow-files && ./manage.sh install system
 
-# Backup existing conflicting files
-cd dotfiles && ./manage.sh backup
+# Remove user configuration symlinks
+cd stow-files && ./manage.sh remove user
 
-# Restore backup files
-cd dotfiles && ./manage.sh restore
+# Remove system configuration symlinks (requires sudo)
+cd stow-files && ./manage.sh remove system
 
-# Check prerequisites (stow and age)
-cd dotfiles && ./manage.sh check
+# Backup existing conflicting files before installation
+cd stow-files && ./manage.sh backup user
+cd stow-files && ./manage.sh backup system
 
-# List available module
-cd dotfiles && ./manage.sh list
-```
+# Restore all backup files (handles both user and system)
+cd stow-files && ./manage.sh restore
 
-### System Files Management
-```bash
-# Install system-level configurations (requires root)
-cd systemfiles && sudo ./manage.sh install
-
-# Remove system-level configurations
-cd systemfiles && sudo ./manage.sh remove
-
-# Backup existing conflicting files (requires root)
-cd systemfiles && sudo ./manage.sh backup
-
-# Restore backup files (requires root)
-cd systemfiles && sudo ./manage.sh restore
-
-# Check prerequisites (requires root)
-cd systemfiles && sudo ./manage.sh check
-
-# List available module
-cd systemfiles && sudo ./manage.sh list
+# List available packages
+cd stow-files && ./manage.sh list
 ```
 
 ### Installation Scripts
@@ -75,9 +59,9 @@ sudo ./installers/su/localization/install.sh
 
 ## Architecture
 
-### Dotfiles Structure
-The dotfiles are consolidated into a single package and use GNU Stow for symlink management via bash scripts:
-- `user-dotfiles/`: Consolidated user configuration files including:
+### Configuration Structure
+The configuration files are unified into a single directory structure using GNU Stow for symlink management:
+- `stow-files/user/`: User configuration files including:
   - Bash aliases, PS1 customization, and development environment setup
   - Sway window manager configuration
   - Tmux terminal multiplexer configuration
@@ -85,7 +69,11 @@ The dotfiles are consolidated into a single package and use GNU Stow for symlink
   - Foot terminal emulator configuration
   - SSH credentials (encrypted with age)
   - Web application binaries
-- `manage.sh`: Idempotent bash script for dotfiles management
+- `stow-files/system/`: System configuration files including:
+  - Greetd display manager configuration
+  - Systemd user service definitions
+  - System wallpapers and assets
+- `manage.sh`: Unified, simplified bash script for configuration management
 
 ### Installation System
 Two-tier installation approach:
@@ -111,10 +99,12 @@ The bash setup includes:
 
 ## Important Notes
 
-- The systemfiles management script targets root filesystem (`TARGET_DIR := /`) and requires root privileges
-- The dotfiles management script targets user home directory (`TARGET_DIR := $(HOME)`)
-- Both scripts are idempotent and include comprehensive backup functionality to prevent data loss
-- Scripts use colored output for better visibility and proper error handling
-- Systemfiles script automatically reloads systemd daemon when needed
+- The unified management script automatically handles permissions based on package type:
+  - `user` package targets user home directory (`$HOME`)
+  - `system` package targets root filesystem (`/`) and automatically uses sudo when needed
+- The script is idempotent and includes comprehensive backup functionality to prevent data loss
+- Creates directory structure before stow execution to ensure only files are symlinked, never directories
+- Uses colored output for better visibility and proper error handling
+- Automatically reloads systemd daemon when system files are modified
 - All operations can be safely re-run without side effects
 - Encrypted SSH credentials use the `age` encryption tool
