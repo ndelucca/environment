@@ -15,12 +15,10 @@ die() {
     exit 1
 }
 
-# Run stow install or remove operation
-stow_op() {
-    local operation="$1"
-    local package="$2"
+# Validate package input
+validate_package() {
+    local package="$1"
     
-    # Validate inputs
     if [[ -z "$package" ]]; then
         die "Package required"
     fi
@@ -29,54 +27,49 @@ stow_op() {
         die "Package '$package' not found"
     fi
     
-    # Execute stow operation based on package type
+    case "$package" in
+        user|system) ;;
+        *) die "Unknown package: $package" ;;
+    esac
+}
+
+# Execute script with appropriate permissions for package type
+run_for_package() {
+    local script="$1"
+    local package="$2"
+    shift 2  # Remove first two args, keep the rest
+    
     case "$package" in
         user)
-            log "Running stow $operation for $package -> \$HOME"
-            "$STOW_SCRIPT" "$operation" "$package" "$HOME"
+            "$script" "$@" "$HOME"
             ;;
         system)
-            log "Running stow $operation for $package -> / (requires sudo)"
-            sudo "$STOW_SCRIPT" "$operation" "$package" "/"
-            ;;
-        *)
-            die "Unknown package: $package"
+            sudo "$script" "$@" "/"
             ;;
     esac
+}
+
+# Run stow install or remove operation
+stow_op() {
+    local operation="$1"
+    local package="$2"
+    
+    log "Running stow $operation for $package"
+    run_for_package "$STOW_SCRIPT" "$package" "$operation" "$package"
 }
 
 # Backup conflicting files
 backup() {
     local package="$1"
     
-    # Validate inputs
-    if [[ -z "$package" ]]; then
-        die "Package required"
-    fi
-    
-    if [[ ! -d "$package" ]]; then
-        die "Package '$package' not found"
-    fi
-    
-    # Execute backup based on package type
-    case "$package" in
-        user)
-            "$BACKUP_SCRIPT" backup "$package" "$HOME"
-            ;;
-        system)
-            sudo "$BACKUP_SCRIPT" backup "$package" "/"
-            ;;
-        *)
-            die "Unknown package: $package"
-            ;;
-    esac
+    log "Backing up conflicting files for $package"
+    run_for_package "$BACKUP_SCRIPT" "$package" backup "$package"
 }
 
 # Restore all backup files
 restore() {
     log "Restoring backup files..."
     
-    # Restore user and system backups
     "$BACKUP_SCRIPT" restore "" "$HOME" 
     sudo "$BACKUP_SCRIPT" restore "" "/"
     
@@ -115,12 +108,15 @@ package="${2:-}"
 
 case "$command" in
     install)
+        validate_package "$package"
         stow_op "" "$package"
         ;;
     remove)
+        validate_package "$package"
         stow_op "-D" "$package"
         ;;
     backup)
+        validate_package "$package"
         backup "$package"
         ;;
     restore)
