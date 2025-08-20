@@ -4,10 +4,6 @@ set -euo pipefail
 
 check_pre_requisites() {
   echo "Checking prerequisites..."
-  if [ "$(id -u)" -ne 0 ]; then
-    echo "ERROR: This script must be run with superuser permissions (as root)." >&2
-    exit 1
-  fi
 }
 
 install_dependencies() {
@@ -57,8 +53,8 @@ install_dependencies() {
   )
 
   echo "Installing build dependencies..."
-  apt-get update
-  apt-get install -y "${dependencies[@]}"
+  sudo apt-get update
+  sudo apt-get install -y "${dependencies[@]}"
 }
 
 build_and_install_sway() {
@@ -184,7 +180,7 @@ build_and_install_waybar() {
       libxkbregistry-dev
       libupower-glib-dev
   )
-  apt-get install -y "${dependencies[@]}"
+  sudo apt-get install -y "${dependencies[@]}"
 
   readonly WAYBAR_REPO="https://github.com/Alexays/Waybar.git"
   readonly WAYBAR_INSTALL_PREFIX="/opt/waybar"
@@ -239,7 +235,7 @@ main() {
 
   check_pre_requisites
 
-  apt install sway swaybg sway-notification-center swaylock i3status wofi wl-clipboard fonts-font-awesome
+  sudo apt install sway swaybg sway-notification-center swaylock i3status wofi wl-clipboard fonts-font-awesome
 
   # install_dependencies
 

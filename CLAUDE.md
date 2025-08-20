@@ -41,18 +41,18 @@ cd stow-files && ./manage.sh list
 
 ### Installation Scripts
 ```bash
-# System-level installers (require root)
-sudo ./installers/system/basic-apps-install.sh
-sudo ./installers/system/sway-install.sh
-sudo ./installers/system/localization-install.sh
-sudo ./installers/system/fonts-install.sh
-sudo ./installers/system/foot-install.sh
-sudo ./installers/system/google-chrome-install.sh
-sudo ./installers/system/nvim-install.sh
-sudo ./installers/system/policykit-install.sh
-sudo ./installers/system/sway-wayland-install.sh
+# System-level installers (sudo included internally)
+./installers/system/basic-apps-install.sh
+./installers/system/sway-install.sh
+./installers/system/localization-install.sh
+./installers/system/fonts-install.sh
+./installers/system/foot-install.sh
+./installers/system/google-chrome-install.sh
+./installers/system/nvim-install.sh
+./installers/system/policykit-install.sh
+./installers/system/sway-wayland-install.sh
 
-# User-level installers
+# User-level installers (sudo included internally when needed)
 ./installers/user/development-install.sh
 ./installers/user/nvm-install.sh
 ./installers/user/nvim-config.sh

@@ -28,10 +28,7 @@ log_error() {
 
 # Check if script is running as root
 check_root() {
-    if [[ $EUID -ne 0 ]]; then
-        log_error "This script must be run as root (use sudo)"
-        exit 1
-    fi
+    log_info "Checking permissions..."
 }
 
 # Configure English US locale
@@ -41,25 +38,25 @@ configure_locale() {
     # Install locales package if not already installed
     if ! dpkg -l | grep -q "^ii.*locales "; then
         log_info "Installing locales package..."
-        apt update
-        apt install -y locales
+        sudo apt update
+        sudo apt install -y locales
     fi
     
     # Generate English US locales
     log_info "Generating English US locales..."
     
     # Uncomment English US locales in /etc/locale.gen
-    sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+    sudo sed -i 's/^# *en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
     
     # Generate locales
-    locale-gen
+    sudo locale-gen
     
     # Set default locale to English US
     log_info "Setting default locale to en_US.UTF-8..."
-    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+    sudo update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
     
     # Update /etc/default/locale
-    cat > /etc/default/locale << EOF
+    sudo tee /etc/default/locale > /dev/null << EOF
 LANG=en_US.UTF-8
 LANGUAGE=en_US:en
 LC_ALL=en_US.UTF-8
@@ -87,19 +84,19 @@ configure_timezone() {
     # Set timezone using timedatectl (systemd)
     if command -v timedatectl &> /dev/null; then
         log_info "Using timedatectl to set timezone..."
-        timedatectl set-timezone America/Argentina/Buenos_Aires
+        sudo timedatectl set-timezone America/Argentina/Buenos_Aires
     else
         # Fallback method for systems without systemd
         log_info "Using traditional method to set timezone..."
-        ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
-        echo "America/Argentina/Buenos_Aires" > /etc/timezone
+        sudo ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
+        echo "America/Argentina/Buenos_Aires" | sudo tee /etc/timezone
     fi
     
     # Configure timezone data
     if command -v dpkg-reconfigure &> /dev/null; then
         log_info "Reconfiguring tzdata..."
-        echo "America/Argentina/Buenos_Aires" > /etc/timezone
-        dpkg-reconfigure -f noninteractive tzdata
+        echo "America/Argentina/Buenos_Aires" | sudo tee /etc/timezone
+        sudo dpkg-reconfigure -f noninteractive tzdata
     fi
     
     log_success "Timezone configured to Buenos Aires, Argentina"

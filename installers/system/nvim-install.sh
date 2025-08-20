@@ -12,10 +12,6 @@ readonly NVIM_SOURCE_DIR="${REPOS_DIR}/neovim"
 
 check_pre_requisites() {
   echo "Checking prerequisites..."
-  if [ "$(id -u)" -ne 0 ]; then
-    echo "ERROR: This script must be run with superuser permissions (as root)." >&2
-    exit 1
-  fi
 }
 
 install_dependencies() {
@@ -35,19 +31,20 @@ install_dependencies() {
     git
   )
   echo "Installing build dependencies..."
-  apt-get update
-  apt-get install -y "${dependencies[@]}"
+  sudo apt-get update
+  sudo apt-get install -y "${dependencies[@]}"
 }
 
 build_and_install_neovim() {
   echo "Preparing installation directories..."
-  mkdir -p "${REPOS_DIR}"
+  sudo mkdir -p "${REPOS_DIR}"
 
   echo "Removing any previous installations for a clean update..."
-  rm -rf "${NVIM_SOURCE_DIR}"
+  sudo rm -rf "${NVIM_SOURCE_DIR}"
 
   echo "Cloning the Neovim repository into '${NVIM_SOURCE_DIR}'..."
-  git clone "$NVIM_REPO" "$NVIM_SOURCE_DIR"
+  git clone "$NVIM_REPO" /tmp/neovim
+  sudo mv /tmp/neovim "$NVIM_SOURCE_DIR"
 
   cd "$NVIM_SOURCE_DIR"
 
@@ -55,7 +52,7 @@ build_and_install_neovim() {
   make CMAKE_BUILD_TYPE=RelWithDebInfo
 
   echo "Installing Neovim to '${INSTALL_PREFIX}'..."
-  make install
+  sudo make install
 }
 
 main() {

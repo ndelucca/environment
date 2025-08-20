@@ -22,10 +22,6 @@ command_exists() {
 
 check_pre_requisites() {
   echo "Checking prerequisites..."
-  if [ "$(id -u)" -ne 0 ]; then
-    echo "ERROR: This script must be run with superuser permissions (as root)." >&2
-    exit 1
-  fi
 }
 
 remove_previous_installation() {
@@ -34,19 +30,19 @@ remove_previous_installation() {
     local foot_path
     foot_path=$(command -v foot)
     echo "Found existing 'foot' binary at '$foot_path'. Removing it..."
-    rm -f "$foot_path"
+    sudo rm -f "$foot_path"
   fi
 
   if [ -d "$INSTALL_PREFIX/foot" ]; then
     echo "Found old build directory at '$INSTALL_PREFIX/foot'. Removing it..."
-    rm -rf "$INSTALL_PREFIX/foot"
+    sudo rm -rf "$INSTALL_PREFIX/foot"
   fi
 }
 
 install_foot() {
   echo "Installing build dependencies..."
-  apt-get update
-  apt-get install -y libfontconfig1-dev libstdc++-14-dev meson cmake pkg-config libpixman-1-dev ninja-build scdoc libwayland-dev wayland-protocols libxkbcommon-dev git
+  sudo apt-get update
+  sudo apt-get install -y libfontconfig1-dev libstdc++-14-dev meson cmake pkg-config libpixman-1-dev ninja-build scdoc libwayland-dev wayland-protocols libxkbcommon-dev git
 
   echo "Cloning the foot repository into '$SCRIPT_TMP_DIR/foot'..."
   git clone "$FOOT_REPO" "$SCRIPT_TMP_DIR/foot"
@@ -55,7 +51,7 @@ install_foot() {
   cd "$SCRIPT_TMP_DIR/foot"
   meson setup "$BUILD_DIR" --prefix="$INSTALL_PREFIX"
   ninja -C "$BUILD_DIR"
-  ninja -C "$BUILD_DIR" install
+  sudo ninja -C "$BUILD_DIR" install
 }
 
 main() {
@@ -66,7 +62,7 @@ main() {
   install_foot
 
   echo "Updating the dynamic linker run-time bindings..."
-  ldconfig
+  sudo ldconfig
 
   echo "foot has been installed to '$INSTALL_PREFIX/bin/foot'."
 }

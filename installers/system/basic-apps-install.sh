@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
-apt-get update
+sudo apt-get update
 
 # PipeWire
-apt-get install -y pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol
+sudo apt-get install -y pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol
 
 # Bluetooth
-apt-get install -y bluez blueman
+sudo apt-get install -y bluez blueman
 
 # Archive and compression tools
-apt-get install -y unzip
+sudo apt-get install -y unzip
 
 # System utilities
-apt-get install -y locales-all gawk
+sudo apt-get install -y locales-all gawk
 
 # Media tools
-apt-get install -y ffmpeg mpv
+sudo apt-get install -y ffmpeg mpv
 
 # Entertainment
-apt-get install -y fortune cowsay fortune-mod
+sudo apt-get install -y fortune cowsay fortune-mod
 
 # Development tools
-apt-get install -y direnv shellcheck curl ripgrep
+sudo apt-get install -y direnv shellcheck curl ripgrep
 
 # Display manager
-apt-get install -y greetd
+sudo apt-get install -y greetd

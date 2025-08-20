@@ -6,11 +6,6 @@ set -e
 set -u
 set -o pipefail
 
-if [ "$(id -u)" -ne 0 ]; then
-  echo "This script requires superuser permissions for installation."
-  exit 1
-fi
-
 function install_fonts() {
     local font fonts fonts_path
 
@@ -20,16 +15,16 @@ function install_fonts() {
 
     fonts_path=/usr/share/fonts
 
-    mkdir -p "${fonts_path}"
+    sudo mkdir -p "${fonts_path}"
     for font in "${fonts[@]}"; do
-        rm -rf "${fonts_path}/${font}Nerd"
-        mkdir -p "${fonts_path}/${font}Nerd"
-        wget -O "${fonts_path}/${font}Nerd.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.tar.xz"
-        tar -xf "${fonts_path}/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
-        rm -f "${fonts_path}/${font}Nerd.tar.xz"
+        sudo rm -rf "${fonts_path}/${font}Nerd"
+        sudo mkdir -p "${fonts_path}/${font}Nerd"
+        wget -O "/tmp/${font}Nerd.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.tar.xz"
+        sudo tar -xf "/tmp/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
+        rm -f "/tmp/${font}Nerd.tar.xz"
     done
 
-    fc-cache -f -v
+    sudo fc-cache -f -v
 }
 
 install_fonts
