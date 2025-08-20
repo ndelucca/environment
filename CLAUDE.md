@@ -49,8 +49,7 @@ cd stow-files && ./manage.sh list
 ./installers/system/foot-install.sh
 ./installers/system/google-chrome-install.sh
 ./installers/system/nvim-install.sh
-./installers/system/policykit-install.sh
-./installers/system/sway-wayland-install.sh
+./installers/system/wayland-install.sh
 
 # User-level installers (sudo included internally when needed)
 ./installers/user/development-install.sh

@@ -1,30 +1,24 @@
 #!/usr/bin/env bash
-
 # Credits to unsung hero @pablos123
 
-set -e
-set -u
-set -o pipefail
+set -euo pipefail
 
-function install_fonts() {
-    local font fonts fonts_path
+echo "Installing Nerd Fonts..."
 
-    fonts=(
-        JetBrainsMono
-    )
+fonts_path="/usr/share/fonts"
+font="JetBrainsMono"
 
-    fonts_path=/usr/share/fonts
+# Create fonts directory
+sudo mkdir -p "${fonts_path}/${font}Nerd"
 
-    sudo mkdir -p "${fonts_path}"
-    for font in "${fonts[@]}"; do
-        sudo rm -rf "${fonts_path}/${font}Nerd"
-        sudo mkdir -p "${fonts_path}/${font}Nerd"
-        wget -O "/tmp/${font}Nerd.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.tar.xz"
-        sudo tar -xf "/tmp/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
-        rm -f "/tmp/${font}Nerd.tar.xz"
-    done
+# Download and install font
+echo "Downloading ${font} Nerd Font..."
+wget -O "/tmp/${font}Nerd.tar.xz" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.tar.xz"
+sudo tar -xf "/tmp/${font}Nerd.tar.xz" -C "${fonts_path}/${font}Nerd"
+rm -f "/tmp/${font}Nerd.tar.xz"
 
-    sudo fc-cache -f -v
-}
+# Refresh font cache
+echo "Refreshing font cache..."
+sudo fc-cache -f -v
 
-install_fonts
+echo "Nerd Fonts installed successfully"

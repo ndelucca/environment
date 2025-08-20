@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
-
 # Credits to unsung hero @pablos123
 
-set -e
-set -u
-set -o pipefail
+set -euo pipefail
 
-function install_chrome() {
-    curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo gpg --yes --dearmor -o /usr/share/keyrings/google-chrome.gpg
-    (echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list) > /dev/null
-    sudo apt-get update
-    sudo apt-get install --yes google-chrome-stable xdg-utils
+echo "Installing Google Chrome..."
 
-    xdg-settings set default-web-browser 'google-chrome.desktop'
+# Add Google Chrome repository
+curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo gpg --yes --dearmor -o /usr/share/keyrings/google-chrome.gpg
+echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
 
-    # Fix emojis not rendering
-    sudo apt-get install --yes fonts-noto-color-emoji
-}
+# Install Chrome and dependencies
+sudo apt-get update
+sudo apt-get install -y google-chrome-stable xdg-utils fonts-noto-color-emoji
 
-install_chrome
+# Set as default browser
+xdg-settings set default-web-browser 'google-chrome.desktop'
+
+echo "Google Chrome installed successfully"
