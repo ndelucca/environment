@@ -41,20 +41,21 @@ cd stow-files && ./manage.sh list
 
 ### Installation Scripts
 ```bash
-# Install basic applications (requires root)
-sudo ./installers/su/basic-apps/install.sh
+# System-level installers (require root)
+sudo ./installers/system/basic-apps-install.sh
+sudo ./installers/system/sway-install.sh
+sudo ./installers/system/localization-install.sh
+sudo ./installers/system/fonts-install.sh
+sudo ./installers/system/foot-install.sh
+sudo ./installers/system/google-chrome-install.sh
+sudo ./installers/system/nvim-install.sh
+sudo ./installers/system/policykit-install.sh
+sudo ./installers/system/sway-wayland-install.sh
 
-# Install Sway window manager and related tools (requires root)
-sudo ./installers/su/sway/install.sh
-
-# Configure localization (Spanish Latin America locale and Buenos Aires timezone) (requires root)
-sudo ./installers/su/localization/install.sh
-
-# Install development environment (Go, Rust, dev directories) (user-level)
-./installers/user/development/install.sh
-
-# Install Node Version Manager (user-level)
-./installers/user/nvm/install.sh
+# User-level installers
+./installers/user/development-install.sh
+./installers/user/nvm-install.sh
+./installers/user/nvim-config.sh
 ```
 
 ## Architecture
@@ -76,11 +77,11 @@ The configuration files are unified into a single directory structure using GNU 
 - `manage.sh`: Unified, simplified bash script for configuration management
 
 ### Installation System
-Two-tier installation approach:
-- `installers/su/`: System-level installers requiring root privileges
-- `installers/user/`: User-level installers for non-privileged software
+Two-tier installation approach with simplified flat structure:
+- `installers/system/`: System-level installers requiring root privileges (flat structure with `<app>-install.sh` naming)
+- `installers/user/`: User-level installers for non-privileged software (flat structure with `<app>-install.sh` naming)
 
-The Sway installer can either install from distribution packages (default) or build from source (commented out functions available).
+All installation scripts follow a consistent naming pattern: `<application>-install.sh` for easy discovery and execution.
 
 ### System Integration
 - Uses systemd for service management (sway-session.target)
