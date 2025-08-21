@@ -11,6 +11,7 @@ sudo apt-get install -y \
     greetd \
     polkitd pkexec lxpolkit \
     pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol \
+    libspa-0.2-bluetooth libspa-0.2-libcamera \
     bluez blueman \
     network-manager-gnome \
     ffmpeg mpv \
