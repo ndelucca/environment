@@ -5,8 +5,8 @@
     "spacing": 4,
 
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": [],
-    "modules-right": ["network", "battery", "cpu", "memory", "pulseaudio", "clock"],
+    "modules-center": ["network", "battery", "cpu", "memory", "pulseaudio"],
+    "modules-right": ["tray", "clock" ],
 
     "sway/workspaces": {
         "disable-scroll": true,
@@ -49,5 +49,9 @@
         "format": "{volume}% VOL",
         "format-muted": "{volume}% VOL",
         "on-click": "pavucontrol"
+    },
+
+    "tray": {
+        "spacing": 5,
     }
 }

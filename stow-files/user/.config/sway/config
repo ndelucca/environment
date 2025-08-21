@@ -23,6 +23,8 @@ bar {
 
 exec_always --no-startup-id lxpolkit
 exec_always swaync
+exec_always nm-applet --indicator
+exec_always blueman-applet
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
 
 bindsym $mod+Return  exec $terminal
