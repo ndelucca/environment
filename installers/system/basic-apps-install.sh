@@ -7,20 +7,14 @@ sudo apt-get update
 
 # Install all packages in one command for efficiency
 sudo apt-get install -y \
-    pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol \
-    bluez blueman \
-    unzip \
-    locales-all gawk \
-    ffmpeg mpv \
-    fortune cowsay fortune-mod \
-    direnv shellcheck curl ripgrep \
+    locales-all \
     greetd \
     polkitd pkexec lxpolkit \
-    thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman \
-    gnome-text-editor \
-    eog \
-    file-roller \
-    htop \
-    network-manager-gnome
+    pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol \
+    bluez blueman \
+    network-manager-gnome \
+    ffmpeg mpv \
+    thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman file-roller viewnior mousepad \
+    gawk unzip curl ripgrep htop direnv cowsay fortune-mod
 
 echo "Basic applications installed successfully"
