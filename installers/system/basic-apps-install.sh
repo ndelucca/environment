@@ -16,7 +16,7 @@ sudo apt-get install -y \
     direnv shellcheck curl ripgrep \
     greetd \
     polkitd pkexec lxpolkit \
-    nautilus \
+    thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman \
     gnome-text-editor \
     eog \
     file-roller \
