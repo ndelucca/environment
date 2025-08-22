@@ -169,6 +169,46 @@ install_python_tools() {
     log_success "Python development tools installed"
 }
 
+# Install Node Version Manager (NVM)
+install_nvm() {
+    log_info "Installing Node Version Manager (NVM)..."
+    
+    # Check if NVM is already installed
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        log_info "NVM is already installed"
+        # Source NVM to check Node version
+        source "$HOME/.nvm/nvm.sh"
+        if command -v node &> /dev/null; then
+            local current_version
+            current_version=$(node --version)
+            log_info "Node.js is already installed (version: $current_version)"
+        fi
+        return 0
+    fi
+    
+    # Install NVM
+    log_info "Downloading and installing NVM..."
+    if curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash; then
+        # Check if nvm was installed correctly
+        if [[ ! -s "$HOME/.nvm/nvm.sh" ]]; then
+            log_error "NVM installation failed"
+            return 1
+        fi
+        
+        log_success "NVM installed successfully"
+        
+        # Load NVM and install latest LTS Node.js
+        log_info "Loading NVM and installing latest LTS Node.js..."
+        source "$HOME/.nvm/nvm.sh"
+        nvm install --lts
+        
+        log_success "Node.js LTS installed successfully"
+    else
+        log_error "Failed to install NVM"
+        return 1
+    fi
+}
+
 # Install additional development tools
 install_dev_tools() {
     log_info "Installing additional development tools..."
@@ -226,6 +266,20 @@ verify_installations() {
         echo
     fi
     
+    # Check Node.js/npm versions (sourcing NVM if needed)
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        source "$HOME/.nvm/nvm.sh"
+    fi
+    
+    if command -v node &> /dev/null; then
+        echo "Node.js version:"
+        node --version
+        echo "npm version:"
+        npm --version
+        echo "Node installation path: $(which node)"
+        echo
+    fi
+    
     log_success "Installation verification complete"
 }
 
@@ -238,6 +292,7 @@ main() {
     install_python_tools
     install_go
     install_rust
+    install_nvm
     verify_installations
     
     log_success "Development environment setup completed successfully!"

@@ -44,8 +44,7 @@ cd stow-files && ./manage.sh restore
 
 # Individual user installers:
 ./installers/user/00-nvim-config.sh     # Neovim configuration from GitHub
-./installers/user/01-development.sh     # Development tools (Go, Rust, Python)
-./installers/user/03-nvm.sh            # Node Version Manager
+./installers/user/01-development.sh     # Development tools (Go, Rust, Python, Node.js via NVM)
 ```
 
 ## Architecture
