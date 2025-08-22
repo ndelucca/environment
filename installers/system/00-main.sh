@@ -9,7 +9,7 @@ sudo apt-get install -y \
     wayland-utils dbus-user-session seatd systemd-container mesa-vulkan-drivers \
     sway swaybg sway-notification-center swaylock waybar wofi \
     wl-clipboard fonts-font-awesome \
-    locales-all \
+    locales locales-all \
     greetd \
     polkitd pkexec lxpolkit \
     pipewire pipewire-audio-client-libraries pipewire-pulse wireplumber pavucontrol \
