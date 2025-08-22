@@ -35,8 +35,8 @@ exec_always blueman-applet
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
 
 bindsym $mod+Return  exec $terminal
-bindsym $mod+d       exec wofi --show run
-bindsym $mod+Shift+d exec wofi --show drun
+bindsym $mod+d       exec wofi --show drun
+bindsym $mod+Shift+d exec wofi --show run
 
 bindsym Print exec grim - | swappy -f -
 bindsym Shift+Print exec grim -g "$(slurp)" - | wl-copy
