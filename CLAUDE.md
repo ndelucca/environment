@@ -87,6 +87,29 @@ The installation system follows a flat, numbered structure for predictable execu
 - Tmux integration for terminal multiplexing
 - Environment-specific configurations separated by concerns
 
+## Theme Color System
+
+The environment uses a consistent green accent color across all components:
+
+- **Primary Accent**: `#4a9d4a` (RGB: 74, 157, 74)
+- **Secondary Accent**: `#6cb66c` (RGB: 108, 182, 108)
+
+### Theme Components:
+- **Bash PS1**: `stow-files/user/bash_aliases.d/02-ps1.sh` - Terminal prompt colors
+- **Sway WM**: `stow-files/user/.config/sway/config` - Window borders and focused elements
+- **Waybar**: `stow-files/user/.config/waybar/style.css` - Status bar highlights
+- **Foot Terminal**: `stow-files/user/.config/foot/foot.ini` - Terminal color palette
+- **Wofi Launcher**: `stow-files/user/.config/wofi/style.css` - Application launcher selection
+- **SwayNC**: `stow-files/user/.config/swaync/style.css` - Notification styling
+- **GTK Applications**: `stow-files/user/.config/gtk-3.0/gtk.css` and `stow-files/user/.config/gtk-4.0/gtk.css` - Custom accent colors for GTK apps (Blueman, Pavucontrol, etc.)
+
+### Changing Theme Accent:
+To change the accent color system-wide:
+1. Update `T_MAIN_COLOR` and `T_SECONDARY_COLOR` in `bash_aliases.d/02-ps1.sh`
+2. Update corresponding colors in all theme component files listed above
+3. Update `@define-color accent_color` and related colors in both GTK CSS files
+4. Use RGB values for terminal (format: `38;2;R;G;B`) and hex for CSS files
+
 ## Important Notes
 
 - The setup.sh script excludes Neovim compilation by default (optional component in 04-nvim.sh)

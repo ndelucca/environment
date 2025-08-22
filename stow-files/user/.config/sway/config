@@ -9,11 +9,20 @@ input type:touchpad {
     accel_profile flat
 }
 
-default_border none
+default_border pixel 1
 gaps inner 5
 smart_gaps on
 hide_edge_borders smart
 workspace_auto_back_and_forth yes
+
+# Window colors - Verde oscuro moderno
+# class                 border   backgr.  text     indicator child_border
+client.focused          #4a9d4a  #242424  #ffffff  #4a9d4a   #4a9d4a
+client.focused_inactive #3d7a3d  #1a1a1a  #d0d0d0  #3d7a3d   #3d7a3d
+client.unfocused        #404040  #1a1a1a  #888888  #404040   #404040
+client.urgent           #ff6b6b  #ff6b6b  #ffffff  #ff6b6b   #ff6b6b
+client.placeholder      #404040  #1a1a1a  #ffffff  #404040   #404040
+client.background       #1a1a1a
 
 bar {
     swaybar_command waybar

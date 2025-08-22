@@ -1,4 +1,55 @@
 * {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 14px;
+    color: #ffffff;
+}
+
+.notification-window {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 157, 74, 0.3);
+    border-radius: 8px;
+}
+
+.notification {
+    background: rgba(36, 36, 36, 0.9);
+    border: 1px solid rgba(74, 157, 74, 0.2);
+    border-radius: 6px;
+    margin: 4px;
+    padding: 8px;
+}
+
+.control-center {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(74, 157, 74, 0.3);
+    border-radius: 8px;
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.widget-title {
+    color: #4a9d4a;
+    font-weight: bold;
+}
+
+.widget-dnd {
+    background: rgba(36, 36, 36, 0.8);
+    border-radius: 6px;
+    margin: 4px;
+}
+
+.widget-dnd:hover {
+    background: rgba(74, 157, 74, 0.2);
+}
+
+button {
+    background: rgba(74, 157, 74, 0.3);
+    border: 1px solid rgba(74, 157, 74, 0.5);
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+button:hover {
+    background: rgba(74, 157, 74, 0.5);
 }
