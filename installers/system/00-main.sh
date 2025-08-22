@@ -20,7 +20,7 @@ sudo apt-get install -y \
     ffmpeg mpv \
     thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman file-roller viewnior mousepad \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \
-    foot
+    foot mycli
 
 echo "Enabling seatd service..."
 sudo systemctl start seatd
