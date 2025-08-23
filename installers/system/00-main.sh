@@ -7,8 +7,8 @@ sudo apt-get update
 
 sudo apt-get install -y \
     wayland-utils dbus-user-session seatd systemd-container mesa-vulkan-drivers \
-    sway swaybg sway-notification-center swaylock waybar wofi \
-    wl-clipboard fonts-font-awesome \
+    sway swaybg sway-notification-center swaylock waybar wofi swappy grim slurp wl-clipboard \
+    fonts-font-awesome \
     locales locales-all \
     greetd \
     polkitd pkexec lxpolkit \
