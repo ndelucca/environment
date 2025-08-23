@@ -1,5 +1,5 @@
 set $mod Mod4
-set $terminal foot
+set $terminal footclient
 
 input type:keyboard {
     xkb_layout latam
@@ -33,6 +33,7 @@ exec_always swaync
 exec_always nm-applet --indicator
 exec_always blueman-applet
 exec_always swaybg -i /usr/share/backgrounds/wallpaper.png -m fill
+exec foot --server
 
 bindsym $mod+Return  exec $terminal
 bindsym $mod+d       exec wofi --show drun
