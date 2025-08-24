@@ -131,13 +131,6 @@ for_window [title=".*[Cc]onfigur.*"] floating enable, border normal
 # Additional specific window types
 for_window [window_type="notification"] floating enable, border none
 
-# System management tools - Generic patterns
-for_window [title=".*[Ff]ile [Mm]anager.*"] floating enable
-for_window [title=".*[Bb]luetooth.*"] floating enable
-for_window [title=".*[Aa]udio.*"] floating enable
-for_window [title=".*[Vv]olume.*"] floating enable
-for_window [title=".*[Nn]etwork.*"] floating enable
-
 # App ID patterns for common system tools
 for_window [app_id=".*file.*"] floating enable
 for_window [app_id=".*bluetooth.*"] floating enable
@@ -145,9 +138,6 @@ for_window [app_id=".*audio.*"] floating enable
 for_window [app_id=".*pulse.*"] floating enable
 for_window [app_id=".*volume.*"] floating enable
 for_window [app_id=".*network.*"] floating enable
-
-# # Specific common applications (fallback)
-for_window [app_id="thunar"] floating enable
 
 # Always float authentication dialogs
 for_window [title=".*[Aa]uthenticat.*"] floating enable, border normal

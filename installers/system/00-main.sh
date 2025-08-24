@@ -20,7 +20,14 @@ sudo apt-get install -y \
     ffmpeg mpv \
     thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman file-roller viewnior mousepad \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \
-    foot mycli
+    tmux foot mycli \
+    network-manager systemd-resolved openvpn-systemd-resolved network-manager-openvpn
+
+echo "Enabling NetworkManager in favour of dhcpcd and wpa_supplicant..."
+sudo systemctl stop dhcpcd wpa_supplicant
+sudo systemctl disable dhcpcd wpa_supplicant
+sudo systemctl enable NetworkManager systemd-resolved
+sudo systemctl start NetworkManager systemd-resolved
 
 echo "Enabling seatd service..."
 sudo systemctl start seatd
