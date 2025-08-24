@@ -1,19 +1,19 @@
 # NetworkManager Setup Guide
 
 ## Overview
-Clean NetworkManager installation for Debian 13.
+NetworkManager is integrated into the main system installation (00-main.sh). Clean setup with automatic service management.
 
-## What it does
+## What it does (integrated in main installer)
 - ✅ Installs NetworkManager + OpenVPN + systemd-resolved
 - ✅ Disables conflicting services (dhcpcd, wpa_supplicant)
-- ✅ Enables NetworkManager and systemd-resolved services
-- ✅ Configures DNS resolution via systemd-resolved
+- ✅ Enables and starts NetworkManager and systemd-resolved services
+- ✅ Configures DNS resolution via systemd-resolved automatically
 
 ## Usage
 
-### Complete Setup (Recommended)
+### Complete Setup
 ```bash
-# Step 1: Install packages and configure services
+# Step 1: Install packages and configure services (includes NetworkManager setup)
 sudo ./installers/setup.sh
 
 # Step 2: Deploy configuration files
@@ -103,7 +103,7 @@ nmcli connection reload
 ## Files
 
 ### Installer
-- `installers/system/05-networkmanager.sh` (15 lines, no complexity)
+- NetworkManager setup integrated in `installers/system/00-main.sh` (lines 24-30)
 
 ### Configuration (via stow)
 - `stow-files/system/etc/NetworkManager/NetworkManager.conf`
