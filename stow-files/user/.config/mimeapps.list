@@ -24,6 +24,8 @@ application/x-extension-html=google-chrome.desktop
 application/x-extension-shtml=google-chrome.desktop
 application/x-extension-xhtml=google-chrome.desktop
 application/x-extension-xht=google-chrome.desktop
+x-scheme-handler/about=google-chrome.desktop
+x-scheme-handler/unknown=google-chrome.desktop
 
 [Added Associations]
 text/plain=mousepad.desktop;
