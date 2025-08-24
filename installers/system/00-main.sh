@@ -24,8 +24,8 @@ sudo apt-get install -y \
     network-manager systemd-resolved openvpn-systemd-resolved network-manager-openvpn
 
 echo "Enabling NetworkManager in favour of dhcpcd and wpa_supplicant..."
-sudo systemctl stop dhcpcd wpa_supplicant
-sudo systemctl disable dhcpcd wpa_supplicant
+sudo systemctl stop dhcpcd wpa_supplicant 2>/dev/null || true
+sudo systemctl disable dhcpcd wpa_supplicant 2>/dev/null || true
 sudo systemctl enable NetworkManager systemd-resolved
 sudo systemctl start NetworkManager systemd-resolved
 
