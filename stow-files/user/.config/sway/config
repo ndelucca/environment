@@ -102,7 +102,6 @@ bindsym $mod+a focus parent
 bindsym $mod+z focus child
 bindsym $mod+c move position center
 
-# Smart floating rules based on window types and roles
 for_window [window_type="dialog"] floating enable, border normal
 for_window [window_type="utility"] floating enable, border normal
 for_window [window_type="toolbar"] floating enable, border normal
@@ -111,8 +110,6 @@ for_window [window_type="menu"] floating enable, border none
 for_window [window_type="dropdown_menu"] floating enable, border none
 for_window [window_type="popup_menu"] floating enable, border none
 for_window [window_type="tooltip"] floating enable, border none
-
-# Window roles that should float
 for_window [window_role="pop-up"] floating enable, border normal
 for_window [window_role="bubble"] floating enable, border none
 for_window [window_role="task_dialog"] floating enable, border normal
@@ -120,17 +117,7 @@ for_window [window_role="Preferences"] floating enable, border normal
 for_window [window_role="About"] floating enable, border normal
 for_window [window_role="toolbox"] floating enable, border normal
 for_window [window_role="page-info"] floating enable, border normal
-
-# Title-based rules for common patterns
-for_window [title="(?:Open|Save|Select).*(?:File|Folder).*"] floating enable, border normal
-for_window [title=".*[Pp]references.*"] floating enable, border normal
-for_window [title=".*[Ss]ettings.*"] floating enable, border normal
-for_window [title=".*[Pp]roperties.*"] floating enable, border normal
-for_window [title=".*[Cc]onfigur.*"] floating enable, border normal
-
-# Additional specific window types
 for_window [window_type="notification"] floating enable, border none
-
 # App ID patterns for common system tools
 for_window [app_id=".*file.*"] floating enable
 for_window [app_id=".*bluetooth.*"] floating enable
@@ -138,15 +125,6 @@ for_window [app_id=".*audio.*"] floating enable
 for_window [app_id=".*pulse.*"] floating enable
 for_window [app_id=".*volume.*"] floating enable
 for_window [app_id=".*network.*"] floating enable
-
-# Always float authentication dialogs
-for_window [title=".*[Aa]uthenticat.*"] floating enable, border normal
-for_window [title=".*[Pp]assword.*"] floating enable, border normal
-for_window [title=".*[Cc]redential.*"] floating enable, border normal
-
-# Picture-in-picture and overlay content
-for_window [title="[Pp]icture.in.[Pp]icture"] floating enable, sticky enable, border none
-for_window [title="[Pp]icture-in-[Pp]icture"] floating enable, sticky enable, border none
 
 # MODES
 
