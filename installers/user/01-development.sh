@@ -31,10 +31,26 @@ create_dev_directories() {
     log_info "Creating development directories..."
     
     local dev_dir="$HOME/dev"
-    local directories=("go" "rust" "node" "python")
+    local directories=("rust" "node" "python")
     
     mkdir -p "$dev_dir"
     
+    # Create Go workspace structure
+    local go_dir="$dev_dir/go"
+    local go_subdirs=("src" "bin" "pkg")
+    
+    log_info "Creating Go workspace structure..."
+    for subdir in "${go_subdirs[@]}"; do
+        local full_path="$go_dir/$subdir"
+        if [[ ! -d "$full_path" ]]; then
+            mkdir -p "$full_path"
+            log_success "Created Go directory: $full_path"
+        else
+            log_info "Go directory already exists: $full_path"
+        fi
+    done
+    
+    # Create other development directories
     for dir in "${directories[@]}"; do
         local full_path="$dev_dir/$dir"
         if [[ ! -d "$full_path" ]]; then
