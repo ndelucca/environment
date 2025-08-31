@@ -1,4 +1,4 @@
-for file in "${HOME}"/bash_aliases.d/*.sh;
+for file in "${HOME}"/.bash_aliases.d/*.sh;
 do
   . "$file"
 done
