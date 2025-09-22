@@ -1,0 +1,18 @@
+[Unit]
+Description=Klipper 3D Printer Firmware SV1
+Documentation=https://www.klipper3d.org/
+After=network-online.target
+Wants=udev.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+User=mainsail
+Group=mainsail
+WorkingDirectory=/opt/mainsail/klipper
+EnvironmentFile=/opt/mainsail/printer_data/systemd/klipper.env
+ExecStart=/opt/mainsail/klippy-env/bin/python $KLIPPER_ARGS
+Restart=always
+RestartSec=10
