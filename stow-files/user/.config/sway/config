@@ -1,6 +1,8 @@
 set $mod Mod4
 set $terminal footclient
 
+xwayland enable
+
 input type:keyboard {
     xkb_layout latam
 }

@@ -2,5 +2,5 @@
 vt = 7
 
 [default_session]
-command = "/usr/sbin/agreety --cmd 'dbus-run-session /usr/bin/sway'"
+command = "/usr/sbin/agreety --cmd 'dbus-run-session /usr/bin/sway --unsupported-gpu'"
 user = "_greetd"
