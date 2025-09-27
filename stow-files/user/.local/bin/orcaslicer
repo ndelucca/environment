@@ -1,0 +1,3 @@
+#!/bin/bash
+
+"${HOME}/slicers/OrcaSlicer_Linux_AppImage_Ubuntu2404_V2.3.0.AppImage" "$@" &
