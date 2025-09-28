@@ -5,10 +5,10 @@ set -e
 MAINSAIL_DIR="/var/www/mainsail.local"
 
 echo "Installing dependencies"
-sudo apt install -y python3-virtualenv python3-dev libffi-dev build-essential libncurses-dev avrdude gcc-avr binutils-avr avr-libc stm32flash dfu-util libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi libusb-1.0-0 libusb-1.0-0-dev libopenjp2-7 python3-libgpiod curl libcurl4-openssl-dev libssl-dev liblmdb-dev libsodium-dev zlib1g-dev libjpeg-dev packagekit wireless-tools
+sudo apt install -y python3-virtualenv python3-dev libffi-dev build-essential libncurses-dev avrdude gcc-avr binutils-avr avr-libc stm32flash dfu-util libnewlib-arm-none-eabi gcc-arm-none-eabi binutils-arm-none-eabi libusb-1.0-0 libusb-1.0-0-dev libopenjp2-7 python3-libgpiod curl libcurl4-openssl-dev libssl-dev liblmdb-dev libsodium-dev zlib1g-dev libjpeg-dev packagekit wireless-tools ustreamer
 
-echo "Adding www-data user to dialout group for serial access"
-sudo usermod -a -G dialout www-data
+echo "Adding www-data user to dialout and video groups for serial and camera access"
+sudo usermod -a -G dialout,video www-data
 
 # Create main directory structure
 echo "Creating directory structure in $MAINSAIL_DIR"
@@ -98,6 +98,19 @@ gcode_store_size: 1000
 
 [machine]
 provider: systemd_dbus
+
+[webcam webcam1]
+service: mjpegstreamer-adaptive
+target_fps: 15
+stream_url: /webcam/?action=stream
+snapshot_url: /webcam/?action=snapshot
+flip_horizontal: false
+flip_vertical: false
+enabled: true
+aspect_ratio: 4:3
+icon: mdiWebcam
+location: printer
+rotation: 0
 EOF
 
 echo "Downloading mainsail static files"
@@ -179,9 +192,17 @@ else
     echo "Moonraker service already enabled"
 fi
 
+if ! sudo systemctl is-enabled ustreamer.service > /dev/null 2>&1; then
+    sudo systemctl enable ustreamer.service
+    echo "Ustreamer service enabled"
+else
+    echo "Ustreamer service already enabled"
+fi
+
 echo "Setting PolicyKit rules for moonraker"
 $MAINSAIL_DIR/moonraker/scripts/set-policykit-rules.sh || echo "PolicyKit rules installed (service restart failed - expected)"
 
 echo "Starting services"
 sudo systemctl start klipper || echo "Klipper service may already be running"
 sudo systemctl start moonraker || echo "Moonraker service may already be running"
+sudo systemctl start ustreamer || echo "Ustreamer service may already be running"
