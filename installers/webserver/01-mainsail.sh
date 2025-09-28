@@ -126,6 +126,43 @@ else
     echo "mainsail.local already exists in /etc/hosts"
 fi
 
+echo "Setting up SSL certificates for HTTPS"
+# Check if certificates already exist
+if [ ! -f "/etc/ssl/certs/mainsail.local.pem" ] || [ ! -f "/etc/ssl/private/mainsail.local-key.pem" ]; then
+    echo "SSL certificates not found, creating new ones with mkcert..."
+
+    # Install mkcert if not available
+    if ! command -v mkcert &> /dev/null; then
+        echo "Installing mkcert..."
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+    fi
+
+    # Install local CA if not already done
+    if [ ! -d "$HOME/.local/share/mkcert" ]; then
+        echo "Installing local CA..."
+        mkcert -install
+    fi
+
+    # Generate certificate for mainsail.local
+    echo "Generating SSL certificate for mainsail.local..."
+    mkcert mainsail.local
+
+    # Move certificates to system directories
+    sudo mkdir -p /etc/ssl/private
+    sudo mv mainsail.local.pem /etc/ssl/certs/
+    sudo mv mainsail.local-key.pem /etc/ssl/private/
+    sudo chmod 644 /etc/ssl/certs/mainsail.local.pem
+    sudo chmod 600 /etc/ssl/private/mainsail.local-key.pem
+    sudo chown root:root /etc/ssl/certs/mainsail.local.pem
+    sudo chown root:ssl-cert /etc/ssl/private/mainsail.local-key.pem
+
+    echo "SSL certificates created and installed successfully"
+else
+    echo "SSL certificates already exist, skipping creation"
+fi
+
 echo "Enabling services"
 sudo systemctl daemon-reload
 if ! sudo systemctl is-enabled klipper.service > /dev/null 2>&1; then
