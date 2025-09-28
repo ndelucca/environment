@@ -8,10 +8,10 @@ WantedBy=multi-user.target
 
 [Service]
 Type=simple
-User=mainsail
-Group=mainsail
-WorkingDirectory=/opt/mainsail/moonraker
-EnvironmentFile=/opt/mainsail/printer_data/systemd/moonraker.env
-ExecStart=/opt/mainsail/moonraker-env/bin/python $MOONRAKER_ARGS
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/mainsail.local/moonraker
+EnvironmentFile=/var/www/mainsail.local/printer_data/systemd/moonraker.env
+ExecStart=/var/www/mainsail.local/moonraker-env/bin/python $MOONRAKER_ARGS
 Restart=always
 RestartSec=10
