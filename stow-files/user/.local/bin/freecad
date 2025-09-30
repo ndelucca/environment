@@ -1,0 +1,3 @@
+#!/bin/bash
+
+${HOME}/app_images/FreeCAD*.AppImage "$@" &
