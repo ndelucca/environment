@@ -1,0 +1,139 @@
+set $mod Mod4
+set $terminal urxvt
+
+# Font for window titles
+font pango:JetBrainsMono Nerd Font 10
+
+# Keyboard layout
+exec_always --no-startup-id setxkbmap latam
+
+default_border pixel 1
+gaps inner 5
+smart_gaps on
+hide_edge_borders smart
+workspace_auto_back_and_forth yes
+
+# Window colors - Verde oscuro moderno
+# class                 border   backgr.  text     indicator child_border
+client.focused          #4a9d4a  #242424  #ffffff  #4a9d4a   #4a9d4a
+client.focused_inactive #3d7a3d  #1a1a1a  #d0d0d0  #3d7a3d   #3d7a3d
+client.unfocused        #404040  #1a1a1a  #888888  #404040   #404040
+client.urgent           #ff6b6b  #ff6b6b  #ffffff  #ff6b6b   #ff6b6b
+client.placeholder      #404040  #1a1a1a  #ffffff  #404040   #404040
+client.background       #1a1a1a
+
+# Launch Polybar
+exec_always --no-startup-id "${HOME}/.config/polybar/launch.sh"
+
+exec --no-startup-id xset dpms 0 0 0
+exec_always --no-startup-id picom -b --config "${HOME}/.config/picom/picom.conf"
+exec_always --no-startup-id lxpolkit
+exec_always --no-startup-id dunst
+exec_always --no-startup-id nm-applet
+exec_always --no-startup-id blueman-applet
+exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/wallpaper.png
+
+bindsym $mod+Return  exec $terminal
+bindsym $mod+d       exec rofi -show drun
+bindsym $mod+Shift+d exec rofi -show run
+
+bindsym Print exec flameshot full -p ~/pictures
+bindsym Shift+Print exec flameshot gui
+bindsym $mod+Shift+Print exec flameshot gui
+
+bindsym $mod+Shift+r restart
+bindsym $mod+q kill
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+f fullscreen toggle
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+assign [class="Spotify"]  6
+assign [class="discord"]  7
+assign [class="Skype"]    8
+assign [class="whatsapp"] 9
+assign [class="URxvt"] 1
+assign [class="firefox"] 2
+assign [class="chromium"] 2
+assign [class="Code"] 3
+
+assign [instance=".*(?i)spotify.*"] 6
+assign [instance=".*(?i)discord.*"] 7
+assign [instance=".*(?i)skype.*"] 8
+assign [instance=".*(?i)whatsapp.*"] 9
+assign [instance=".*(?i)chatgpt.*"] 10
+assign [window_role="^browser$"] 2
+
+for_window [class="URxvt"] border none
+
+floating_modifier $mod
+focus_follows_mouse yes
+mouse_warping output
+
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+bindsym $mod+z focus child
+bindsym $mod+c move position center
+
+# App class patterns for common system tools
+for_window [class="(?i)file"] floating enable
+for_window [class="(?i)bluetooth"] floating enable
+for_window [class="(?i)audio"] floating enable
+for_window [class="(?i)pulse"] floating enable
+for_window [class="(?i)volume"] floating enable
+for_window [class="(?i)network"] floating enable
+
+# MODES
+
+# Lock - Reboot - Shutdown mode
+set $mode_system (e) Logout | (r) Reboot | (CTRL+s) Shutdown
+bindsym $mod+BackSpace mode "$mode_system"
+mode "$mode_system" {
+    bindsym e      exec --no-startup-id i3-msg exit, mode "default"
+    bindsym r      exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Ctrl+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Settings and configurations mode
+set $mode_settings (n) Notifications
+bindsym $mod+exclamdown mode "$mode_settings"
+bindsym $mod+questiondown mode "$mode_settings"
+mode "$mode_settings" {
+    bindsym n exec --no-startup-id dunstctl history-pop, mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
