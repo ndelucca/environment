@@ -10,6 +10,12 @@ echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl
 
 sudo apt-get install -y google-chrome-stable xdg-utils fonts-noto-color-emoji
 
-xdg-settings set default-web-browser 'google-chrome.desktop'
+# xdg-settings set default-web-browser 'google-chrome.desktop'
 
 echo "Google Chrome installed successfully"
+
+echo "Installing Brave..."
+curl -fsS https://dl.brave.com/install.sh | sh
+
+xdg-settings set default-web-browser 'brave-browser.desktop'
+

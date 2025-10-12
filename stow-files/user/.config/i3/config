@@ -86,6 +86,7 @@ assign [class="whatsapp"] 9
 assign [class="URxvt"] 1
 assign [class="firefox"] 2
 assign [class="chromium"] 2
+assign [class="Opera"] 2
 assign [class="Code"] 3
 
 assign [instance=".*(?i)spotify.*"] 6

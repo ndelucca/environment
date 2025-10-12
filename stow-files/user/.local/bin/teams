@@ -1,3 +1,3 @@
 #!/bin/bash
 
-google-chrome --app="https://teams.live.com/v2/" "$@" &
+"$CURRENT_BROWSER" --app="https://teams.live.com/v2/" "$@" &
