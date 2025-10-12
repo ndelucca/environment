@@ -21,6 +21,7 @@ sudo apt-get install -y \
     thunar gvfs gvfs-backends thunar-archive-plugin thunar-volman file-roller viewnior mousepad \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \
     tmux mycli \
+    lazygit \
     network-manager systemd-resolved openvpn-systemd-resolved network-manager-openvpn
 
 echo "Enabling NetworkManager in favour of dhcpcd and wpa_supplicant..."
