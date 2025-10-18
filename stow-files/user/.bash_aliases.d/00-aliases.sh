@@ -5,4 +5,3 @@ alias ap='ansible-playbook'
 
 alias myip='printf "external: " && curl ifconfig.me && echo && printf "local: " && hostname -I'
 
-export CURRENT_BROWSER="brave-browser"
