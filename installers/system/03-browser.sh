@@ -14,8 +14,3 @@ sudo apt-get install -y google-chrome-stable xdg-utils fonts-noto-color-emoji
 
 echo "Google Chrome installed successfully"
 
-echo "Installing Brave..."
-curl -fsS https://dl.brave.com/install.sh | sh
-
-xdg-settings set default-web-browser 'brave-browser.desktop'
-
