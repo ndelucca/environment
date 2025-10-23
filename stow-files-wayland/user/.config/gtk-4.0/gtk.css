@@ -1,0 +1,55 @@
+/* Custom GTK4 accent color override - Subtle grey theme */
+/* Primary accent: rgba(255, 255, 255, 0.15) */
+/* Secondary accent: rgba(255, 255, 255, 0.25) */
+
+@define-color accent_color rgba(255, 255, 255, 0.2);
+@define-color accent_bg_color rgba(255, 255, 255, 0.15);
+@define-color accent_fg_color #ffffff;
+
+/* Selection colors */
+selection,
+*:selected {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Button colors */
+.suggested-action {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.suggested-action:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Progress bars and sliders */
+progressbar > trough > progress,
+scale > trough > slider,
+scale > trough > highlight {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Switch active state */
+switch:checked {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Links */
+link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Checkboxes and radio buttons */
+check:checked,
+radio:checked {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Entry focus */
+entry:focus-within {
+    border-color: rgba(255, 255, 255, 0.3);
+    outline-color: rgba(255, 255, 255, 0.15);
+}

@@ -1,6 +1,9 @@
 set $mod Mod4
 set $terminal footclient
 
+# Font for window titles and bar
+font pango:JetBrainsMono Nerd Font 11
+
 xwayland enable
 
 input type:keyboard {
@@ -11,19 +14,24 @@ input type:touchpad {
     accel_profile flat
 }
 
-default_border pixel 1
-gaps inner 5
-smart_gaps on
-hide_edge_borders smart
-workspace_auto_back_and_forth yes
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_border_thickness 0
+titlebar_padding 10 6
 
-# Window colors - Verde oscuro moderno
+smart_gaps on
+smart_borders on
+
+workspace_auto_back_and_forth yes
+focus_on_window_activation focus
+
+# Window colors - Clear focus indication
 # class                 border   backgr.  text     indicator child_border
-client.focused          #4a9d4a  #242424  #ffffff  #4a9d4a   #4a9d4a
-client.focused_inactive #3d7a3d  #1a1a1a  #d0d0d0  #3d7a3d   #3d7a3d
-client.unfocused        #404040  #1a1a1a  #888888  #404040   #404040
+client.focused          #4a9d4a  #1e1e1e  #ffffff  #4a9d4a   #4a9d4a
+client.focused_inactive #333333  #1a1a1a  #aaaaaa  #333333   #333333
+client.unfocused        #2a2a2a  #181818  #888888  #2a2a2a   #2a2a2a
 client.urgent           #ff6b6b  #ff6b6b  #ffffff  #ff6b6b   #ff6b6b
-client.placeholder      #404040  #1a1a1a  #ffffff  #404040   #404040
+client.placeholder      #2a2a2a  #181818  #888888  #2a2a2a   #2a2a2a
 client.background       #1a1a1a
 
 bar {
@@ -92,7 +100,10 @@ assign [app_id=".*firefox.*"] 2
 assign [app_id=".*chrom.*"]   2
 assign [app_id="code"]        3
 
-for_window [app_id=$terminal] border none
+for_window [app_id=$terminal] border pixel 2
+
+# Enhanced floating window defaults
+for_window [floating] resize set 70 ppt 70 ppt, move position center
 
 floating_modifier $mod
 focus_follows_mouse yes

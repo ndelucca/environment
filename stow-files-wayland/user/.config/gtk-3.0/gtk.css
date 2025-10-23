@@ -1,0 +1,66 @@
+/* Custom GTK3 accent color override - Subtle grey theme */
+/* Primary accent: rgba(255, 255, 255, 0.15) */
+/* Secondary accent: rgba(255, 255, 255, 0.25) */
+
+@define-color accent_color rgba(255, 255, 255, 0.2);
+@define-color accent_bg_color rgba(255, 255, 255, 0.15);
+@define-color accent_fg_color #ffffff;
+
+/* Selection colors */
+selection,
+*:selected {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Button and link colors */
+button.suggested-action,
+.suggested-action {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+button.suggested-action:hover,
+.suggested-action:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Progress bars and sliders */
+progressbar progress,
+scale slider,
+scale highlight {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Switch active state */
+switch:checked {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Links */
+link,
+link:link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+link:visited {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Checkboxes and radio buttons */
+checkbutton:checked,
+radiobutton:checked {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Scrollbar thumbs */
+scrollbar slider {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Entry focus */
+entry:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
