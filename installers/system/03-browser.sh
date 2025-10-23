@@ -2,16 +2,19 @@
 set -euo pipefail
 # Credits to unsung hero @pablos123
 
+echo "Installing Chromium"
 
-echo "Installing Google Chrome..."
+sudo apt-get install chromium
 
-curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo gpg --yes --dearmor -o /usr/share/keyrings/google-chrome.gpg
-echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
-
-sudo apt-get update
-sudo apt-get install -y google-chrome-stable xdg-utils fonts-noto-color-emoji
-
-echo "Google Chrome installed successfully"
+# echo "Installing Google Chrome..."
+#
+# curl -fsSL 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo gpg --yes --dearmor -o /usr/share/keyrings/google-chrome.gpg
+# echo 'deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+#
+# sudo apt-get update
+# sudo apt-get install -y google-chrome-stable xdg-utils fonts-noto-color-emoji
+#
+# echo "Google Chrome installed successfully"
 
 echo "Installing Firefox..."
 
