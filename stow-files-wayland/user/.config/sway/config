@@ -6,6 +6,10 @@ font pango:JetBrainsMono Nerd Font 11
 
 xwayland enable
 
+# Import environment variables for portals and D-Bus
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
 input type:keyboard {
     xkb_layout latam
 }
