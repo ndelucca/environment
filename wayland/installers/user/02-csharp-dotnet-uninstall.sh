@@ -1,0 +1,1 @@
+../../../installers-shared/user/02-csharp-dotnet-uninstall.sh
