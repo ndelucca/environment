@@ -1,1 +1,0 @@
-../../../installers-shared/user/01-development.sh

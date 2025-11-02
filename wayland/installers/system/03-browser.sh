@@ -1,1 +1,0 @@
-../../../installers-shared/system/03-browser.sh

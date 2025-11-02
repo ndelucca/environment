@@ -1,0 +1,1 @@
+../../../installers-shared/system/01-localization.sh

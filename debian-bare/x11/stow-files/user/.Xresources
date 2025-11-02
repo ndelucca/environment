@@ -1,0 +1,78 @@
+! URxvt configuration matching foot terminal settings
+
+! Font configuration with fallback for symbols
+URxvt.font: xft:JetBrainsMono Nerd Font:size=14:antialias=true:hinting=true,xft:DejaVu Sans Mono:size=14,xft:Symbola:size=14
+URxvt.boldFont: xft:JetBrainsMono Nerd Font:bold:size=14:antialias=true:hinting=true,xft:DejaVu Sans Mono:bold:size=14,xft:Symbola:bold:size=14
+URxvt.letterSpace: 0
+
+! Background and foreground (transparency handled by picom)
+URxvt.background: #1a1a1a
+URxvt.foreground: #ffffff
+
+! Scrollback buffer
+URxvt.saveLines: 10000
+
+! Scrollbar
+URxvt.scrollBar: false
+
+! Geometry and spacing
+URxvt.internalBorder: 10
+URxvt.externalBorder: 0
+URxvt.geometry: 120x30
+
+! UTF-8 support
+URxvt*utf8: true
+
+! Cursor
+URxvt.cursorBlink: false
+URxvt.cursorUnderline: false
+
+! URLs clickable
+URxvt.perl-ext-common: default,matcher,selection-to-clipboard,-confirm-paste
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button: 1
+URxvt.underlineURLs: true
+
+! Copy/Paste - seamless clipboard integration
+URxvt.clipboard.autocopy: true
+URxvt.clipboard.copycmd: xclip -i -selection clipboard
+URxvt.clipboard.pastecmd: xclip -o -selection clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+
+! Color scheme - matching foot
+! Black
+URxvt.color0: #2a2a2a
+URxvt.color8: #404040
+
+! Red
+URxvt.color1: #ff6b6b
+URxvt.color9: #ff8a8a
+
+! Green
+URxvt.color2: #4a9d4a
+URxvt.color10: #6cb66c
+
+! Yellow
+URxvt.color3: #f5c842
+URxvt.color11: #f7d662
+
+! Blue
+URxvt.color4: #5294cf
+URxvt.color12: #72aaef
+
+! Magenta
+URxvt.color5: #b084d6
+URxvt.color13: #c89ae6
+
+! Cyan
+URxvt.color6: #47b3c4
+URxvt.color14: #67d3e4
+
+! White
+URxvt.color7: #d0d0d0
+URxvt.color15: #ffffff
+
+! Disable ISO 14755 unicode input (Ctrl+Shift)
+URxvt.iso14755: false
+URxvt.iso14755_52: false

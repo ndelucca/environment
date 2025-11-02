@@ -1,0 +1,171 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(26, 26, 26, 0.88);
+    color: #ffffff;
+}
+
+/* Tooltip */
+tooltip {
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(74, 157, 74, 0.3);
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: #ffffff;
+}
+
+/* Workspaces - Bold and clear */
+#workspaces {
+    background: transparent;
+    margin: 0 8px 0 4px;
+    padding: 0;
+}
+
+#workspaces button {
+    color: #888888;
+    background: transparent;
+    padding: 0 12px;
+    margin: 0 2px;
+    border-radius: 0;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 32px;
+}
+
+#workspaces button:hover {
+    background: rgba(74, 157, 74, 0.15);
+    color: #aaaaaa;
+}
+
+/* This is the key - focused means visible AND active on current output */
+#workspaces button.focused {
+    background: rgba(74, 157, 74, 0.35);
+    color: #ffffff;
+}
+
+/* Visible but not focused (on other monitor) */
+#workspaces button.visible {
+    background: rgba(60, 60, 60, 0.3);
+    color: #aaaaaa;
+}
+
+#workspaces button.urgent {
+    background: rgba(255, 107, 107, 0.35);
+    color: #ffffff;
+    animation: urgent-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes urgent-pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Mode indicator */
+#mode {
+    background: rgba(74, 157, 74, 0.4);
+    color: #ffffff;
+    padding: 0 12px;
+    margin: 0 8px 0 0;
+    border-radius: 0;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* Clock - Right side, clean */
+#clock {
+    background: transparent;
+    color: #ffffff;
+    padding: 0 12px;
+    margin: 0 4px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+/* Center modules - No backgrounds, clean */
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#battery {
+    background: transparent;
+    padding: 0 10px;
+    margin: 0;
+    color: #e0e0e0;
+    font-size: 12px;
+}
+
+/* Tray - no background */
+#tray {
+    background: transparent;
+    padding: 0 8px;
+    margin: 0 4px;
+}
+
+/* Individual module styling - unified colors */
+#pulseaudio {
+    color: #e0e0e0;
+}
+
+#network {
+    color: #e0e0e0;
+}
+
+#network.disconnected {
+    color: #ff6b6b;
+}
+
+#cpu {
+    color: #e0e0e0;
+}
+
+#memory {
+    color: #e0e0e0;
+}
+
+#battery {
+    color: #e0e0e0;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #4a9d4a;
+}
+
+#battery.warning:not(.charging) {
+    color: #f5c842;
+}
+
+#battery.critical:not(.charging) {
+    background: rgba(255, 107, 107, 0.4);
+    color: #ffffff;
+    animation: blink-critical 1s ease-in-out infinite;
+}
+
+@keyframes blink-critical {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Tray */
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: rgba(255, 107, 107, 0.2);
+    border-radius: 6px;
+}

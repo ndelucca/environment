@@ -1,0 +1,58 @@
+general {
+    colors = true
+    interval = 5
+    color_good = "#4a9d4a"
+    color_degraded = "#f5c842"
+    color_bad = "#ff6b6b"
+}
+
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "battery all"
+order += "cpu_usage"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+wireless _first_ {
+    format_up = "%quality WIFI"
+    format_down = ""
+}
+
+ethernet _first_ {
+    format_up = "ETH"
+    format_down = ""
+}
+
+battery all {
+    format = "%percentage %status"
+    format_down = ""
+    status_chr = "CHR"
+    status_bat = ""
+    status_unk = "?"
+    status_full = "POW"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 10
+}
+
+cpu_usage {
+    format = "%usage CPU"
+}
+
+memory {
+    format = "%percentage_used MEM"
+    threshold_degraded = "10%"
+    format_degraded = "MEMORY LOW: %free"
+}
+
+volume master {
+    format = "%volume VOL"
+    format_muted = "%volume VOL"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}
+
+tztime local {
+    format = "%a %d %H:%M"
+}

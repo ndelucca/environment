@@ -1,0 +1,18 @@
+[user]
+name = ndelucca
+email = nazadelucca@gmail.com
+[push]
+default = simple
+[pull]
+rebase = True
+[alias]
+st = status
+[core]
+autocrlf = False
+commentchar = ";"
+[color]
+ui = True
+[safe]
+	directory = /var/www/mainsail.local/klipp
+	directory = /var/www/mainsail.local/klipper
+	directory = /var/www/mainsail.local/klipper-conf

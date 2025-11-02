@@ -1,0 +1,77 @@
+configuration {
+    modi: "drun,run";
+    font: "JetBrainsMono Nerd Font 14";
+    show-icons: false;
+    display-drun: "";
+    display-run: "";
+    drun-display-format: "{name}";
+    case-sensitive: false;
+    kb-row-up: "Up,Control+p";
+    kb-row-down: "Down,Control+n";
+}
+
+* {
+    background-color: #1a1a1a;
+    text-color: #ffffff;
+    border-color: #4a9d4a;
+    selected-normal-background: rgba(74, 157, 74, 0.3);
+    selected-normal-foreground: #ffffff;
+    alternate-normal-background: #1a1a1a;
+    alternate-normal-foreground: #ffffff;
+    normal-background: #1a1a1a;
+    normal-foreground: #ffffff;
+}
+
+window {
+    transparency: "real";
+    background-color: rgba(26, 26, 26, 0.95);
+    border: 1px;
+    border-color: rgba(74, 157, 74, 0.3);
+    border-radius: 8px;
+    width: 600px;
+    location: center;
+    anchor: center;
+}
+
+mainbox {
+    border: 0;
+    padding: 10px;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+    spacing: 10px;
+    background-color: #242424;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+prompt {
+    text-color: #4a9d4a;
+}
+
+entry {
+    placeholder: "Search...";
+    text-color: #ffffff;
+}
+
+listview {
+    lines: 10;
+    spacing: 4px;
+    padding: 10px 0px;
+}
+
+element {
+    padding: 8px;
+    border-radius: 4px;
+}
+
+element selected {
+    background-color: rgba(74, 157, 74, 0.3);
+    text-color: #ffffff;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}

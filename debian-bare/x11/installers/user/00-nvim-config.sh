@@ -1,0 +1,1 @@
+../../../installers-shared/user/00-nvim-config.sh

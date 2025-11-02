@@ -1,1 +1,0 @@
-../../../installers-shared/system/04-nvim.sh
