@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-sudo dnf copr enable agriffis/neovim-nightly
+sudo dnf copr enable agriffis/neovim-nightly -y
 sudo dnf install -y \
     swaync swappy \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \

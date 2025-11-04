@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-FROZEN_DIR=$(dirname "$0")
+FROZEN_DIR="${HOME}/environment/fedora-sway-spin/setup"
 FONT_NAME="JetBrainsMono"
 FONT_DIR="/usr/local/share/fonts/${FONT_NAME}Nerd"
 TMP_PATH="$(mktemp)"
