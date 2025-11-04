@@ -27,7 +27,7 @@ RAW_VARIANT=$(localectl status | awk '/X11 Variant/ {print $3}')
 LAYOUT_LINE="xkb_layout ${RAW_LAYOUT:-us}"
 VARIANT_LINE=$([[ -n "$RAW_VARIANT" && "$RAW_VARIANT" != "n/a" ]] && echo "xkb_variant $RAW_VARIANT" || echo "")
 
-sudo tee /usr/share/sway/config.d/10-keyboard.conf > /dev/null <<'EOF'
+sudo tee /usr/share/sway/config.d/10-keyboard.conf > /dev/null <<EOF
 # Auto-generated from system settings
 input * {
     ${LAYOUT_LINE}
