@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+FROZEN_DIR=$(dirname "$0")
 FONT_NAME="JetBrainsMono"
 FONT_DIR="/usr/local/share/fonts/${FONT_NAME}Nerd"
 TMP_PATH="$(mktemp)"
@@ -24,12 +25,12 @@ echo "Updating font cache..."
 sudo fc-cache -f "$FONT_DIR"
 
 echo "Updating system wallpaper"
-sudo cp ./02-wallpaper.png /usr/share/backgrounds/wallpaper.png
+sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
 
 echo "SDDM configuration"
 echo "Updating sddm wallpaper"
 sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.bak
-sudo cp ./02-wallpaper.png /usr/share/backgrounds/default.jxl
+sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
 
 echo "Creating sddm configuration file"
 sudo tee /etc/sddm.conf.d/ndelucca.conf > /dev/null <<'EOF'

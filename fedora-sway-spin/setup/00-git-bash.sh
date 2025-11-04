@@ -15,3 +15,19 @@ do
 done
 EOF
 
+FROZEN_SSH=$(dirname "$0")/ssh
+SSH_DIR="${HOME}/.ssh"
+
+echo "Setting up SSH keys"
+
+mkdir -p "$SSH_DIR"
+
+if [ ! -f "${SSH_DIR}/id_rsa" ]; then
+    cp ${FROZEN_SSH}/id_rsa.pub ${SSH_DIR}/id_rsa.pub
+    sudo dnf install -y age
+    age --decrypt -o ${SSH_DIR}/id_rsa ${FROZEN_SSH}/id_rsa.age
+    chmod 400 ${SSH_DIR}/id_rsa
+fi
+
+echo "Changing .git origin to ssh"
+git remote set-url origin "ssh://git@github.com/ndelucca/environment.git"
