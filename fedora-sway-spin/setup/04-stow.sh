@@ -3,7 +3,12 @@
 set -euo pipefail
 
 STOW_DIR="${HOME}/environment/fedora-sway-spin/dotfiles"
-CONFIG_DIR="${HOME}/.config"
+BASHRC=.bashrc.d
+CONFIG=.config
+
+mkdir -p "${HOME}/${BASHRC}"
+mkdir -p "${HOME}/${CONFIG}"
 
 cd "${STOW_DIR}"
-stow -t ${CONFIG_DIR} .config
+stow -t "${HOME}/${BASHRC}" "${BASHRC}"
+stow -t "${HOME}/${CONFIG}" "${CONFIG}"

@@ -9,5 +9,7 @@ Current environment: Fedora Sway Spin
 ```bash
 git clone https://github.com/ndelucca/environment.git "${HOME}/environment"
 
-./environment/fedora-sway-spin/setup/bootstraping.sh
+cd "${HOME}/environment"
+
+./fedora-sway-spin/bootstraping.sh
 ```

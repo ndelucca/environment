@@ -11,14 +11,6 @@ sudo git config --system core.commentchar ";"
 sudo git config --system color.ui true
 sudo git config --system alias.st status
 
-cat > "${HOME}/.bash_aliases" <<EOF
-#!/usr/bin/env bash
-for file in "\${HOME}"/.config/bash_aliases/*.sh;
-do
-  . "\$file"
-done
-EOF
-
 FROZEN_DIR="${HOME}/environment/fedora-sway-spin/setup/ssh"
 SSH_DIR="${HOME}/.ssh"
 
