@@ -143,11 +143,13 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-set $mode_settings (n) Notifications
+set $mode_settings (a) Audio (n) Notifications
 bindsym $mod+exclamdown mode "$mode_settings"
 bindsym $mod+questiondown mode "$mode_settings"
+bindsym $mod+equal mode "$mode_settings"
 mode "$mode_settings" {
     bindsym n exec --no-startup-id swaync-client -t -sw, mode "default"
+    bindsym a exec --no-startup-id pavucontrol, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
