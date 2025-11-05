@@ -33,7 +33,7 @@ sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.ba
 sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
 
 echo "Creating sddm configuration file"
-sudo tee /etc/sddm.conf.d/ndelucca.conf > /dev/null <<'EOF'
+sudo tee /etc/sddm.conf.d/ndelucca.conf >/dev/null <<'EOF'
 [Autologin]
 # User=ndelucca
 # Session=sway
@@ -50,7 +50,6 @@ if [ -d /sys/firmware/efi ]; then
 else
     GRUB_CFG="/boot/grub2/grub.cfg"
 fi
-
 THEME_DIR="/boot/grub2/themes/breeze"
 THEME_FILE="${THEME_DIR}/theme.txt"
 TMP_DIR="$(mktemp -d)"
@@ -61,16 +60,30 @@ if ! sudo test -f "${THEME_FILE}"; then
     sudo mkdir -p /boot/grub2/themes
     sudo rm -rf "${THEME_DIR}"
     sudo cp -r "${TMP_DIR}/repo/breeze" "${THEME_DIR}"
+
+    sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub
+    echo "GRUB_THEME=\"${THEME_FILE}\"" | sudo tee -a /etc/default/grub >/dev/null
+
+    if ! grep -q '^GRUB_TERMINAL_OUTPUT="gfxterm"' /etc/default/grub; then
+        echo 'GRUB_TERMINAL_OUTPUT="gfxterm"' | sudo tee -a /etc/default/grub >/dev/null
+    fi
+
+    sudo grub2-mkconfig -o "${GRUB_CFG}"
+    sudo rm -rf "${TMP_DIR}"
 else
     echo "Theme already installed at ${THEME_FILE}"
 fi
 
-sudo sed -i '/^GRUB_THEME=/d' /etc/default/grub
-echo "GRUB_THEME=\"${THEME_FILE}\"" | sudo tee -a /etc/default/grub > /dev/null
+echo "Configuring rofi-wayland"
 
-if ! grep -q '^GRUB_TERMINAL_OUTPUT="gfxterm"' /etc/default/grub; then
-    echo 'GRUB_TERMINAL_OUTPUT="gfxterm"' | sudo tee -a /etc/default/grub > /dev/null
+REPO_URL="https://github.com/newmanls/rofi-themes-collection.git"
+TMP_DIR="$(mktemp -d)"
+TARGET_DIR="/usr/share/rofi/themes"
+
+if [ ! -f "${TARGET_DIR}/themes-installed" ]; then
+    sudo git clone --depth=1 "${REPO_URL}" "${TMP_DIR}/repo"
+    sudo mkdir -p "${TARGET_DIR}"
+    sudo cp -r ${TMP_DIR}/repo/themes/* ${TARGET_DIR}/
+    sudo rm -rf "${TMP_DIR}"
+    sudo touch "${TARGET_DIR}/themes-installed"
 fi
-
-sudo grub2-mkconfig -o "${GRUB_CFG}"
-sudo rm -rf "${TMP_DIR}"
