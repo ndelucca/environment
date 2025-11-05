@@ -56,7 +56,7 @@ THEME_FILE="${THEME_DIR}/theme.txt"
 TMP_DIR="$(mktemp -d)"
 REPO_URL="https://github.com/gustawho/grub2-theme-breeze.git"
 
-if [ ! -f "${THEME_FILE}" ]; then
+if ! sudo test -f "${THEME_FILE}"; then
     sudo git clone --depth=1 "${REPO_URL}" "${TMP_DIR}/repo"
     sudo mkdir -p /boot/grub2/themes
     sudo rm -rf "${THEME_DIR}"
