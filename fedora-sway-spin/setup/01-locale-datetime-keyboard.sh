@@ -4,7 +4,8 @@ set -euo pipefail
 
 LOCALE="en_US.UTF-8"
 TIMEZONE="America/Argentina/Buenos_Aires"
-KEYMAP="latam" # KEYMAP="us"
+KEYMAP="us-euro" # KEYMAP="latam"
+KEYMAP_X11="eu" # KEYMAP="latam"
 
 echo "Fedora $0"
 echo "Configuring locale (${LOCALE}) keymap (${KEYMAP}) and timezone (${TIMEZONE})..."
@@ -12,7 +13,7 @@ echo "Configuring locale (${LOCALE}) keymap (${KEYMAP}) and timezone (${TIMEZONE
 sudo localectl set-locale LANG=${LOCALE}
 sudo timedatectl set-timezone "${TIMEZONE}"
 sudo localectl set-keymap "${KEYMAP}"
-sudo localectl set-x11-keymap "${KEYMAP}"
+sudo localectl set-x11-keymap "${KEYMAP_X11}"
 
 echo "Localization - datetime - keyboard configured successfully!"
 localectl status | grep "System Locale" || true
