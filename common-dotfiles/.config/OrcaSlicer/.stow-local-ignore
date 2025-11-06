@@ -1,0 +1,25 @@
+# Stow local ignore patterns for OrcaSlicer
+# Prevents stow from creating symlinks for these files/directories
+
+# Runtime and temporary files
+cache
+log
+plugins
+
+# Backup directories
+.*_backup.*
+user_backup.*
+
+# Machine-specific files
+\.orcaslicer_machine_id
+
+# OTA updates
+ota
+
+# System vendor profiles (managed by OrcaSlicer)
+system
+
+# Git files (if any remain)
+\.git
+\.gitignore
+\.claude
