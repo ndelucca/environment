@@ -125,16 +125,14 @@ workspace 8 output HDMI-A-1 eDP-1
 workspace 9 output HDMI-A-1 eDP-1
 workspace 10 output HDMI-A-1 eDP-1
 
-assign [app_id=".*spotify.*"] workspace 6
-assign [app_id=".*discord.*"] workspace 7
-assign [app_id=".*teams.*"] workspace 8
+assign [app_id=".*chrom.*"]    workspace 2
+assign [app_id=".*firefox.*"]  workspace 2
+assign [app_id="code"]         workspace 3
+assign [app_id=".*spotify.*"]  workspace 6
+assign [app_id=".*discord.*"]  workspace 7
+assign [app_id=".*teams.*"]    workspace 8
 assign [app_id=".*whatsapp.*"] workspace 9
-
-assign [app_id=".*chrom.*"] workspace 2
-assign [app_id=".*firefox.*"] workspace 2
-
-assign [app_id="code"] workspace 3
-
+assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
 # Modes
 
