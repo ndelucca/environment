@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+HDMI_POSITION="left"  # Options: "left" or "right"
+
+# Monitor names
+LAPTOP_OUTPUT="eDP-1"
+EXTERNAL_OUTPUT="HDMI-A-1"
+
+LAPTOP_WIDTH=1920
+EXTERNAL_WIDTH=1920
+
+check_lid_state() {
+    local lid_state=$(cat /proc/acpi/button/lid/*/state 2>/dev/null | awk '{print $2}')
+    [ "$lid_state" = "closed" ]
+}
+
+check_output_connected() {
+    local output_name="$1"
+    local output_info="$2"
+    echo "$output_info" | jq -r ".[] | select(.name == \"$output_name\") | .name" | grep -q "$output_name"
+}
+
+output_info=$(swaymsg -r -t get_outputs)
+
+laptop_connected=$(check_output_connected "$LAPTOP_OUTPUT" "$output_info" && echo "yes" || echo "no")
+external_connected=$(check_output_connected "$EXTERNAL_OUTPUT" "$output_info" && echo "yes" || echo "no")
+
+lid_closed=$(check_lid_state && echo "yes" || echo "no")
+
+# ============================================================================
+# Case 1: Lid is closed
+# ============================================================================
+if [ "$lid_closed" = "yes" ]; then
+    echo "Lid is closed - disabling laptop display, using external monitor only"
+    swaymsg output "$LAPTOP_OUTPUT" disable
+    if [ "$external_connected" = "yes" ]; then
+        swaymsg output "$EXTERNAL_OUTPUT" enable
+        swaymsg output "$EXTERNAL_OUTPUT" pos 0 0
+    fi
+    exit 0
+fi
+
+# ============================================================================
+# Case 2: Both monitors connected (lid is open)
+# ============================================================================
+if [ "$laptop_connected" = "yes" ] && [ "$external_connected" = "yes" ]; then
+    echo "Both monitors detected - positioning $EXTERNAL_OUTPUT on the $HDMI_POSITION"
+
+    swaymsg output "$LAPTOP_OUTPUT" enable
+    swaymsg output "$EXTERNAL_OUTPUT" enable
+
+    if [ "$HDMI_POSITION" = "left" ]; then
+        # External on left, laptop on right
+        swaymsg output "$EXTERNAL_OUTPUT" pos 0 0
+        swaymsg output "$LAPTOP_OUTPUT" pos "$EXTERNAL_WIDTH" 0
+    else
+        # Laptop on left, external on right
+        swaymsg output "$LAPTOP_OUTPUT" pos 0 0
+        swaymsg output "$EXTERNAL_OUTPUT" pos "$LAPTOP_WIDTH" 0
+    fi
+    exit 0
+fi
+
+# ============================================================================
+# Case 3: Only laptop screen available
+# ============================================================================
+if [ "$laptop_connected" = "yes" ]; then
+    echo "Only laptop screen available - positioning at 0,0"
+    swaymsg output "$LAPTOP_OUTPUT" enable
+    swaymsg output "$LAPTOP_OUTPUT" pos 0 0
+    exit 0
+fi
+
+# ============================================================================
+# Case 4: Only external monitor available
+# ============================================================================
+if [ "$external_connected" = "yes" ]; then
+    echo "Only external monitor available - positioning at 0,0"
+    swaymsg output "$EXTERNAL_OUTPUT" enable
+    swaymsg output "$EXTERNAL_OUTPUT" pos 0 0
+    exit 0
+fi
+
+exit 1
