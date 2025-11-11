@@ -127,9 +127,11 @@ workspace 10 output HDMI-A-1 eDP-1
 
 assign [app_id="code"]         workspace 3
 assign [app_id=".*spotify.*"]  workspace 6
-assign [app_id=".*discord.*"]  workspace 7
+
+assign [app_id=".*discord.*"]  workspace 8
 assign [app_id=".*teams.*"]    workspace 8
-assign [app_id=".*whatsapp.*"] workspace 9
+assign [app_id=".*whatsapp.*"] workspace 8
+
 assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
 # Wildcards go after specific apps
