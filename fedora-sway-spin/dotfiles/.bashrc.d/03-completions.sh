@@ -4,6 +4,3 @@
 
 [[ -f /usr/share/bash-completion/completions/git ]] && source /usr/share/bash-completion/completions/git
 
-eval "$(direnv hook bash)"
-
-/usr/bin/fortune | /usr/bin/cowsay -pn
