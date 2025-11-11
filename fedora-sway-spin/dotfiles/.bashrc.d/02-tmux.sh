@@ -7,7 +7,7 @@
 ((BASH_VERSINFO[0] < 4)) && return
 
 # Return if not the terminal cannot use colors.
-[[ ! "${TERM}" =~ color ]] && return
+[[ ! "${TERM}" =~ foot ]] && return
 
 if command -v tmux &>>/dev/null \
     && [[ ! "${TERM}" =~ screen ]] \
