@@ -1,27 +1,4 @@
 #!/usr/bin/env bash
-# HISTORY
-
-# Append to history after finishing any command.
-export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
-
-# Automatically trim long paths in the prompt.
-export PROMPT_DIRTRIM=2
-
-# Big history.
-export HISTSIZE=500000
-export HISTFILESIZE=100000
-
-# Avoid duplicate entries.
-export HISTCONTROL="erasedups:ignoreboth"
-
-# Don't record some commands.
-export HISTIGNORE="exit:ls:history:clear:pwd"
-
-# Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d
-# %T equivalent to %H:%M:%S (24-hours format)
-export HISTTIMEFORMAT='%F %T '
-
 # SHELL OPTIONS
 {
 
@@ -99,4 +76,26 @@ export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa"
 export PROMPT_COMMAND="__git_ps1 \"${RUTA}\" \"${FIRSTLINE}${SIMB} \""
 export PS1=''
 
+# HISTORY
+
+# Append to history after finishing any command.
+export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
+
+# Automatically trim long paths in the prompt.
+export PROMPT_DIRTRIM=2
+
+# Big history.
+export HISTSIZE=500000
+export HISTFILESIZE=100000
+
+# Avoid duplicate entries.
+export HISTCONTROL="erasedups:ignoreboth"
+
+# Don't record some commands.
+export HISTIGNORE="exit:ls:history:clear:pwd"
+
+# Use standard ISO 8601 timestamp
+# %F equivalent to %Y-%m-%d
+# %T equivalent to %H:%M:%S (24-hours format)
+export HISTTIMEFORMAT='%F %T '
 
