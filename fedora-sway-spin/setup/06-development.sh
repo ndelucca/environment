@@ -254,7 +254,7 @@ main() {
     install_dev_tools
     install_python_tools
     install_go
-    install_rust
+    # install_rust
     install_nvm
     verify_installations
 
