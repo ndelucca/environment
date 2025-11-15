@@ -12,18 +12,8 @@ sudo dnf install -y \
 if command -v code &>/dev/null; then
     echo "VSCode is already installed."
     echo "Version: $(code --version | head -n1)"
-    read -p "Do you want to skip VSCode installation? (Y/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        echo "Skipping VSCode installation..."
-    else
-        INSTALL_VSCODE=true
-    fi
+    INSTALL_VSCODE=false
 else
-    INSTALL_VSCODE=true
-fi
-
-if [ "$INSTALL_VSCODE" = true ]; then
     echo "Installing VSCode from Microsoft repository..."
 
     sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
