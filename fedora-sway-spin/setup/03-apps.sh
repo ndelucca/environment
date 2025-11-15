@@ -9,6 +9,20 @@ sudo dnf install -y \
     tmux mycli \
     chromium firefox neovim python3-neovim
 
+if command -v gh &>/dev/null; then
+    echo "GitHub CLI is already installed."
+    echo "Version: $(gh --version | head -n1)"
+else
+    echo "Installing GitHub CLI from official repository..."
+
+    sudo dnf install -y dnf5-plugins
+    sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+    sudo dnf install -y gh --repo gh-cli
+
+    echo "GitHub CLI installed successfully!"
+    echo "Version: $(gh --version | head -n1)"
+fi
+
 if command -v code &>/dev/null; then
     echo "VSCode is already installed."
     echo "Version: $(code --version | head -n1)"
