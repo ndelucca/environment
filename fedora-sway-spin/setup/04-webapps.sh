@@ -12,6 +12,7 @@ declare -A WEBAPPS=(
     [ChatGPT]="https://chat.openai.com"
     [Discord]="https://discord.com/app"
     [WhatsApp]="https://web.whatsapp.com"
+    [Gmail]="https://mail.google.com"
 )
 
 CHROMIUM_BIN="${CHROMIUM_BIN:-chromium-browser}"

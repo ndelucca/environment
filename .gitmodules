@@ -1,0 +1,3 @@
+[submodule "fedora-sway-spin/dotfiles/.config/nvim"]
+	path = fedora-sway-spin/dotfiles/.config/nvim
+	url = git@github.com:ndelucca/nvim.git

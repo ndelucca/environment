@@ -1,0 +1,4 @@
+// Most keybindings are handled by Neovim via vscode-neovim extension
+// See ~/.config/nvim/lua/ndelucca/vscode.lua for keybinding configuration
+// Add VSCode-specific keybindings here if needed
+[]
