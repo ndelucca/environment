@@ -76,6 +76,9 @@ GITB="${C_GITB}\`__git_ps1\`${M_END}"
 
 export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa"
 
+# Automatically trim long paths in the prompt.
+# export PROMPT_DIRTRIM=2
+
 # Use PROMPT_COMMAND (not PS1) to get color output (see git-prompt.sh for more)
 export PROMPT_COMMAND="__git_ps1 \"${RUTA}\" \"${FIRSTLINE}${SIMB} \""
 export PS1=''
@@ -84,9 +87,6 @@ export PS1=''
 
 # Append to history after finishing any command.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
-
-# Automatically trim long paths in the prompt.
-export PROMPT_DIRTRIM=2
 
 # Big history.
 export HISTSIZE=500000
