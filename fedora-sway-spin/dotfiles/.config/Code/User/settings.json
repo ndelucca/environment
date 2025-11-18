@@ -112,5 +112,6 @@
 "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
 },
-"workbench.startupEditor": "none"
+"workbench.startupEditor": "none",
+"workbench.activityBar.location": "top"
 }
