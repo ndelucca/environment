@@ -1,1 +1,0 @@
-../../../installers-shared/system/02-fonts.sh
