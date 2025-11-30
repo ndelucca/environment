@@ -7,7 +7,8 @@ sudo dnf install -y \
     swaync swappy \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \
     tmux mycli \
-    chromium firefox neovim python3-neovim
+    chromium firefox neovim python3-neovim \
+    ansible
 
 if command -v gh &>/dev/null; then
     echo "GitHub CLI is already installed."
