@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Display network configuration in a table format
+show_network_config() {
+    local title="$1"
+    echo "=== $title ==="
+    printf "%-15s %-12s %-12s %-18s\n" "INTERFACE" "TYPE" "STATUS" "IP ADDRESS"
+    printf "%-15s %-12s %-12s %-18s\n" "---------" "----" "------" "----------"
+    nmcli -t -f DEVICE,TYPE,STATE device | while IFS=: read -r dev type state; do
+        local ip_addr
+        ip_addr=$(ip -4 -o addr show "$dev" 2>/dev/null | awk '{print $4}' | head -n1) || true
+        [[ -z "$ip_addr" ]] && ip_addr="--"
+        printf "%-15s %-12s %-12s %-18s\n" "$dev" "$type" "$state" "$ip_addr"
+    done
+    echo ""
+}
+
+# Validate IP address format
+validate_ip() {
+    local ip="$1"
+    # Remove CIDR notation if present
+    local ip_only="${ip%%/*}"
+
+    if [[ $ip_only =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        local IFS='.'
+        local -a octets=($ip_only)
+        for octet in "${octets[@]}"; do
+            ((octet > 255)) && return 1
+        done
+        return 0
+    fi
+    return 1
+}
+
+# Configure a single interface
+configure_iface() {
+    local iface="$1"
+    local type="$2"
+
+    echo ""
+    echo "Detected interface ($type): $iface"
+
+    # Get and validate static IP
+    local static_ip
+    while true; do
+        read -rp "Enter static IP (e.g., 192.168.0.50/24): " static_ip
+
+        if [[ -z "$static_ip" ]]; then
+            echo "Error: IP address cannot be empty"
+            continue
+        fi
+
+        # Add /24 netmask if user didn't include it
+        if [[ ! "$static_ip" =~ / ]]; then
+            echo "No netmask specified, using /24 by default"
+            static_ip="${static_ip}/24"
+        fi
+
+        if validate_ip "$static_ip"; then
+            break
+        else
+            echo "Error: Invalid IP address format"
+        fi
+    done
+
+    # Get and validate gateway
+    local gateway
+    while true; do
+        read -rp "Enter gateway (e.g., 192.168.0.1): " gateway
+
+        if [[ -z "$gateway" ]]; then
+            echo "Error: Gateway cannot be empty"
+            continue
+        fi
+
+        if validate_ip "$gateway"; then
+            break
+        else
+            echo "Error: Invalid gateway format"
+        fi
+    done
+
+    # Get DNS or use gateway as default
+    local dns1
+    read -rp "Enter primary DNS (e.g., 192.168.0.1) [Press Enter to use gateway]: " dns1
+
+    if [[ -z "$dns1" ]]; then
+        dns1="$gateway"
+        echo "Using gateway as DNS: $dns1"
+    elif ! validate_ip "$dns1"; then
+        echo "Warning: Invalid DNS format, using gateway instead"
+        dns1="$gateway"
+    fi
+
+    # Get or create connection
+    local con_name
+    con_name=$(nmcli -t -f NAME,DEVICE connection show | awk -F: -v d="$iface" '$2==d {print $1}')
+
+    if [[ -z "$con_name" ]]; then
+        echo "No connection found for $iface. Creating one..."
+        con_name="${type}-${iface}"
+        nmcli connection add type "$type" ifname "$iface" con-name "$con_name" \
+            ipv4.method manual ipv4.address "$static_ip" ipv4.gateway "$gateway" ipv4.dns "$dns1"
+    else
+        echo "Modifying existing connection: $con_name"
+        nmcli connection modify "$con_name" ipv4.addresses "$static_ip"
+        nmcli connection modify "$con_name" ipv4.gateway "$gateway"
+        nmcli connection modify "$con_name" ipv4.method manual
+        nmcli connection modify "$con_name" ipv4.dns "$dns1"
+    fi
+
+    # Restart connection
+    echo "Activating connection..."
+    nmcli connection down "$con_name" 2>/dev/null || true
+    nmcli connection up "$con_name"
+    echo "Configuration applied successfully!"
+}
+
+# Main script
+show_network_config "Current Network Configuration"
+
+echo "=== Configure Static IP (NetworkManager) ==="
+
+# Detect connected interfaces
+mapfile -t wired_ifaces < <(nmcli device status | awk '$2=="ethernet" && $3=="connected" {print $1}')
+mapfile -t wifi_ifaces < <(nmcli device status | awk '$2=="wifi" && $3=="connected" {print $1}')
+
+# Check if there are any connected interfaces
+if [[ ${#wired_ifaces[@]} -eq 0 && ${#wifi_ifaces[@]} -eq 0 ]]; then
+    echo "No connected interfaces found. Please connect an interface first."
+    exit 1
+fi
+
+# Configure wired interfaces
+for iface in "${wired_ifaces[@]}"; do
+    configure_iface "$iface" "ethernet"
+done
+
+# Configure Wi-Fi interfaces
+for iface in "${wifi_ifaces[@]}"; do
+    configure_iface "$iface" "wifi"
+done
+
+echo ""
+show_network_config "Final Configuration"
+echo "Done."
