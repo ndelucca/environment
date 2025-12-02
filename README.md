@@ -13,3 +13,13 @@ cd "${HOME}/environment"
 
 ./fedora-sway-spin/bootstraping.sh
 ```
+
+## Home Server
+
+Ansible configuration for my Fedora home server with Cockpit web management and AdGuard Home DNS filtering.
+
+```bash
+cd "${HOME}/environment/home-server"
+
+ansible-playbook playbooks/site.yml -l server-host
+```
