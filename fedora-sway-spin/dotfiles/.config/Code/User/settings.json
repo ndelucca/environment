@@ -46,7 +46,7 @@
   "git.confirmSync": false,
 
   // Workbench
-  "workbench.colorTheme": "Dracula",
+  "workbench.colorTheme": "Dracula Theme",
   "workbench.editor.enablePreview": false,
 
   // File settings
@@ -113,5 +113,6 @@
     "asvetliakov.vscode-neovim": 1
 },
 "workbench.startupEditor": "none",
-"workbench.activityBar.location": "top"
+"workbench.activityBar.location": "top",
+"claudeCode.preferredLocation": "panel"
 }
