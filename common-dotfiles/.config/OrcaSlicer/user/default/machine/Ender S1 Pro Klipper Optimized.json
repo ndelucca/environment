@@ -59,8 +59,8 @@
     "machine_pause_gcode": "PAUSE",
     "machine_start_gcode": "START_PRINT BED_TEMP=[bed_temperature_initial_layer_single] EXTRUDER_TEMP=[nozzle_temperature_initial_layer]",
     "name": "Ender S1 Pro Klipper Optimized",
-    "print_host": "192.168.10.167",
-    "print_host_webui": "http://192.168.10.167/heightmap",
+    "print_host": "ndelucca-raspberry-printer.com",
+    "print_host_webui": "http://ndelucca-raspberry-printer.com/heightmap",
     "printer_settings_id": "Ender S1 Pro Klipper Optimized",
     "printhost_ssl_ignore_revoke": "1",
     "retract_before_wipe": [
