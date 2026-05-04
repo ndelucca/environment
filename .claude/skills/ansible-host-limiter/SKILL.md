@@ -13,7 +13,7 @@ This skill enforces a critical safety practice for the home-server infrastructur
 ## Target Hosts
 
 ### Primary Target (Default)
-- **ndelucca-server**: The main home server running Fedora 43
+- **ndelucca-server**: The main home server running Fedora 44
 
 ### Hosts to Avoid (Unless Explicitly Requested)
 - **ndelucca-raspberry-printer**: Raspberry Pi running Debian (not Fedora)
@@ -94,7 +94,7 @@ Before executing any ansible command, verify:
 - [ ] The `-l` flag is present
 - [ ] The target is `ndelucca-server` (or user explicitly requested otherwise)
 - [ ] The command is appropriate for the targeted host
-- [ ] The playbook/role supports the target OS (ndelucca-server runs Fedora 43)
+- [ ] The playbook/role supports the target OS (ndelucca-server runs Fedora 44)
 
 ## Common Commands with Correct Syntax
 
