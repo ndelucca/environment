@@ -1,0 +1,20 @@
+# Local pre-commit hooks for the home-server Ansible project.
+# One-time setup:  pip install --user pre-commit && pre-commit install
+# Runs fully locally (language: system) — no external hook repos are fetched.
+# Hooks only fire when files under home-server/ are staged.
+repos:
+  - repo: local
+    hooks:
+      - id: yamllint-home-server
+        name: yamllint (home-server)
+        language: system
+        entry: bash -c 'cd home-server && exec yamllint .'
+        files: ^home-server/.*\.(ya?ml)$
+        pass_filenames: false
+
+      - id: ansible-lint-home-server
+        name: ansible-lint (home-server)
+        language: system
+        entry: bash -c 'cd home-server && exec ansible-lint'
+        files: ^home-server/
+        pass_filenames: false
