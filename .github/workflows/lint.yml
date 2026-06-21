@@ -1,0 +1,46 @@
+---
+name: lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install tooling
+        run: pip install ansible-core ansible-lint yamllint
+
+      - name: Install collections
+        working-directory: home-server
+        run: ansible-galaxy collection install -r requirements.yml
+
+      # ansible.cfg points at a (gitignored) vault password file. Create a
+      # throwaway one so syntax-check/lint can parse files that reference
+      # vaulted vars. These steps never decrypt secrets, so the value is
+      # irrelevant.
+      - name: Provide dummy vault password
+        working-directory: home-server
+        run: echo "ci-dummy" > .vault_pass
+
+      - name: yamllint
+        working-directory: home-server
+        run: yamllint .
+
+      - name: ansible-lint
+        working-directory: home-server
+        run: ansible-lint
+
+      - name: Syntax check
+        working-directory: home-server
+        run: ansible-playbook playbooks/site.yml --syntax-check
