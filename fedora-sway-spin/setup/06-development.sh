@@ -147,7 +147,7 @@ install_nvm() {
         log_warning "NVM is already installed"
     else
         # Install NVM
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
 
         log_success "NVM installed successfully"
     fi

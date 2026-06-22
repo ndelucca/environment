@@ -2,9 +2,8 @@
 
 set -euo pipefail
 
-sudo dnf copr enable agriffis/neovim-nightly -y
 sudo dnf install -y \
-    swaync swappy \
+    swaync swappy brightnessctl \
     gawk unzip curl ripgrep htop direnv cowsay fortune-mod \
     tmux mycli \
     chromium firefox neovim python3-neovim \
