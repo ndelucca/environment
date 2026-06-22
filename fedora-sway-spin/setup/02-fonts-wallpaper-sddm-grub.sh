@@ -74,7 +74,7 @@ else
     echo "Theme already installed at ${THEME_FILE}"
 fi
 
-echo "Configuring rofi-wayland"
+echo "Configuring rofi"
 
 REPO_URL="https://github.com/newmanls/rofi-themes-collection.git"
 TMP_DIR="$(mktemp -d)"
