@@ -29,7 +29,6 @@ direnv
 cowsay
 fortune-mod
 tmux
-mycli
 
 # Fonts (Nerd-patched — needed for the icon glyphs in waybar/foot/prompt)
 cascadia-code-nf-fonts
