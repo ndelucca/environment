@@ -74,7 +74,7 @@ SIMB="${C_SIMB}☯${M_END}"
 
 GITB="${C_GITB}\`__git_ps1\`${M_END}"
 
-export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa"
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
 
 # Automatically trim long paths in the prompt.
 # export PROMPT_DIRTRIM=2

@@ -1,0 +1,53 @@
+# Single source of truth for dnf packages installed by the bootstrap.
+# Consumed once by 03-apps.sh. One package per line; blank lines and lines
+# starting with '#' are ignored.
+#
+# Things NOT here (they have their own install logic):
+#   - gh                 -> 03-apps.sh (third-party repo)
+#   - Zed                -> 03-apps.sh (official install script)
+#   - c-development      -> 06-development.sh (dnf group)
+
+# Desktop / Wayland / Sway
+SwayNotificationCenter
+swappy
+brightnessctl
+
+# Browsers
+chromium
+firefox
+
+# CLI tools
+gawk
+unzip
+curl
+ripgrep
+fd-find
+jq
+tree
+htop
+direnv
+cowsay
+fortune-mod
+tmux
+mycli
+
+# Fonts (Nerd-patched — needed for the icon glyphs in waybar/foot/prompt)
+cascadia-code-nf-fonts
+
+# Editors
+neovim
+python3-neovim
+
+# Languages / development. Fedora has no bare 'nodejs' package — only versioned
+# streams — so the major version is pinned explicitly.
+golang
+nodejs24
+nodejs24-npm
+uv
+python3-pip
+
+# Automation
+ansible
+
+# Linting / quality
+ShellCheck
