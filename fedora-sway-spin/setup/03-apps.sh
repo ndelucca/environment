@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-SETUP_DIR="${HOME}/environment/fedora-sway-spin/setup"
+SETUP_DIR="${HOME}/nd.environment/fedora-sway-spin/setup"
 PKG_FILE="${SETUP_DIR}/packages.txt"
 
 echo "Installing dnf packages from ${PKG_FILE}..."

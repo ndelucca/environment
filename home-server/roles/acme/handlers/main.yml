@@ -1,7 +1,0 @@
----
-- name: Reload acme service
-  ansible.builtin.systemd:
-    name: "{{ acme_reload_service }}"
-    state: reloaded
-  become: true
-  listen: reload acme service

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_DIR="${HOME}/environment"
+REPO_DIR="${HOME}/nd.environment"
 SETUP_DIR="${REPO_DIR}/fedora-sway-spin/setup"
 LOG_FILE="${HOME}/.cache/bootstrap-$(date +%Y%m%d-%H%M%S).log"
 

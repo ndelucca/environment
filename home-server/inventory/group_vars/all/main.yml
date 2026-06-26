@@ -1,9 +1,0 @@
----
-# Configuración no secreta compartida entre hosts.
-#
-# Única fuente de verdad del dominio público. Cambiarlo acá y todo lo demás se
-# deriva de él: nginx_domain (vhosts del servidor + cert wildcard), los rewrites
-# de AdGuard, forgejo_domain, el cert de la impresora (printer.<base_domain>), etc.
-
-# Dominio público real alojado en deSEC, resuelto internamente a la LAN por AdGuard.
-base_domain: ndelucca.dedyn.io

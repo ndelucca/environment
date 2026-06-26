@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-STOW_DIR="${HOME}/environment/fedora-sway-spin/dotfiles"
+STOW_DIR="${HOME}/nd.environment/fedora-sway-spin/dotfiles"
 
 # --no-folding symlinks files individually (real dirs) instead of folding whole
 # directories — so files apps write into ~/.config stay out of the repo.

@@ -1,5 +1,0 @@
----
-# Sin handler `reload firewalld`: cada tarea de regla usa `immediate: true` +
-# `permanent: true`, así que los cambios se aplican al firewall en ejecución Y
-# persisten en un solo paso. Un reload solo releería la config permanente
-# (redundante) y podría descartar estado runtime-only, por eso se omite a propósito.

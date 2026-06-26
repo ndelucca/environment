@@ -9,9 +9,9 @@ Current environment: Fedora Sway Spin
 Clone with submodules (the nvim config lives in a submodule):
 
 ```bash
-git clone --recurse-submodules https://github.com/ndelucca/environment.git "${HOME}/environment"
+git clone --recurse-submodules https://github.com/ndelucca/nd.environment.git "${HOME}/nd.environment"
 
-cd "${HOME}/environment"
+cd "${HOME}/nd.environment"
 
 ./fedora-sway-spin/bootstraping.sh
 ```
@@ -30,18 +30,3 @@ cat ~/.ssh/id_ed25519.pub   # add this to GitHub → Settings → SSH keys
 ```
 
 `GIT_SSH_COMMAND` (in `.bashrc.d/01-ps1.sh`) already points to `~/.ssh/id_ed25519`.
-
-### Notes
-
-- `common-scripts/` are helper scripts for setting up Raspberry Pi boards; they
-  are **not** part of the PC setup and are not run by the bootstrap.
-
-## Home Server
-
-Ansible configuration for my Fedora home server with Cockpit web management and AdGuard Home DNS filtering.
-
-```bash
-cd "${HOME}/environment/home-server"
-
-ansible-playbook playbooks/site.yml -l server-host
-```

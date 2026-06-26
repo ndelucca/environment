@@ -1,9 +1,0 @@
-[Unit]
-Description=Timer for {{ service_maintenance_unit_description | lower }}
-
-[Timer]
-# Corre una sola vez tras el boot, con un retardo para que el router esté listo.
-OnBootSec={{ service_maintenance_boot_delay }}
-
-[Install]
-WantedBy=timers.target

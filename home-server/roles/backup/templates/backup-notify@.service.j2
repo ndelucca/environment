@@ -1,9 +1,0 @@
-[Unit]
-# {{ ansible_managed }}
-# Se dispara vía OnFailure= desde backup.service / backup-maintenance.service.
-# El nombre de instancia (%i) es la unit que falló.
-Description=Alert that %i failed
-
-[Service]
-Type=oneshot
-ExecStart={{ backup_notify_script }} "Backup unit %i failed on %H" "Inspect: journalctl --user -u %i -n 50"

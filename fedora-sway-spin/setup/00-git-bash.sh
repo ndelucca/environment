@@ -12,4 +12,4 @@ sudo git config --system color.ui true
 sudo git config --system alias.st status
 
 echo "Changing .git origin to ssh"
-git remote set-url origin "ssh://git@github.com/ndelucca/environment.git"
+git remote set-url origin "ssh://git@github.com/ndelucca/nd.environment.git"

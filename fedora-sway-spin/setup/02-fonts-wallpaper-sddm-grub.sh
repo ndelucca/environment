@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-FROZEN_DIR="${HOME}/environment/fedora-sway-spin/setup"
+FROZEN_DIR="${HOME}/nd.environment/fedora-sway-spin/setup"
 
 echo "Updating system wallpaper"
 sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
