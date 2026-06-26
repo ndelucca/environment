@@ -1,0 +1,18 @@
+# Lista declarativa de herramientas CLI para scoop (equivalente a packages.txt de Fedora).
+# Una por linea; se ignoran lineas que empiezan con # o vacias.
+
+# CLI tools
+ripgrep
+fd
+jq
+tree
+fzf
+direnv
+shellcheck
+less
+
+# Lenguajes / desarrollo (dev mixto: tambien disponibles en Windows nativo)
+go
+nodejs-lts
+python
+uv

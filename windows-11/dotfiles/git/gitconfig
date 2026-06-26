@@ -1,0 +1,13 @@
+# Config portable de git (incluida desde ~/.gitconfig via [include] en 04-link-configs).
+# Espejo de los settings de 00-git-bash.sh. La identidad (user.*) la pone 02-git.ps1.
+
+[pull]
+	rebase = true
+[push]
+	default = simple
+[core]
+	autocrlf = input
+[color]
+	ui = true
+[alias]
+	st = status

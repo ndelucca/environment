@@ -1,0 +1,39 @@
+# Prompt Starship: replica del PS1 de Fedora (tema verde, dos lineas).
+#   Linea 1: directorio + estado git (dirty/staged/stash/untracked/ahead-behind).
+#   Linea 2: simbolo ☯.
+# Colores: principal #4a9d4a (74,157,74), secundario #6cb66c (108,182,108).
+
+add_newline = true
+format = "$directory$git_branch$git_status$git_state$line_break$character"
+
+[directory]
+style = "bold #4a9d4a"
+truncation_length = 0
+truncate_to_repo = false
+format = "[$path]($style) "
+
+[git_branch]
+symbol = " "
+style = "#6cb66c"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "#6cb66c"
+format = '([$all_status$ahead_behind]($style)) '
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "%${count}"
+stashed = "\\$${count}"
+modified = "*${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[git_state]
+style = "#6cb66c"
+
+[character]
+success_symbol = "[☯](#4a9d4a)"
+error_symbol = "[☯](#ff6b6b)"
