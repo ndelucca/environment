@@ -16,8 +16,7 @@
         { "PackageIdentifier": "GitHub.cli" },
         { "PackageIdentifier": "Starship.Starship" },
         { "PackageIdentifier": "Neovim.Neovim" },
-        { "PackageIdentifier": "Google.Chrome" },
-        { "PackageIdentifier": "Mozilla.Firefox" }
+        { "PackageIdentifier": "Google.Chrome" }
       ]
     }
   ]

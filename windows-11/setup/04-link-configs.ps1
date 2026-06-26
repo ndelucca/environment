@@ -44,11 +44,31 @@ if (Test-Path $wtState) {
 $nvimSrc = Join-Path $RepoDir 'fedora-sway-spin\dotfiles\.config\nvim'
 $nvimDst = Join-Path $env:LOCALAPPDATA 'nvim'
 if (Test-Path $nvimSrc) {
-    try {
-        New-Item -ItemType SymbolicLink -Path $nvimDst -Target $nvimSrc -Force | Out-Null
-        Write-Host "  link $nvimDst -> $nvimSrc"
-    } catch {
-        Write-Warning "No se pudo linkear nvim ($nvimDst). Requiere Developer Mode/admin."
+    $existing = Get-Item $nvimDst -Force -ErrorAction SilentlyContinue
+    # Ya es un symlink: si apunta a otro lado lo recreamos, si ya apunta bien no hacemos nada.
+    if ($existing -and $existing.LinkType -eq 'SymbolicLink') {
+        if ($existing.Target -eq $nvimSrc) {
+            Write-Host "  link $nvimDst -> $nvimSrc (ya presente)"
+            $existing = $null
+        } else {
+            Remove-Item $nvimDst -Force
+            $existing = $null
+        }
+    }
+    # Directorio/archivo real preexistente: lo respaldamos en vez de pisarlo (New-Item -Force
+    # no puede reemplazar un directorio real no vacio, y no queremos perder una config local).
+    if ($existing) {
+        $bak = "$nvimDst.bak-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+        Move-Item -Path $nvimDst -Destination $bak -Force
+        Write-Warning "  nvim ya existia como copia real; respaldado en $bak"
+    }
+    if (-not (Test-Path $nvimDst)) {
+        try {
+            New-Item -ItemType SymbolicLink -Path $nvimDst -Target $nvimSrc -Force | Out-Null
+            Write-Host "  link $nvimDst -> $nvimSrc"
+        } catch {
+            Write-Warning "No se pudo linkear nvim ($nvimDst). Requiere Developer Mode/admin."
+        }
     }
 }
 

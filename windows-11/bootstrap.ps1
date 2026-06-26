@@ -20,7 +20,6 @@ $Steps = @(
     '00-prereqs.ps1'
     '01-packages.ps1'
     '02-git.ps1'
-    '03-fonts.ps1'
     '04-link-configs.ps1'
     '05-shell.ps1'
     '06-development.ps1'

@@ -1,91 +1,98 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-    "copyOnSelect": false,
+    "actions": [],
     "copyFormatting": "none",
-
-    "profiles": {
-        "defaults": {
-            "font": {
-                "face": "CaskaydiaCove Nerd Font",
-                "size": 12,
-                "features": { "ss01": 1 }
-            },
-            "padding": "5",
+    "copyOnSelect": false,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "keybindings":
+    [
+        { "id": "Terminal.DuplicatePaneRight", "keys": "alt+\\" },
+        { "id": "Terminal.DuplicatePaneDown", "keys": "alt+minus" },
+        { "id": "Terminal.OpenNewTab", "keys": "alt+t" },
+        { "id": "Terminal.NextTab", "keys": "alt+n" },
+        { "id": "Terminal.PrevTab", "keys": "alt+p" },
+        { "id": "Terminal.MoveFocusLeft", "keys": "alt+h" },
+        { "id": "Terminal.MoveFocusDown", "keys": "alt+j" },
+        { "id": "Terminal.MoveFocusUp", "keys": "alt+k" },
+        { "id": "Terminal.MoveFocusRight", "keys": "alt+l" },
+        { "id": "Terminal.ResizePaneLeft", "keys": "alt+shift+h" },
+        { "id": "Terminal.ResizePaneDown", "keys": "alt+shift+j" },
+        { "id": "Terminal.ResizePaneUp", "keys": "alt+shift+k" },
+        { "id": "Terminal.ResizePaneRight", "keys": "alt+shift+l" },
+        { "id": "Terminal.ClosePane", "keys": "alt+x" },
+        { "id": "Terminal.TogglePaneZoom", "keys": "alt+z" }
+    ],
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "colorScheme": "nd-dark",
             "cursorShape": "bar",
+            "historySize": 10000,
             "opacity": 95,
-            "useAcrylic": false,
+            "padding": "5",
             "scrollbarState": "hidden",
             "snapOnInput": true,
-            "colorScheme": "nd-dark",
-            "historySize": 10000
+            "useAcrylic": false
         },
-        "list": [
+        "list": 
+        [
             {
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
                 "name": "PowerShell",
-                "source": "Windows.Terminal.PowershellCore",
-                "hidden": false
+                "source": "Windows.Terminal.PowershellCore"
             },
             {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "name": "Windows PowerShell",
-                "commandline": "powershell.exe",
-                "hidden": true
+                "hidden": true,
+                "name": "Windows PowerShell"
             },
             {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-                "name": "Command Prompt",
-                "commandline": "cmd.exe",
-                "hidden": true
+                "hidden": true,
+                "name": "Command Prompt"
+            },
+            {
+                "guid": "{412531de-405b-56c4-8d79-03d8b45460de}",
+                "hidden": false,
+                "name": "Ubuntu-24.04",
+                "source": "Microsoft.WSL"
             }
         ]
     },
-
-    "schemes": [
+    "schemes": 
+    [
         {
-            "name": "nd-dark",
             "background": "#121212",
-            "foreground": "#FFFFFF",
-            "cursorColor": "#4A9D4A",
-            "selectionBackground": "#4A9D4A",
             "black": "#2A2A2A",
-            "red": "#FF6B6B",
-            "green": "#4A9D4A",
-            "yellow": "#F5C842",
             "blue": "#5294CF",
-            "purple": "#B084D6",
-            "cyan": "#47B3C4",
-            "white": "#D0D0D0",
             "brightBlack": "#404040",
-            "brightRed": "#FF8A8A",
-            "brightGreen": "#6CB66C",
-            "brightYellow": "#F7D662",
             "brightBlue": "#72AAEF",
-            "brightPurple": "#C89AE6",
             "brightCyan": "#67D3E4",
-            "brightWhite": "#FFFFFF"
+            "brightGreen": "#6CB66C",
+            "brightPurple": "#C89AE6",
+            "brightRed": "#FF8A8A",
+            "brightWhite": "#FFFFFF",
+            "brightYellow": "#F7D662",
+            "cursorColor": "#4A9D4A",
+            "cyan": "#47B3C4",
+            "foreground": "#FFFFFF",
+            "green": "#4A9D4A",
+            "name": "nd-dark",
+            "purple": "#B084D6",
+            "red": "#FF6B6B",
+            "selectionBackground": "#4A9D4A",
+            "white": "#D0D0D0",
+            "yellow": "#F5C842"
         }
     ],
-
-    "_comment_keybindings": "Panes estilo tmux. OJO: Windows Terminal NO tiene attach/detach ni sesiones persistentes como tmux; esto solo cubre splits y navegacion en vivo.",
-    "actions": [
-        { "command": { "action": "splitPane", "split": "vertical",   "splitMode": "duplicate" }, "keys": "alt+\\" },
-        { "command": { "action": "splitPane", "split": "horizontal", "splitMode": "duplicate" }, "keys": "alt+-" },
-
-        { "command": { "action": "moveFocus", "direction": "left" },  "keys": "alt+h" },
-        { "command": { "action": "moveFocus", "direction": "down" },  "keys": "alt+j" },
-        { "command": { "action": "moveFocus", "direction": "up" },    "keys": "alt+k" },
-        { "command": { "action": "moveFocus", "direction": "right" }, "keys": "alt+l" },
-
-        { "command": { "action": "resizePane", "direction": "left" },  "keys": "alt+shift+h" },
-        { "command": { "action": "resizePane", "direction": "down" },  "keys": "alt+shift+j" },
-        { "command": { "action": "resizePane", "direction": "up" },    "keys": "alt+shift+k" },
-        { "command": { "action": "resizePane", "direction": "right" }, "keys": "alt+shift+l" },
-
-        { "command": "togglePaneZoom", "keys": "alt+z" },
-        { "command": { "action": "closePane" }, "keys": "alt+x" },
-        { "command": { "action": "newTab" },    "keys": "alt+t" }
-    ]
+    "themes": []
 }

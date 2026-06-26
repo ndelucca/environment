@@ -17,7 +17,15 @@ $dirs = @(
 foreach ($d in $dirs) { New-Item -ItemType Directory -Force -Path $d | Out-Null }
 Write-Host 'dev dirs OK'
 
-# Verificacion del toolchain. Puede requerir abrir una terminal nueva para refrescar PATH.
+# Refrescamos el PATH del proceso desde el registro (Machine + User) antes de verificar:
+# winget/scoop modifican el PATH persistente pero no el del proceso ya corriendo, asi
+# la verificacion no reporta MISS por herramientas recien instaladas (node, etc.).
+$env:PATH = (
+    [Environment]::GetEnvironmentVariable('PATH', 'Machine'),
+    [Environment]::GetEnvironmentVariable('PATH', 'User')
+) -join ';'
+
+# Verificacion del toolchain. Aun asi, conviene abrir una terminal nueva para uso normal.
 $tools = @('go', 'node', 'npm', 'python', 'uv', 'git', 'gh', 'rg', 'fd', 'jq')
 foreach ($t in $tools) {
     if (Get-Command $t -ErrorAction SilentlyContinue) {

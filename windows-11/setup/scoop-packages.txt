@@ -5,7 +5,7 @@
 ripgrep
 fd
 jq
-tree
+# tree: Windows ya lo trae built-in (tree.com en system32); no esta en el bucket main de scoop
 fzf
 direnv
 shellcheck
