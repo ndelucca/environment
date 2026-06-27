@@ -16,12 +16,21 @@ declare -A WEBAPPS=(
 )
 
 CHROMIUM_BIN="${CHROMIUM_BIN:-chromium-browser}"
-DEFAULT_ICON="chromium"
+# Per-app logos shipped in the repo and deployed via stow to this path
+# (dotfiles/.local/share/icons/webapps/<Name>.png). The default GTK/Adwaita
+# theme has no per-service icons, so we reference the PNGs by absolute path.
+# Fallback to the chromium icon (named chromium-browser on Fedora, NOT chromium)
+# if a logo is missing.
+ICON_DIR="$HOME/.local/share/icons/webapps"
+FALLBACK_ICON="chromium-browser"
 
 create_webapp() {
     local name="$1"
     local url="$2"
     local desktop_file="$WEBAPPS_DIR/${name}.desktop"
+
+    local icon="${ICON_DIR}/${name}.png"
+    [ -f "$icon" ] || icon="$FALLBACK_ICON"
 
     echo "Creating or updating: $name"
     # NOTE: under Wayland, Chromium derives the app_id from the URL
@@ -32,7 +41,7 @@ create_webapp() {
 [Desktop Entry]
 Name=${name}
 Exec=${CHROMIUM_BIN} --app="${url}" --class=${name}
-Icon=${DEFAULT_ICON}
+Icon=${icon}
 Type=Application
 Categories=WebApps;
 EOF
