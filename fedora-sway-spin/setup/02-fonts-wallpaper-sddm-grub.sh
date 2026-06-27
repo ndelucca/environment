@@ -56,16 +56,5 @@ else
     echo "Theme already installed at ${THEME_FILE}"
 fi
 
-echo "Configuring rofi"
-
-REPO_URL="https://github.com/newmanls/rofi-themes-collection.git"
-TMP_DIR="$(mktemp -d)"
-TARGET_DIR="/usr/share/rofi/themes"
-
-if [ ! -f "${TARGET_DIR}/themes-installed" ]; then
-    sudo git clone --depth=1 "${REPO_URL}" "${TMP_DIR}/repo"
-    sudo mkdir -p "${TARGET_DIR}"
-    sudo cp -r ${TMP_DIR}/repo/themes/* ${TARGET_DIR}/
-    sudo rm -rf "${TMP_DIR}"
-    sudo touch "${TARGET_DIR}/themes-installed"
-fi
+# Rofi se configura por completo vía dotfiles (~/.config/rofi/, tema nd-dark
+# autocontenido). No hace falta clonar colecciones de temas externas.

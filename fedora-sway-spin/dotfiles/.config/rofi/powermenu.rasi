@@ -1,0 +1,34 @@
+/*
+ * powermenu — override de geometría sobre nd-dark para un menú angosto y centrado.
+ * Reusa toda la paleta/estilo de nd-dark; solo cambia tamaño y oculta el prompt vacío.
+ */
+
+@import "nd-dark"
+
+window {
+    width:    320px;
+    location: center;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+listview {
+    lines:        5;
+    fixed-height: true;
+    scrollbar:    false;
+    dynamic:      false;
+}
+
+inputbar {
+    children: [ prompt ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+element {
+    padding: 9px 12px;
+}

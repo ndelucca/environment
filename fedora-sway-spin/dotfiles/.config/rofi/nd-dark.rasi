@@ -1,0 +1,124 @@
+/*
+ * nd-dark — tema rofi autocontenido a juego con el sistema.
+ * Paleta compartida con waybar / foot / swaylock:
+ *   fondo #121212, verde bosque #225D42, blanco #ffffff,
+ *   amarillo #f5c842, rojo #ff6b6b. Diseño flat, JetBrainsMono Nerd Font.
+ * No depende de /usr/share/rofi/themes (probar con: rofi -no-config -theme nd-dark).
+ */
+
+* {
+    bg:         #121212f2;   /* fondo base, ~95% opaco (matchea foot alpha) */
+    bg-alt:     #1a1a1aff;   /* fila alterna / inputbar */
+    bg-sel:     #225d42ff;   /* acento: selección y prompt */
+    fg:         #ffffffff;
+    fg-dim:     #d0d0d0ff;
+    accent:     #225d42ff;
+    yellow:     #f5c842ff;
+    urgent:     #ff6b6bff;
+    border-col: #225d42ff;
+    transparent: #00000000;
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "JetBrainsMono Nerd Font 12";
+}
+
+window {
+    width:            40%;
+    background-color: @bg;
+    border:           2px;
+    border-color:     @border-col;
+    border-radius:    8px;
+    padding:          0;
+}
+
+mainbox {
+    children: [ inputbar, message, listview ];
+    padding:  10px;
+    spacing:  10px;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    6px;
+    padding:          8px 12px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    text-color:        @fg;
+    placeholder:       "Buscar…";
+    placeholder-color: @fg-dim;
+    cursor:            text;
+}
+
+message {
+    background-color: @bg-alt;
+    border-radius:    6px;
+    padding:          8px 12px;
+}
+
+textbox {
+    text-color: @fg;
+}
+
+listview {
+    columns:      1;
+    lines:        8;
+    fixed-height: false;
+    cycle:        true;
+    dynamic:      true;
+    scrollbar:    true;
+    spacing:      4px;
+}
+
+scrollbar {
+    width:        4px;
+    handle-width: 4px;
+    handle-color: @accent;
+    background-color: @bg-alt;
+    border-radius: 4px;
+}
+
+element {
+    padding:       7px 10px;
+    spacing:       10px;
+    border-radius: 6px;
+    background-color: transparent;
+    text-color:    @fg;
+}
+
+element normal active {
+    text-color: @yellow;
+}
+
+element urgent {
+    text-color: @urgent;
+}
+
+element selected {
+    background-color: @bg-sel;
+    text-color:       @fg;
+}
+
+element selected active {
+    background-color: @bg-sel;
+    text-color:       @yellow;
+}
+
+element-icon {
+    size:             24px;
+    background-color: transparent;
+    vertical-align:   0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}

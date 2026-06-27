@@ -9,8 +9,8 @@ set $term foot
 set $lock_timeout 600
 set $screen_timeout 300
 
-set $rofi_cmd rofi -terminal '$term'
-set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
+# Modos, combi, iconos, matching y tema viven en ~/.config/rofi/config.rasi
+set $menu rofi -show drun
 
 # Autostart. `pkill -x` guards make exec_always idempotent across `reload`
 # (otherwise every reload spawns a duplicate daemon).
@@ -63,7 +63,7 @@ bindsym $mod+d exec $menu
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+Escape exec loginctl lock-session
 # Clipboard history picker (cliphist + rofi)
-bindsym $mod+v exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+bindsym $mod+v exec cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy
 
 floating_modifier $mod normal
 # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
@@ -181,15 +181,8 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-set $mode_system (e) Logout | (r) Reboot | (CTRL+s) Shutdown
-bindsym $mod+BackSpace mode "$mode_system"
-mode "$mode_system" {
-    bindsym e      exec --no-startup-id swaymsg exit, mode "default"
-    bindsym r      exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Ctrl+s exec --no-startup-id systemctl poweroff -i, mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
+# Power menu en rofi (Lock/Logout/Suspend/Reboot/Shutdown), a juego con el sistema
+bindsym $mod+BackSpace exec ~/.config/rofi/powermenu.sh
 
 set $mode_settings (a) Audio (n) Notifications
 bindsym $mod+exclamdown mode "$mode_settings"

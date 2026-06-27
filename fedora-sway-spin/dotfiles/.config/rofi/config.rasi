@@ -1,0 +1,17 @@
+configuration {
+    modes:             "drun,run,window";
+    combi-modes:       "drun,run";
+    terminal:          "foot";          // usado por el modo run / drun-launch
+    show-icons:        true;
+    icon-theme:        "Adwaita";       // ya instalado (GTK usa Adwaita)
+    drun-display-format: "{name}";
+    matching:          "fuzzy";         // tolera typos
+    case-sensitive:    false;           // case-insensitive
+    sort:              true;
+    sorting-method:    "fzf";
+    display-drun:      "  Apps";
+    display-run:       "  Run";
+    display-window:    "  Windows";
+}
+
+@theme "nd-dark"
