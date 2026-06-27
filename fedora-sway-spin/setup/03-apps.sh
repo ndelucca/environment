@@ -85,10 +85,10 @@ Comment=No Nonsense Neovim GUI
 Exec=neovide %F
 Icon=neovide
 Type=Application
-Categories=Utility;TextEditor;Development;
+Categories=Utility;TextEditor;
 Terminal=false
 StartupWMClass=neovide
-MimeType=text/plain;
+MimeType=text/plain;text/markdown;application/json;text/x-python;text/x-shellscript;
 EOF
 
     rm -rf "${NEOVIDE_TMP}"
@@ -107,4 +107,12 @@ if command -v xdg-mime &>/dev/null; then
     xdg-mime default mpv.desktop \
         video/mp4 video/x-matroska video/webm video/quicktime video/x-msvideo
     xdg-mime default thunar.desktop inode/directory
+    # Text/code files open in Neovide (GUI nvim) instead of nvim-in-a-terminal.
+    xdg-mime default neovide.desktop \
+        text/plain text/markdown text/x-readme \
+        application/json application/x-yaml text/x-yaml application/toml text/x-toml \
+        text/x-shellscript application/x-shellscript \
+        text/x-python text/x-lua text/x-go \
+        text/x-csrc text/x-chdr text/x-c++src text/x-c++hdr \
+        text/css application/xml text/xml text/x-sql text/x-makefile
 fi
