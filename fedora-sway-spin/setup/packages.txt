@@ -20,6 +20,7 @@ grim
 slurp
 playerctl
 pavucontrol
+blueman
 wl-clipboard
 swaylock
 swayidle

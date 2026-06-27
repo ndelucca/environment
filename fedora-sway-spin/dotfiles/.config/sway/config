@@ -185,14 +185,8 @@ bindsym $mod+r mode "resize"
 # Power menu en rofi (Lock/Logout/Suspend/Reboot/Shutdown), a juego con el sistema
 bindsym $mod+BackSpace exec ~/.config/rofi/powermenu.sh
 
-set $mode_settings (a) Audio (n) Notifications
-bindsym $mod+exclamdown mode "$mode_settings"
-bindsym $mod+questiondown mode "$mode_settings"
-bindsym $mod+equal mode "$mode_settings"
-mode "$mode_settings" {
-    bindsym n exec --no-startup-id swaync-client -t -sw, mode "default"
-    bindsym a exec --no-startup-id pavucontrol, mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
+# Settings menu en rofi (Audio/Bluetooth/Notifications), a juego con el sistema
+bindsym $mod+equal        exec ~/.config/rofi/settings.sh
+bindsym $mod+exclamdown   exec ~/.config/rofi/settings.sh
+bindsym $mod+questiondown exec ~/.config/rofi/settings.sh
 
