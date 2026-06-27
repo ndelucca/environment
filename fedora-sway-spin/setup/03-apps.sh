@@ -88,7 +88,7 @@ Type=Application
 Categories=Utility;TextEditor;
 Terminal=false
 StartupWMClass=neovide
-MimeType=text/plain;text/markdown;application/json;text/x-python;text/x-shellscript;
+MimeType=text/plain;text/markdown;text/x-readme;application/json;application/x-yaml;text/x-yaml;application/toml;text/x-toml;text/x-shellscript;application/x-shellscript;text/x-python;text/x-lua;text/x-go;text/x-csrc;text/x-chdr;text/x-c++src;text/x-c++hdr;text/css;application/xml;text/xml;text/x-sql;text/x-makefile;
 EOF
 
     rm -rf "${NEOVIDE_TMP}"
