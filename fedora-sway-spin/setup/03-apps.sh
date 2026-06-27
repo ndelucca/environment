@@ -49,3 +49,58 @@ else
     curl -f https://zed.dev/install.sh | sh
     echo "Zed installed successfully!"
 fi
+
+# Neovide: GUI client for our Neovim. Not in dnf/COPR. The Flathub build runs nvim in
+# a sandbox (it wouldn't use our host nvim / LSPs / Go / Node), so we install the
+# official release binary into ~/.local/bin (same approach as Zed). It just drives our
+# existing nvim config (the submodule), so it's the GUI of our nvim, not a 3rd editor.
+if command -v neovide &>/dev/null; then
+    echo "Neovide is already installed."
+else
+    echo "Installing Neovide from GitHub release..."
+    NEOVIDE_TMP="$(mktemp -d)"
+    # Release asset is a plain .tar (not .tar.gz) containing the neovide binary.
+    curl -fL https://github.com/neovide/neovide/releases/latest/download/neovide-linux-x86_64.tar \
+        -o "${NEOVIDE_TMP}/neovide.tar"
+    tar -xf "${NEOVIDE_TMP}/neovide.tar" -C "${NEOVIDE_TMP}"
+    NEOVIDE_BIN="$(find "${NEOVIDE_TMP}" -type f -name neovide | head -n1)"
+    mkdir -p "${HOME}/.local/bin"
+    install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide"
+
+    # Desktop entry + icon so it shows up in rofi. Under Wayland the app_id is
+    # "neovide" (matched by sway's `assign ... workspace 3`).
+    mkdir -p "${HOME}/.local/share/icons/hicolor/scalable/apps"
+    curl -fsL https://raw.githubusercontent.com/neovide/neovide/main/assets/neovide.svg \
+        -o "${HOME}/.local/share/icons/hicolor/scalable/apps/neovide.svg" || true
+    mkdir -p "${HOME}/.local/share/applications"
+    tee "${HOME}/.local/share/applications/neovide.desktop" >/dev/null <<'EOF'
+[Desktop Entry]
+Name=Neovide
+GenericName=Text Editor
+Comment=No Nonsense Neovim GUI
+Exec=neovide %F
+Icon=neovide
+Type=Application
+Categories=Utility;TextEditor;Development;
+Terminal=false
+StartupWMClass=neovide
+MimeType=text/plain;
+EOF
+
+    rm -rf "${NEOVIDE_TMP}"
+    echo "Neovide installed to ~/.local/bin/neovide"
+fi
+
+# Default file handlers. ~/.config/mimeapps.list is a real file that the system and
+# apps rewrite, so it is NOT stowed (that would clash with stow's --no-folding and
+# clobber the browser/nvim defaults already there). We set only our handlers with
+# xdg-mime, which merges into that file idempotently and leaves the rest intact.
+if command -v xdg-mime &>/dev/null; then
+    echo "Setting default file handlers (images=Loupe, pdf=Papers, video=mpv)..."
+    xdg-mime default org.gnome.Loupe.desktop \
+        image/png image/jpeg image/gif image/webp image/bmp image/tiff image/svg+xml
+    xdg-mime default org.gnome.Papers.desktop application/pdf
+    xdg-mime default mpv.desktop \
+        video/mp4 video/x-matroska video/webm video/quicktime video/x-msvideo
+    xdg-mime default thunar.desktop inode/directory
+fi

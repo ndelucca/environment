@@ -6,9 +6,9 @@
   "theme": "Dracula",
   "icon_theme": "Material Icon Theme",
 
-  "buffer_font_family": "Cascadia Code NF",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_size": 14,
-  "buffer_font_features": { "ss01": true, "calt": true },
+  "buffer_font_features": { "calt": true },
   "ui_font_size": 15,
 
   "vim_mode": true,

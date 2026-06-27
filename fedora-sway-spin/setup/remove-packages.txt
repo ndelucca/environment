@@ -1,0 +1,11 @@
+# Apps que NO queremos en el sistema (vengan del Spin o arrastradas como dependencia
+# débil). Las borra 07-remove-unwanted.sh de forma idempotente: solo quita las que
+# están instaladas, no falla si ya no están. Una por línea; '#' y vacías se ignoran.
+#
+# gnome-text-editor: editor de texto nativo de GNOME. No lo usamos (nuestro editor de
+# text/plain ya es nvim) y nada lo requiere.
+gnome-text-editor
+
+# eog: visor de imágenes viejo (GTK3) de GNOME. Lo reemplazamos por Loupe (GTK4),
+# que es el handler de imágenes en 03-apps.sh. Nada lo requiere.
+eog

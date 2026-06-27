@@ -1,0 +1,92 @@
+# Fedora Sway Spin — entorno de Naza
+
+Configuración personal sobre **Fedora Sway Spin**. Este README documenta la
+**intención, la situación y las reglas** del setup, para no tener que re-investigar
+decisiones ya tomadas. Para los pasos de instalación generales, ver el
+[`README.md` de la raíz](../README.md).
+
+## Intención
+
+Un escritorio **Wayland-first**, cohesivo (familia GTK/Adwaita), moderno y
+**reproducible**, que se **apoya en el Spin** en vez de pelearse con él. La idea es
+tocar el sistema lo mínimo: heredar lo que el Spin ya resuelve bien y solo override /
+agregar lo propio, de forma declarativa y versionada.
+
+## Cómo está armado (situación)
+
+- **Instalación:** `bootstraping.sh` corre los pasos `setup/NN-*.sh` en orden
+  (idempotentes). Valores por máquina en `vars.sh` (única fuente de verdad);
+  hardware (monitores, sensor de temperatura) autodetectado en runtime.
+- **Dotfiles:** GNU **stow** `--no-folding` symlinkea `dotfiles/{.bashrc.d,.config,.local}`
+  a `~`. Configs con valores variables se generan desde templates `.in` (sed/jq) y
+  quedan git-ignoradas; solo se versiona el `.in`.
+- **Config de Sway en capas:** usamos el `include` con `layered-include` del Spin. Los
+  defaults del Spin viven en `/usr/share/sway/config.d/*`; nosotros override por
+  **mismo nombre de archivo** en `~/.config/sway/config.d/`. **No** forkeamos archivos
+  del sistema.
+- **nvim:** submódulo aparte (`git@github.com:ndelucca/nvim.git`), gestionado con
+  `vim.pack` nativo (sin gestor de plugins externo).
+
+## Reglas / decisiones (lo que conviene recordar)
+
+### Wayland / compositor
+- Stack 100% Wayland-nativo: sway, foot, waybar, swaync, swaylock, swayidle (del Spin),
+  kanshi, wlsunset, swayosd, grim+slurp+swappy, wl-clipboard+cliphist, swaybg.
+- **rofi = `rofi` 2.0** = el fork *rofi-wayland* ya mainline. Corre **nativo en
+  Wayland**, NO es el viejo rofi X11. No migrar "por ser X11".
+- **No** seteamos `MOZ_ENABLE_WAYLAND` / `GDK_BACKEND` etc.: en Fedora 44 son
+  innecesarios (Firefox/GTK ya van a Wayland). Evitar ese cruft.
+- `$lock_timeout` / `$screen_timeout` (en `sway/config`) **los consume el
+  `90-swayidle.conf` del Spin** (están definidos antes del `include`). No son variables
+  muertas.
+- **waybar lo arranca el Spin** vía `swaybar_command waybar` en su `90-bar.conf`. Por
+  eso no hay `exec waybar` en nuestra config, y está bien.
+- kanshi arranca por `exec_always` en `sway/config` (el `kanshi.service` está disabled).
+
+### Toolkit y theming
+- Familia **GTK / Adwaita-dark** en todo (GTK3 + GTK4 coordinados, cursor Adwaita 24
+  replicado a XWayland por `environment.d/cursor.conf`).
+- **Qt:** no se puede sacar 100% del Spin (entra por `lxqt-policykit` que arranca el
+  Spin, `sddm`, `gstreamer-qt6`, `kf6-*`, `qtwebengine`). En vez de eso lo dejamos
+  **cubierto como baseline**: `qt6ct` + `environment.d/qt.conf`
+  (`QT_QPA_PLATFORM=wayland;xcb`, `QT_QPA_PLATFORMTHEME=qt6ct`) + `qt6ct/qt6ct.conf`
+  (Fusion + paleta oscura + diálogos GTK). Así cualquier app Qt (incluido el diálogo de
+  polkit) sale dark + Wayland. No reemplazamos el agente polkit del Spin.
+
+### Login / sesión
+- **SDDM lo trae el Spin** (`reason: Group`); nosotros **solo lo configuramos**
+  (`02-...sh` escribe `/etc/sddm.conf.d/ndelucca.conf` + wallpaper, no lo instala).
+  Su greeter corre en **Wayland** (`sddm-wayland-sway`, `DisplayServer=wayland`). Es
+  Qt pero pre-sesión: se deja como está.
+- **Agente polkit:** lo arranca el Spin (`/usr/share/sway/config.d/95-autostart-policykit-agent.conf`
+  → `lxqt-policykit-agent`). Se deja (queda pintado por qt6ct).
+
+### Audio / red
+- **Audio = PipeWire** (+ `pipewire-pulse` + wireplumber). NO PulseAudio. El módulo
+  `pulseaudio` de waybar usa la capa de compat — es lo correcto.
+- Red = NetworkManager (`nmcli`, script `nd-fixed-ip`).
+
+### Fuentes
+- **Regla: solo JetBrainsMono Nerd Font.** foot, GTK, swaylock, qt6ct y **Zed** la
+  usan. (Zed tenía Cascadia hardcodeada en el template; corregido.) La trae el COPR
+  `jhuang6451/nerd-fonts` (`jetbrains-mono-nf`).
+
+### Editores
+- **nvim** (terminal) + **Neovide** (GUI del *mismo* nvim) + **Zed**.
+- Neovide se instala desde el **binario oficial de release** a `~/.local/bin` (en
+  `03-apps.sh`), NO por flatpak (el flatpak corre nvim en sandbox y no usaría el nvim /
+  LSPs / toolchains del host). Comparte la config del submódulo nvim.
+
+### Apps por defecto
+- Terminal foot · launcher rofi · imágenes **Loupe** · PDF **Papers** · video **mpv** ·
+  archivos **Thunar** · navegadores firefox/chromium. Los handlers se setean con
+  `xdg-mime` al final de `03-apps.sh` (escriben en `~/.config/mimeapps.list`, que **no**
+  se stowea porque es un archivo real que el sistema reescribe; se respetan los defaults
+  ya presentes: chromium para http, nvim para text/plain).
+- **PWAs** vía `chromium --app=` (Spotify, Tidal, Teams, ChatGPT, Discord, WhatsApp,
+  Gmail) en `04-webapps.sh` — sin Electron.
+
+### Apps que NO queremos
+- Se borran de forma declarativa: lista en `setup/remove-packages.txt`, borrado
+  idempotente por `setup/07-remove-unwanted.sh` (cableado en `bootstraping.sh`). Hoy:
+  `gnome-text-editor`.

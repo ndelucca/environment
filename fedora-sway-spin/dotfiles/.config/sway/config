@@ -152,6 +152,7 @@ workspace 9 output HDMI-A-1 eDP-1
 workspace 10 output HDMI-A-1 eDP-1
 
 assign [app_id="dev.zed.Zed"]  workspace 3
+assign [app_id="neovide"]      workspace 3
 
 # Chromium web-apps report a URL-derived app_id of the form
 # `chrome-<host>__-Default` (same for Chromium and Google Chrome PWAs), not the

@@ -16,6 +16,7 @@ STEPS=(
     "04-webapps.sh"
     "05-stow.sh"
     "06-development.sh"
+    "07-remove-unwanted.sh"
 )
 
 declare -a OK_STEPS=()
