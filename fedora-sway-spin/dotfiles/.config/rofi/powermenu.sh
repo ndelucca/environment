@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # Power menu en rofi, a juego con el sistema (tema powermenu.rasi).
-# Invocado por sway: $mod+BackSpace.
+# Invocado por sway: $mod+BackSpace. Glifos Nerd Font (Font Awesome).
 
 set -euo pipefail
 
-# Glifos Nerd Font (mismo set que waybar). El texto tras el icono es la etiqueta.
 options="\
-  Lock
-  Logout
-  Suspend
-  Reboot
-  Shutdown"
+  Lock
+  Logout
+  Suspend
+  Reboot
+  Shutdown"
 
 chosen="$(printf '%s' "$options" | rofi -dmenu -i \
     -p "Power" \
