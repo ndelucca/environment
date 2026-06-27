@@ -1,0 +1,122 @@
+/* SwayNotificationCenter theme. Matches foot/waybar/swaylock/swayosd:
+ * bg #121212 / #1a1a1a, green accent #225D42, JetBrainsMono Nerd Font. */
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 14px;
+}
+
+/* ----- Notification popups ------------------------------------------------ */
+.notification-row {
+    outline: none;
+}
+
+.notification {
+    margin: 6px 8px;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(110, 110, 110, 0.6);
+    background-color: rgba(26, 26, 26, 0.96);
+}
+
+.notification-content {
+    padding: 8px;
+    color: #ffffff;
+}
+
+.notification.critical {
+    border: 1px solid #f53c3c;
+}
+
+.summary {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.body,
+.time {
+    color: #d0d0d0;
+}
+
+.close-button {
+    margin: 6px;
+    padding: 2px;
+    border-radius: 999px;
+    color: #ffffff;
+    background-color: #2a2a2a;
+}
+
+.close-button:hover {
+    background-color: #225D42;
+}
+
+/* Inline action buttons */
+.notification-default-action,
+.notification-action {
+    color: #ffffff;
+    background: transparent;
+}
+
+.notification-action {
+    margin: 4px;
+    border-radius: 6px;
+    border: 1px solid rgba(110, 110, 110, 0.6);
+    background-color: #1a1a1a;
+}
+
+.notification-action:hover {
+    background-color: #225D42;
+}
+
+/* ----- Control center ----------------------------------------------------- */
+.control-center {
+    margin: 6px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(110, 110, 110, 0.6);
+    background-color: rgba(18, 18, 18, 0.96);
+    color: #ffffff;
+}
+
+.control-center .notification {
+    background-color: rgba(42, 42, 42, 0.6);
+}
+
+.widget-title {
+    margin: 4px 4px 10px 4px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.widget-title > button {
+    padding: 4px 10px;
+    border-radius: 6px;
+    color: #ffffff;
+    background-color: #2a2a2a;
+}
+
+.widget-title > button:hover {
+    background-color: #225D42;
+}
+
+/* Do-Not-Disturb / DND toggle */
+.widget-dnd {
+    margin: 4px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.widget-dnd > switch {
+    border-radius: 999px;
+    background-color: #2a2a2a;
+}
+
+.widget-dnd > switch:checked {
+    background-color: #225D42;
+}
+
+/* Empty-state label */
+.control-center .notification-group-empty,
+.control-center-empty {
+    color: #6e6e6e;
+}

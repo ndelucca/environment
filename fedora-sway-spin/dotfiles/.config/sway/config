@@ -14,9 +14,11 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 
 # Autostart. `pkill -x` guards make exec_always idempotent across `reload`
 # (otherwise every reload spawns a duplicate daemon).
-exec_always pkill -x swaync;   exec swaync
-exec_always pkill -x wlsunset; exec wlsunset -l -34.6 -L -58.4   # night light (Buenos Aires)
-exec_always pkill -x kanshi;   exec kanshi                       # output profiles (~/.config/kanshi/config)
+# wlsunset (night light) lives in the generated config.d/10-wlsunset.conf so its
+# coordinates come from vars.sh (LATITUDE/LONGITUDE) instead of being hardcoded.
+exec_always pkill -x swaync;         exec swaync
+exec_always pkill -x kanshi;         exec kanshi          # output profiles (~/.config/kanshi/config)
+exec_always pkill -x swayosd-server; exec swayosd-server  # OSD for volume/brightness/caps (see config.d binds)
 
 # Clipboard history (cliphist). `exec` (not exec_always) so reload doesn't add
 # duplicate watchers that would double-store every copy.
@@ -27,6 +29,7 @@ default_border pixel 2
 default_floating_border pixel 2
 titlebar_border_thickness 0
 titlebar_padding 10 6
+gaps inner 6
 smart_gaps on
 smart_borders on
 workspace_auto_back_and_forth yes
@@ -79,6 +82,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
+bindsym $mod+c move position center
 bindsym $mod+a focus parent
 
 bindsym $mod+1 workspace number 1

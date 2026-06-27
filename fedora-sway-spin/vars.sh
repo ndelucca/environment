@@ -17,5 +17,16 @@ DOTFILES_DIR="${SWAY_DIR}/dotfiles"
 # --- User / deployment values (versioned on purpose, defined once) ---
 TIMEZONE="America/Argentina/Buenos_Aires"
 
+# Geolocation for wlsunset (night light). Rendered into the generated
+# sway/config.d/10-wlsunset.conf by 05-stow.sh. Buenos Aires.
+LATITUDE="-34.6"
+LONGITUDE="-58.4"
+
+# X offset (px) of the internal panel in kanshi's `docked` profile: it equals the
+# width of the external monitor placed to its LEFT (HDMI-A-1). kanshi can't do
+# arithmetic or relative positioning, so the value lives here instead of being
+# hardcoded in kanshi/config. Adjust if the external monitor's width differs.
+DOCK_LEFT_WIDTH="1920"
+
 GIT_NAME="ndelucca"
 GIT_EMAIL="ndelucca@protonmail.com"

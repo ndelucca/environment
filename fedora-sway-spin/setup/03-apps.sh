@@ -6,15 +6,21 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
 PKG_FILE="${SETUP_DIR}/packages.txt"
 
-# JetBrainsMono Nerd Font (jetbrains-mono-nf in packages.txt) isn't in Fedora's
-# repos — it ships from this COPR. Enable it (idempotent) before the bulk install
-# so the package resolves.
-COPR="jhuang6451/nerd-fonts"
-if ! sudo dnf copr list 2>/dev/null | grep -q "${COPR}"; then
-    echo "Enabling COPR ${COPR} for JetBrainsMono Nerd Font..."
-    sudo dnf install -y dnf5-plugins
-    sudo dnf copr enable -y "${COPR}"
-fi
+# Some packages.txt entries aren't in Fedora's repos and ship from a COPR. Enable
+# them (idempotent) before the bulk install so the packages resolve:
+#   jhuang6451/nerd-fonts  -> jetbrains-mono-nf (JetBrainsMono Nerd Font)
+#   erikreider/swayosd     -> swayosd (volume/brightness/caps-lock OSD)
+COPRS=(
+    "jhuang6451/nerd-fonts"
+    "erikreider/swayosd"
+)
+for copr in "${COPRS[@]}"; do
+    if ! sudo dnf copr list 2>/dev/null | grep -q "${copr}"; then
+        echo "Enabling COPR ${copr}..."
+        sudo dnf install -y dnf5-plugins
+        sudo dnf copr enable -y "${copr}"
+    fi
+done
 
 echo "Installing dnf packages from ${PKG_FILE}..."
 mapfile -t PACKAGES < <(grep -vE '^\s*(#|$)' "${PKG_FILE}")

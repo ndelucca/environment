@@ -1,3 +1,15 @@
 # Generated from config.jsonc.in by setup/05-stow.sh (machine-specific timezone
 # + auto-detected hwmon path). Only the .in template is tracked.
 dotfiles/.config/waybar/config.jsonc
+
+# Generated from settings.json.in by setup/05-stow.sh. Zed rewrites settings.json
+# at runtime (ssh_connections, UI tweaks); only the .in template is tracked.
+dotfiles/.config/zed/settings.json
+
+# Generated from 10-wlsunset.conf.in by setup/05-stow.sh (geolocation from
+# vars.sh). Only the .in template is tracked.
+dotfiles/.config/sway/config.d/10-wlsunset.conf
+
+# Generated from config.in by setup/05-stow.sh (docked-profile offset from
+# vars.sh). Only the .in template is tracked.
+dotfiles/.config/kanshi/config

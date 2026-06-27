@@ -1,0 +1,42 @@
+/* SwayOSD theme. Matches foot/waybar/swaylock: bg #121212, green accent #225D42,
+ * JetBrainsMono Nerd Font. Auto-loaded by swayosd-server from this path. */
+
+window#osd {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(110, 110, 110, 0.6);
+    background-color: rgba(18, 18, 18, 0.92);
+}
+
+window#osd #container {
+    margin: 8px;
+}
+
+window#osd image,
+window#osd label {
+    color: #ffffff;
+    font-family: "JetBrainsMono Nerd Font";
+}
+
+window#osd progressbar:disabled,
+window#osd image:disabled {
+    opacity: 0.5;
+}
+
+window#osd progressbar {
+    min-height: 8px;
+    border-radius: 999px;
+    background: transparent;
+}
+
+window#osd trough {
+    min-height: 8px;
+    border-radius: 999px;
+    background-color: #2a2a2a;
+}
+
+window#osd progress {
+    min-height: 8px;
+    border-radius: 999px;
+    background-color: #225D42;
+}

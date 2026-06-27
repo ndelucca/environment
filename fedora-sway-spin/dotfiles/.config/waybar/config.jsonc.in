@@ -26,7 +26,17 @@
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
-        "warp-on-scroll": false
+        "warp-on-scroll": false,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "2": "",
+            "3": "",
+            "6": "",
+            "8": "",
+            "10": "",
+            "default": "",
+            "urgent": ""
+        }
     },
     "sway/scratchpad": {
         "format": "{icon} {count}",

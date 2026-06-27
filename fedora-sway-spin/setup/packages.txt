@@ -13,6 +13,8 @@ swappy
 brightnessctl
 # Referenced by the sway/waybar config but otherwise only provided implicitly by
 # the Spin — declared here so the env is reproducible on a minimal base.
+# waybar is launched by the Spin's /usr/share/sway/config.d/90-bar.conf.
+waybar
 rofi
 grim
 slurp
@@ -24,6 +26,9 @@ swayidle
 kanshi
 wlsunset
 cliphist
+# On-screen display for volume/brightness/caps-lock. Not in Fedora's repos; comes
+# from the COPR erikreider/swayosd, which 03-apps.sh enables before this install.
+swayosd
 
 # Browsers
 chromium
