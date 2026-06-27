@@ -67,9 +67,8 @@ agregar lo propio, de forma declarativa y versionada.
 - Red = NetworkManager (`nmcli`, script `nd-fixed-ip`).
 
 ### Fuentes
-- **Regla: solo JetBrainsMono Nerd Font.** foot, GTK, swaylock, qt6ct y **Zed** la
-  usan. (Zed tenía Cascadia hardcodeada en el template; corregido.) La trae el COPR
-  `jhuang6451/nerd-fonts` (`jetbrains-mono-nf`).
+- **Regla: solo JetBrainsMono Nerd Font** en toda la UI (terminal, GTK, barras,
+  launcher, lock). La trae el COPR `jhuang6451/nerd-fonts` (`jetbrains-mono-nf`).
 
 ### Editores
 - **nvim** (terminal) + **Neovide** (GUI del *mismo* nvim) + **Zed**.
@@ -92,6 +91,5 @@ agregar lo propio, de forma declarativa y versionada.
   Gmail) en `04-webapps.sh` — sin Electron.
 
 ### Apps que NO queremos
-- Se borran de forma declarativa: lista en `setup/remove-packages.txt`, borrado
-  idempotente por `setup/07-remove-unwanted.sh` (cableado en `bootstraping.sh`). Hoy:
-  `gnome-text-editor`.
+- Se borran de forma declarativa: la lista vive en `setup/remove-packages.txt`, borrado
+  idempotente por `setup/07-remove-unwanted.sh` (cableado en `bootstraping.sh`).

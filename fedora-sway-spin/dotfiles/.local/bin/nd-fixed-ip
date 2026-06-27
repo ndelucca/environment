@@ -22,7 +22,7 @@ validate_ip() {
     # Remove CIDR notation if present
     local ip_only="${ip%%/*}"
 
-    if [[ $ip_only =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    if [[ "$ip_only" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
         local IFS='.'
         local -a octets=($ip_only)
         for octet in "${octets[@]}"; do

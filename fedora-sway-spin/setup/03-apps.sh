@@ -68,6 +68,7 @@ else
         -o "${NEOVIDE_TMP}/neovide.tar"
     tar -xf "${NEOVIDE_TMP}/neovide.tar" -C "${NEOVIDE_TMP}"
     NEOVIDE_BIN="$(find "${NEOVIDE_TMP}" -type f -name neovide | head -n1)"
+    [[ -n "${NEOVIDE_BIN}" ]] || { echo "ERROR: neovide binary not found in release tarball" >&2; exit 1; }
     mkdir -p "${HOME}/.local/bin"
     install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide-bin"
 

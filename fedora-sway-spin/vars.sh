@@ -17,6 +17,11 @@ DOTFILES_DIR="${SWAY_DIR}/dotfiles"
 # --- User / deployment values (versioned on purpose, defined once) ---
 TIMEZONE="America/Argentina/Buenos_Aires"
 
+# Keyboard layout (alternative the user switches to: "latam"). KEYMAP is the console
+# keymap; KEYMAP_X11 the Wayland/X11 layout. Consumed by 01-locale-datetime-keyboard.sh.
+KEYMAP="us-euro"
+KEYMAP_X11="eu"
+
 # Geolocation for wlsunset (night light). Rendered into the generated
 # sway/config.d/10-wlsunset.conf by 05-stow.sh. Buenos Aires.
 LATITUDE="-34.6"
@@ -30,3 +35,8 @@ DOCK_LEFT_WIDTH="1920"
 
 GIT_NAME="ndelucca"
 GIT_EMAIL="ndelucca@protonmail.com"
+
+# GitHub account that owns this repo's origin remote (used by 00-git-bash.sh to switch
+# origin to SSH). Separate from GIT_NAME because commit-author name and account handle
+# are different facts, even if they coincide today.
+GITHUB_USER="ndelucca"

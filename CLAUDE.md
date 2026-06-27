@@ -27,7 +27,7 @@ no re-chequear:
   variables muertas). **waybar lo arranca el `90-bar.conf` del Spin.**
 
 ## Reglas
-- **Fuentes: solo JetBrainsMono Nerd Font** (foot, GTK, swaylock, qt6ct, Zed).
+- **Fuentes: solo JetBrainsMono Nerd Font** en toda la UI (detalle en el README).
 - Editores: nvim + **Neovide** (GUI del mismo nvim, binario a `~/.local/bin`, NO flatpak)
   + Zed.
 - Apps por defecto: foot, rofi, Loupe (img), Papers (pdf), mpv (video), Thunar (files),
