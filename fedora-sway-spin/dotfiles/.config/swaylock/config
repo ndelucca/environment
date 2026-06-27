@@ -7,7 +7,7 @@ show-failed-attempts
 indicator-caps-lock
 indicator-radius=110
 indicator-thickness=8
-font=Cascadia Code NF
+font=JetBrainsMono Nerd Font
 
 color=121212
 inside-color=121212

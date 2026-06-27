@@ -6,6 +6,16 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
 PKG_FILE="${SETUP_DIR}/packages.txt"
 
+# JetBrainsMono Nerd Font (jetbrains-mono-nf in packages.txt) isn't in Fedora's
+# repos — it ships from this COPR. Enable it (idempotent) before the bulk install
+# so the package resolves.
+COPR="jhuang6451/nerd-fonts"
+if ! sudo dnf copr list 2>/dev/null | grep -q "${COPR}"; then
+    echo "Enabling COPR ${COPR} for JetBrainsMono Nerd Font..."
+    sudo dnf install -y dnf5-plugins
+    sudo dnf copr enable -y "${COPR}"
+fi
+
 echo "Installing dnf packages from ${PKG_FILE}..."
 mapfile -t PACKAGES < <(grep -vE '^\s*(#|$)' "${PKG_FILE}")
 sudo dnf install -y "${PACKAGES[@]}"

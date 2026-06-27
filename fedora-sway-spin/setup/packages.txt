@@ -43,8 +43,10 @@ cowsay
 fortune-mod
 tmux
 
-# Fonts (Nerd-patched — needed for the icon glyphs in waybar/foot/prompt)
-cascadia-code-nf-fonts
+# Fonts (Nerd-patched — needed for the icon glyphs in waybar/foot/prompt).
+# JetBrainsMono Nerd Font isn't in Fedora's repos; it comes from the COPR
+# jhuang6451/nerd-fonts, which 03-apps.sh enables before this install.
+jetbrains-mono-nf
 
 # Editors
 neovim
