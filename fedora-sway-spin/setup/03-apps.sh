@@ -54,7 +54,11 @@ fi
 # a sandbox (it wouldn't use our host nvim / LSPs / Go / Node), so we install the
 # official release binary into ~/.local/bin (same approach as Zed). It just drives our
 # existing nvim config (the submodule), so it's the GUI of our nvim, not a 3rd editor.
-if command -v neovide &>/dev/null; then
+#
+# The binary is installed as `neovide-bin`; the launcher on PATH is the stowed wrapper
+# dotfiles/.local/bin/neovide, which falls back to software GL on old GPUs (Neovide
+# needs OpenGL >= 3.2). See that wrapper for details.
+if command -v neovide-bin &>/dev/null; then
     echo "Neovide is already installed."
 else
     echo "Installing Neovide from GitHub release..."
@@ -65,10 +69,10 @@ else
     tar -xf "${NEOVIDE_TMP}/neovide.tar" -C "${NEOVIDE_TMP}"
     NEOVIDE_BIN="$(find "${NEOVIDE_TMP}" -type f -name neovide | head -n1)"
     mkdir -p "${HOME}/.local/bin"
-    install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide"
+    install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide-bin"
 
-    # Desktop entry + icon so it shows up in rofi. Under Wayland the app_id is
-    # "neovide" (matched by sway's `assign ... workspace 3`).
+    # Desktop entry + icon so it shows up in rofi. Exec=neovide -> the stowed wrapper.
+    # Under Wayland the app_id is "neovide" (matched by sway's `assign ... workspace 3`).
     mkdir -p "${HOME}/.local/share/icons/hicolor/scalable/apps"
     curl -fsL https://raw.githubusercontent.com/neovide/neovide/main/assets/neovide.svg \
         -o "${HOME}/.local/share/icons/hicolor/scalable/apps/neovide.svg" || true

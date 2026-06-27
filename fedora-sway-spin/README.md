@@ -73,9 +73,14 @@ agregar lo propio, de forma declarativa y versionada.
 
 ### Editores
 - **nvim** (terminal) + **Neovide** (GUI del *mismo* nvim) + **Zed**.
-- Neovide se instala desde el **binario oficial de release** a `~/.local/bin` (en
-  `03-apps.sh`), NO por flatpak (el flatpak corre nvim en sandbox y no usaría el nvim /
-  LSPs / toolchains del host). Comparte la config del submódulo nvim.
+- Neovide se instala desde el **binario oficial de release** a `~/.local/bin/neovide-bin`
+  (en `03-apps.sh`), NO por flatpak (el flatpak corre nvim en sandbox y no usaría el
+  nvim / LSPs / toolchains del host). Comparte la config del submódulo nvim.
+- El comando `neovide` en PATH es un **wrapper** (`dotfiles/.local/bin/neovide`): Neovide
+  necesita **OpenGL >= 3.2** y en GPUs viejas (este Aspire 5742 tiene Intel Ironlake, tope
+  GL 2.1) el contexto GL falla (`EGL_BAD_MATCH`). El wrapper detecta la versión de GL con
+  `glxinfo` y cae a **render por software** (llvmpipe) solo si hace falta; en hardware
+  capaz no toca nada. Trade-off en esta laptop: anda pero por CPU (no acelerado).
 
 ### Apps por defecto
 - Terminal foot · launcher rofi · imágenes **Loupe** · PDF **Papers** · video **mpv** ·

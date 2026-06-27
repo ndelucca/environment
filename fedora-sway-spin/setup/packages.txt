@@ -52,6 +52,9 @@ Thunar
 qt6ct
 
 # CLI tools
+# glxinfo (glx-utils): usado por el wrapper de Neovide para detectar la versión de
+# OpenGL y caer a render por software en GPUs viejas (GL < 3.2).
+glx-utils
 gawk
 unzip
 curl

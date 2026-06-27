@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# Wrapper de Neovide. El binario real se instala como `neovide-bin`
+# (setup/03-apps.sh); este wrapper lo lanza.
+#
+# Neovide usa el backend OpenGL de Skia y necesita OpenGL >= 3.2. En GPUs viejas
+# (p.ej. Intel Ironlake / HD Graphics 1ª gen -> tope GL 2.1) la creación del
+# contexto GL falla con EGL_BAD_MATCH y Neovide crashea. En ese caso caemos a
+# render por software (llvmpipe, que ofrece GL 4.6). En GPUs capaces no tocamos
+# nada, así que el wrapper es portable entre máquinas.
+
+if command -v glxinfo >/dev/null 2>&1; then
+    gl="$(glxinfo -B 2>/dev/null | awk '/OpenGL version string/{print $4; exit}')"
+    major="${gl%%.*}"
+    minor="${gl#*.}"
+    if [[ "${major}" =~ ^[0-9]+$ && "${minor}" =~ ^[0-9]+$ ]]; then
+        if (( major < 3 || (major == 3 && minor < 2) )); then
+            export LIBGL_ALWAYS_SOFTWARE=1
+        fi
+    fi
+fi
+
+exec neovide-bin "$@"
