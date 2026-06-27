@@ -9,6 +9,12 @@ indicator-radius=110
 indicator-thickness=8
 font=JetBrainsMono Nerd Font
 
+# Blurred desktop wallpaper as background. Copied to /usr/share/backgrounds by
+# setup/02-fonts-wallpaper-sddm-grub.sh (same convention as the desktop wallpaper).
+# color= below is the fallback if the image is missing.
+image=/usr/share/backgrounds/wallpaper-swaylock.png
+scaling=fill
+
 color=121212
 inside-color=121212
 inside-clear-color=121212

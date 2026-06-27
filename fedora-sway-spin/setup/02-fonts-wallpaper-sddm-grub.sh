@@ -7,6 +7,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
 
 echo "Updating system wallpaper"
 sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
+sudo cp "${SETUP_DIR}/wallpaper-swaylock.png" /usr/share/backgrounds/wallpaper-swaylock.png
 
 echo "SDDM configuration"
 echo "Updating sddm wallpaper"
