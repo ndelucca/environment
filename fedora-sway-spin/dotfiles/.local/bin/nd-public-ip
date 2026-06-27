@@ -18,7 +18,17 @@ NEW_IP_FILE="${CACHE_DIR}/new_ip"
 mkdir -p "$CACHE_DIR"
 
 get_public_ip() {
-    curl -s --max-time 10 ifconfig.me 2>/dev/null
+    # Try several services; use the first that responds. Never returns non-zero
+    # (prints empty on total failure) so callers' own empty-string checks decide.
+    local svc ip
+    for svc in ifconfig.me icanhazip.com ident.me; do
+        ip=$(curl -s --max-time 5 "$svc" 2>/dev/null) || true
+        if [[ -n "$ip" ]]; then
+            printf '%s' "$ip"
+            return 0
+        fi
+    done
+    return 0
 }
 
 show_alert() {

@@ -2,8 +2,10 @@
 
 set -euo pipefail
 
+# shellcheck source=../vars.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides TIMEZONE
+
 LOCALE="en_US.UTF-8"
-TIMEZONE="America/Argentina/Buenos_Aires"
 KEYMAP="us-euro" # KEYMAP="latam"
 KEYMAP_X11="eu" # KEYMAP="latam"
 

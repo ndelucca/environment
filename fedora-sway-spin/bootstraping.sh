@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-REPO_DIR="${HOME}/nd.environment"
-SETUP_DIR="${REPO_DIR}/fedora-sway-spin/setup"
+# shellcheck source=vars.sh
+source "$(dirname "${BASH_SOURCE[0]}")/vars.sh"   # provides REPO_DIR, SETUP_DIR, ...
 LOG_FILE="${HOME}/.cache/bootstrap-$(date +%Y%m%d-%H%M%S).log"
 
 mkdir -p "$(dirname "${LOG_FILE}")"

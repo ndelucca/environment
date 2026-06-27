@@ -2,8 +2,11 @@
 
 set -euo pipefail
 
-sudo git config --system user.name "ndelucca"
-sudo git config --system user.email "ndelucca@protonmail.com"
+# shellcheck source=../vars.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides REPO_DIR, GIT_NAME, GIT_EMAIL
+
+sudo git config --system user.name "${GIT_NAME}"
+sudo git config --system user.email "${GIT_EMAIL}"
 sudo git config --system pull.rebase true
 sudo git config --system push.default simple
 sudo git config --system core.autocrlf false
@@ -12,4 +15,4 @@ sudo git config --system color.ui true
 sudo git config --system alias.st status
 
 echo "Changing .git origin to ssh"
-git remote set-url origin "ssh://git@github.com/ndelucca/nd.environment.git"
+git -C "${REPO_DIR}" remote set-url origin "ssh://git@github.com/ndelucca/nd.environment.git"

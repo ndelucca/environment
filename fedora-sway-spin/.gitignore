@@ -1,0 +1,3 @@
+# Generated from config.jsonc.in by setup/05-stow.sh (machine-specific timezone
+# + auto-detected hwmon path). Only the .in template is tracked.
+dotfiles/.config/waybar/config.jsonc

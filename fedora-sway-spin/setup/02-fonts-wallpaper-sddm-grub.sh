@@ -2,15 +2,16 @@
 
 set -euo pipefail
 
-FROZEN_DIR="${HOME}/nd.environment/fedora-sway-spin/setup"
+# shellcheck source=../vars.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
 
 echo "Updating system wallpaper"
-sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
+sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
 
 echo "SDDM configuration"
 echo "Updating sddm wallpaper"
 sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.bak
-sudo cp "${FROZEN_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
+sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
 
 echo "Creating sddm configuration file"
 sudo tee /etc/sddm.conf.d/ndelucca.conf >/dev/null <<'EOF'
