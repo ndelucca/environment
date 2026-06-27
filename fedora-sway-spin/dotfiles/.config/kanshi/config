@@ -1,0 +1,23 @@
+# kanshi — declarative output profiles, applied automatically on hotplug/dock.
+# Started from sway/config (`exec_always ... kanshi`), alongside swaync/wlsunset.
+#
+# Profiles match on the SET of connected outputs (names as in
+# `swaymsg -t get_outputs`). Lid state is not visible to kanshi — that is
+# handled in sway/config via `bindswitch lid:on/off`.
+
+# Laptop only (no external display).
+profile laptop {
+    output eDP-1 enable position 0,0
+}
+
+# Docked: external monitor on the LEFT, laptop panel to its right.
+# (eDP-1 width is 1920; adjust if the panel resolution differs.)
+profile docked {
+    output HDMI-A-1 enable position 0,0
+    output eDP-1 enable position 1920,0
+}
+
+# External monitor only (e.g. lid closed and docked — eDP not present/disabled).
+profile external {
+    output HDMI-A-1 enable position 0,0
+}

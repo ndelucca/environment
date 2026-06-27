@@ -12,7 +12,16 @@ set $screen_timeout 300
 set $rofi_cmd rofi -terminal '$term'
 set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 
-exec_always swaync
+# Autostart. `pkill -x` guards make exec_always idempotent across `reload`
+# (otherwise every reload spawns a duplicate daemon).
+exec_always pkill -x swaync;   exec swaync
+exec_always pkill -x wlsunset; exec wlsunset -l -34.6 -L -58.4   # night light (Buenos Aires)
+exec_always pkill -x kanshi;   exec kanshi                       # output profiles (~/.config/kanshi/config)
+
+# Clipboard history (cliphist). `exec` (not exec_always) so reload doesn't add
+# duplicate watchers that would double-store every copy.
+exec wl-paste --type text  --watch cliphist store
+exec wl-paste --type image --watch cliphist store
 
 default_border pixel 2
 default_floating_border pixel 2
@@ -22,6 +31,10 @@ smart_gaps on
 smart_borders on
 workspace_auto_back_and_forth yes
 focus_on_window_activation focus
+
+# Match the Wayland cursor to the GTK theme (Adwaita 24). XWayland apps read the
+# same values from ~/.config/environment.d/cursor.conf.
+seat seat0 xcursor_theme Adwaita 24
 
 # swaymsg -t get_outputs
 output * bg /usr/share/backgrounds/wallpaper.png fill
@@ -35,10 +48,19 @@ input type:touchpad {
     middle_emulation enabled
 }
 
+# Output arrangement (hotplug/dock) is handled declaratively by kanshi
+# (~/.config/kanshi/config + the kanshi user service). Lid state is not visible
+# to kanshi, so handle it here: disable the internal panel when the lid closes.
+bindswitch --reload --locked lid:on  output eDP-1 disable
+bindswitch --reload --locked lid:off output eDP-1 enable
+
 bindsym $mod+Return exec $term
 bindsym $mod+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+r reload
+bindsym $mod+Shift+Escape exec loginctl lock-session
+# Clipboard history picker (cliphist + rofi)
+bindsym $mod+v exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 floating_modifier $mod normal
 # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
@@ -126,17 +148,23 @@ workspace 9 output HDMI-A-1 eDP-1
 workspace 10 output HDMI-A-1 eDP-1
 
 assign [app_id="dev.zed.Zed"]  workspace 3
-assign [app_id=".*spotify.*"]  workspace 6
 
-assign [app_id=".*discord.*"]  workspace 8
-assign [app_id=".*teams.*"]    workspace 8
-assign [app_id=".*whatsapp.*"] workspace 8
+# Chromium web-apps report a URL-derived app_id of the form
+# `chrome-<host>__-Default` (same for Chromium and Google Chrome PWAs), not the
+# --class value, so match them by host. Anchored to not overlap the browser rule
+# below, so matching is independent of rule order.
+assign [app_id="^chrome-open\.spotify\.com"]    workspace 6
+assign [app_id="^chrome-discord\.com"]          workspace 8
+assign [app_id="^chrome-teams\.microsoft\.com"] workspace 8
+assign [app_id="^chrome-web\.whatsapp\.com"]    workspace 8
+assign [app_id="^chrome-mail\.google\.com"]     workspace 10
 
 assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
-# Wildcards go after specific apps
-assign [app_id=".*chrom.*"]    workspace 2
-assign [app_id=".*firefox.*"]  workspace 2
+# Real browser windows (not the web-apps). Exact app_id so they never collide
+# with the chrome-<host> web-app ids above.
+assign [app_id="^(chromium-browser|google-chrome|google-chrome-stable)$"] workspace 2
+assign [app_id="^firefox$"] workspace 2
 # Modes
 
 mode "resize" {

@@ -69,9 +69,19 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #power-profiles-daemon,
-#mpd {
+#custom-notification,
+#mpris {
     padding: 0 10px;
     color: #ffffff;
+}
+
+#custom-notification.notification {
+    color: #f5c842;
+}
+
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification {
+    background-color: #225D42;
 }
 
 /* If workspaces is the leftmost module, omit left margin */

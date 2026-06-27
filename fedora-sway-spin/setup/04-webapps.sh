@@ -24,6 +24,10 @@ create_webapp() {
     local desktop_file="$WEBAPPS_DIR/${name}.desktop"
 
     echo "Creating or updating: $name"
+    # NOTE: under Wayland, Chromium derives the app_id from the URL
+    # (chrome-<host>__-Default) and ignores --class for matching, so Sway's
+    # `assign` rules in ~/.config/sway/config match by host, not by this name.
+    # --class only affects the WM_CLASS used under XWayland.
     tee "$desktop_file" >/dev/null <<EOF
 [Desktop Entry]
 Name=${name}

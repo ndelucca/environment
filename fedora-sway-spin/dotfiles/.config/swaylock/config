@@ -1,0 +1,30 @@
+# swaylock theme. Overrides /etc/swaylock/config. Invoked by the swayidle config
+# (lock / before-sleep / loginctl lock-session via $mod+Shift+Escape).
+# Palette matches foot/waybar: bg #121212, green accent #225D42.
+
+ignore-empty-password
+show-failed-attempts
+indicator-caps-lock
+indicator-radius=110
+indicator-thickness=8
+font=Cascadia Code NF
+
+color=121212
+inside-color=121212
+inside-clear-color=121212
+inside-ver-color=121212
+inside-wrong-color=121212
+
+ring-color=2a2a2a
+ring-clear-color=f5c842
+ring-ver-color=5294cf
+ring-wrong-color=ff6b6b
+
+key-hl-color=225d42
+bs-hl-color=ff6b6b
+separator-color=00000000
+
+text-color=ffffff
+text-clear-color=ffffff
+text-ver-color=ffffff
+text-wrong-color=ffffff

@@ -11,6 +11,19 @@
 SwayNotificationCenter
 swappy
 brightnessctl
+# Referenced by the sway/waybar config but otherwise only provided implicitly by
+# the Spin — declared here so the env is reproducible on a minimal base.
+rofi
+grim
+slurp
+playerctl
+pavucontrol
+wl-clipboard
+swaylock
+swayidle
+kanshi
+wlsunset
+cliphist
 
 # Browsers
 chromium
