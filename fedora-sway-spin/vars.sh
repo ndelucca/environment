@@ -8,6 +8,10 @@
 # repetir la receta de descubrimiento en cada script. Los consumidores solo necesitan:
 #     source "$(dirname "${BASH_SOURCE[0]}")/<...>/vars.sh"
 
+# Las variables las consumen los scripts que hacen source, no este archivo: SC2034
+# ("appears unused") es un falso positivo acá.
+# shellcheck disable=SC2034
+
 # --- Layout del repo (descubierto una sola vez, acá) ---
 SWAY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # fedora-sway-spin/
 REPO_DIR="$(cd "${SWAY_DIR}/.." && pwd)"                    # raíz del repo
@@ -16,6 +20,7 @@ DOTFILES_DIR="${SWAY_DIR}/dotfiles"
 
 # --- Valores de usuario / deployment (versionados a propósito, definidos una vez) ---
 TIMEZONE="America/Argentina/Buenos_Aires"
+LOCALE="en_US.UTF-8"
 
 # Layout de teclado (la alternativa a la que cambia el usuario: "latam"). KEYMAP es el
 # keymap de consola; KEYMAP_X11 el layout de Wayland/X11. Lo consume 01-locale-datetime-keyboard.sh.

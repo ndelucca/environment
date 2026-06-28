@@ -5,7 +5,8 @@ set $up k
 set $right l
 set $term foot
 
-# swayidle
+# swayidle: las consume el 90-swayidle.conf del Spin vía include (definidas antes que él).
+# No borrar aunque no se vean referencias locales — sin estas, el idle del Spin se rompe.
 set $lock_timeout 600
 set $screen_timeout 300
 

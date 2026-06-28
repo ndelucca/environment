@@ -43,6 +43,8 @@ if ! sudo test -f "${THEME_FILE}"; then
     # El tmpdir se crea solo en el camino de instalación, así no queda basura en
     # /tmp cuando el tema ya está y este paso es no-op.
     TMP_DIR="$(mktemp -d)"
+    # git clone corre con sudo, así que el contenido queda root-owned: el cleanup también.
+    trap 'sudo rm -rf "${TMP_DIR:-}"' EXIT
     sudo git clone --depth=1 "${REPO_URL}" "${TMP_DIR}/repo"
     sudo mkdir -p /boot/grub2/themes
     sudo rm -rf "${THEME_DIR}"
@@ -56,7 +58,6 @@ if ! sudo test -f "${THEME_FILE}"; then
     fi
 
     sudo grub2-mkconfig -o "${GRUB_CFG}"
-    sudo rm -rf "${TMP_DIR}"
 else
     echo "Tema ya instalado en ${THEME_FILE}"
 fi

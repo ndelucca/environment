@@ -26,10 +26,12 @@ COPRS=(
     "jhuang6451/nerd-fonts"
     "erikreider/swayosd"
 )
+# dnf5-plugins aporta los subcomandos `copr` y `config-manager` (este último lo usa la
+# sección de gh más abajo). Se instala una sola vez acá para no repetirlo en cada uso.
+sudo dnf install -y dnf5-plugins
 for copr in "${COPRS[@]}"; do
     if ! sudo dnf copr list 2>/dev/null | grep -q "${copr}"; then
         echo "Habilitando COPR ${copr}..."
-        sudo dnf install -y dnf5-plugins
         sudo dnf copr enable -y "${copr}"
     fi
 done
@@ -44,7 +46,6 @@ if command -v gh &>/dev/null; then
 else
     echo "Instalando GitHub CLI desde el repo oficial..."
 
-    sudo dnf install -y dnf5-plugins
     sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
     sudo dnf install -y gh --repo gh-cli
 
@@ -76,6 +77,7 @@ if command -v neovide-bin &>/dev/null; then
 else
     echo "Instalando Neovide desde el release de GitHub..."
     NEOVIDE_TMP="$(mktemp -d)"
+    trap 'rm -rf "${NEOVIDE_TMP:-}"' EXIT
     # El asset de release es un .tar plano (no .tar.gz) con el binario neovide.
     curl -fL https://github.com/neovide/neovide/releases/latest/download/neovide-linux-x86_64.tar \
         -o "${NEOVIDE_TMP}/neovide.tar"
@@ -107,7 +109,6 @@ StartupWMClass=neovide
 MimeType=${neovide_mime_line}
 EOF
 
-    rm -rf "${NEOVIDE_TMP}"
     echo "Neovide instalado en ~/.local/bin/neovide"
 fi
 

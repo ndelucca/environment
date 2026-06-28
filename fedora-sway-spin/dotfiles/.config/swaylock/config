@@ -1,6 +1,6 @@
 # Tema de swaylock. Override de /etc/swaylock/config. Lo invoca el config de swayidle
 # (lock / before-sleep / loginctl lock-session vía $mod+Shift+Escape).
-# Paleta del dominio desktop (igual que waybar): fondo #121212, acento verde #225D42.
+# Usa la paleta del dominio desktop (igual que waybar/swaync/swayosd/rofi).
 
 ignore-empty-password
 show-failed-attempts

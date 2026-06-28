@@ -1,10 +1,10 @@
 /*
  * nd-dark — tema rofi autocontenido a juego con el sistema.
- * Paleta del dominio DESKTOP (waybar / swaylock / swayosd / swaync):
- *   fondo #121212, verde bosque #225D42, blanco #ffffff,
- *   amarillo #f5c842, rojo #ff6b6b. Diseño flat, JetBrainsMono Nerd Font.
- * Nota de convención: las apps de terminal (foot / tmux / prompt bash) usan a
- * propósito un verde más brillante (#4a9d4a), no este #225D42.
+ * Usa la paleta del dominio DESKTOP (igual que waybar/swaylock/swayosd/swaync), diseño
+ * flat, JetBrainsMono Nerd Font. Los valores reales viven en la sección * { } de abajo.
+ * Nota de convención: las apps de terminal (foot / tmux / prompt bash) usan a propósito
+ * un verde más brillante (#4a9d4a), distinto del acento desktop (#225D42) — ese contraste
+ * es intencional, por eso ambos hex se nombran acá.
  * No depende de /usr/share/rofi/themes (probar con: rofi -no-config -theme nd-dark).
  */
 

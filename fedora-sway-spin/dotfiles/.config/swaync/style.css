@@ -1,5 +1,5 @@
-/* Tema de SwayNotificationCenter. Coincide con foot/waybar/swaylock/swayosd:
- * bg #121212 / #1a1a1a, acento verde #225D42, JetBrainsMono Nerd Font. */
+/* Tema de SwayNotificationCenter. Usa la paleta del dominio desktop
+ * (igual que waybar/swaylock/swayosd/rofi) y JetBrainsMono Nerd Font. */
 
 * {
     font-family: "JetBrainsMono Nerd Font";

@@ -3,9 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee TIMEZONE, KEYMAP, KEYMAP_X11
-
-LOCALE="en_US.UTF-8"
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee LOCALE, TIMEZONE, KEYMAP, KEYMAP_X11
 
 echo "Fedora $0"
 echo "Configuring locale (${LOCALE}) keymap (${KEYMAP}) and timezone (${TIMEZONE})..."

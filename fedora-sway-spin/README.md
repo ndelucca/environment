@@ -16,16 +16,21 @@ agregar lo propio, de forma declarativa y versionada.
 
 - **Instalación:** `bootstraping.sh` corre los pasos `setup/NN-*.sh` en orden
   (idempotentes). Valores por máquina en `vars.sh` (única fuente de verdad);
-  hardware (monitores, sensor de temperatura) autodetectado en runtime.
+  hardware (monitores, sensor de temperatura) autodetectado en runtime. La lista
+  autoritativa de paquetes dnf vive en `setup/packages.txt` (lo de abajo es un resumen
+  conceptual del stack, no el manifiesto).
 - **Dotfiles:** GNU **stow** `--no-folding` symlinkea `dotfiles/{.bashrc.d,.config,.local}`
-  a `~`. Configs con valores variables se generan desde templates `.in` (sed/jq) y
-  quedan git-ignoradas; solo se versiona el `.in`.
+  a `~`. Configs con valores variables se generan desde templates `.in`: `05-stow.sh`
+  los renderiza (sed/jq) con los valores de `vars.sh` ANTES de stowear, y el resultado
+  queda git-ignorado; solo se versiona el `.in`.
 - **Config de Sway en capas:** usamos el `include` con `layered-include` del Spin. Los
   defaults del Spin viven en `/usr/share/sway/config.d/*`; nosotros override por
   **mismo nombre de archivo** en `~/.config/sway/config.d/`. **No** forkeamos archivos
   del sistema.
 - **nvim:** submódulo aparte (`git@github.com:ndelucca/nvim.git`), gestionado con
-  `vim.pack` nativo (sin gestor de plugins externo).
+  `vim.pack` nativo (sin gestor de plugins externo). `bootstraping.sh` corre
+  `git submodule update --init --recursive`; si clonaste sin `--recurse-submodules`,
+  ese paso lo trae igual.
 
 ## Reglas / decisiones (lo que conviene recordar)
 
@@ -42,6 +47,9 @@ agregar lo propio, de forma declarativa y versionada.
 - **waybar lo arranca el Spin** vía `swaybar_command waybar` en su `90-bar.conf`. Por
   eso no hay `exec waybar` en nuestra config, y está bien.
 - kanshi arranca por `exec_always` en `sway/config` (el `kanshi.service` está disabled).
+- **Multi-monitor:** `kanshi/config` y `sway/config` referencian outputs por nombre
+  (`eDP-1`, `HDMI-A-1`). Si cambiás de monitor o de puerto, corré `swaymsg -t get_outputs`
+  para ver los nombres reales y actualizá ambos (más `DOCK_LEFT_WIDTH` en `vars.sh`).
 
 ### Toolkit y theming
 - Familia **GTK / Adwaita-dark** en todo (GTK3 + GTK4 coordinados, cursor Adwaita 24

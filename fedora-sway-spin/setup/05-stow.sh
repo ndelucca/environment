@@ -24,7 +24,7 @@ resolve_hwmon() {
         done
     done
     # Fallback: primer input de temperatura disponible en el sistema.
-    find /sys/class/hwmon/hwmon*/ -maxdepth 1 -name 'temp*_input' 2>/dev/null | sort | head -n1
+    find /sys/class/hwmon/ -maxdepth 2 -name 'temp*_input' 2>/dev/null | sort | head -n1
 }
 
 # render TEMPLATE OUTPUT 'sed-expr' ['sed-expr' ...]

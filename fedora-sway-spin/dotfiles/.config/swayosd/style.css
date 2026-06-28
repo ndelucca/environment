@@ -1,5 +1,5 @@
-/* Tema de SwayOSD. Coincide con foot/waybar/swaylock: bg #121212, acento verde #225D42,
- * JetBrainsMono Nerd Font. swayosd-server lo carga automaticamente desde esta ruta. */
+/* Tema de SwayOSD. Usa la paleta del dominio desktop (igual que waybar/swaylock/swaync/
+ * rofi) y JetBrainsMono Nerd Font. swayosd-server lo carga automaticamente desde esta ruta. */
 
 window#osd {
     padding: 12px 18px;
