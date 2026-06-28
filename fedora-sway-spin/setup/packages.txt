@@ -90,6 +90,9 @@ python3-neovim
 
 # Lenguajes / desarrollo. Fedora no tiene un paquete 'nodejs' pelado — solo streams
 # versionados — así que la versión mayor se fija explícitamente.
+# MANTENIMIENTO: el stream se fija a mano. Cuando nodejs24 salga de soporte (o al subir
+# de versión de Fedora) dnf falla con "no package"; bumpear acá al stream LTS vigente
+# (ver `dnf module list nodejs` / `dnf list nodejs*`).
 golang
 nodejs24
 nodejs24-npm

@@ -1,7 +1,7 @@
 # kanshi — perfiles de output declarativos, aplicados automáticamente al hotplug/dock.
 # Se arranca desde sway/config (`exec_always ... kanshi`), junto a swaync/wlsunset.
 #
-# GENERADO desde config.in por setup/05-stow.sh — @DOCK_LEFT_WIDTH@ viene de
+# GENERADO desde config.in por setup/04-stow.sh — @DOCK_LEFT_WIDTH@ viene de
 # vars.sh (única fuente de verdad). El `config` generado está git-ignored; editá
 # el template .in, no el output.
 #

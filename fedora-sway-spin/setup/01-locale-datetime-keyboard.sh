@@ -19,11 +19,6 @@ localectl status | grep -E 'Keymap|Layout' || true
 timedatectl | grep "Time zone" || true
 
 # El layout de teclado de la SESIÓN sway se genera como override en ~/.config
-# (sway/config.d/10-keyboard.conf, desde KEYMAP_X11 en vars.sh) por 05-stow.sh — acá
+# (sway/config.d/10-keyboard.conf, desde KEYMAP_X11 en vars.sh) por 04-stow.sh — acá
 # solo seteamos el default del sistema con localectl, sin tocar /usr/share.
-#
-# Migración: versiones anteriores escribían ese override en el árbol del sistema
-# (/usr/share/sway/config.d/10-keyboard.conf). Lo borramos para no dejar un archivo
-# root-owned stale que compita con el de ~/.config.
-sudo rm -f /usr/share/sway/config.d/10-keyboard.conf
 

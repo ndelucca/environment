@@ -26,13 +26,13 @@ LOCALE="en_US.UTF-8"
 # keymap de consola (lo consume 01-locale-datetime-keyboard.sh vía localectl). KEYMAP_X11
 # es el layout de Wayland/XWayland: lo consume tanto localectl (default del sistema) como
 # el generado sway/config.d/10-keyboard.conf (override de la sesión) renderizado por
-# 05-stow.sh. KEYMAP_X11_VARIANT es la variante xkb opcional (vacío = sin variante).
+# 04-stow.sh. KEYMAP_X11_VARIANT es la variante xkb opcional (vacío = sin variante).
 KEYMAP="us-euro"
 KEYMAP_X11="eu"
 KEYMAP_X11_VARIANT=""
 
 # Geolocalización para wlsunset (luz nocturna). Se renderiza en el generado
-# sway/config.d/10-wlsunset.conf por 05-stow.sh. Buenos Aires.
+# sway/config.d/10-wlsunset.conf por 04-stow.sh. Buenos Aires.
 LATITUDE="-34.6"
 LONGITUDE="-58.4"
 

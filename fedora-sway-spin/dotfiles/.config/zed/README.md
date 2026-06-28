@@ -51,6 +51,6 @@ remapear solo lo mínimo.
 
 ## Nota sobre el versionado
 
-`settings.json` se genera de `settings.json.in` por `setup/05-stow.sh` (deep-merge
+`settings.json` se genera de `settings.json.in` por `setup/04-stow.sh` (deep-merge
 con jq) y está git-ignored: Zed reescribe `settings.json` en runtime (p. ej.
 `ssh_connections`), y solo el `.in` se trackea. Editá el `.in`, no el generado.

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -uo pipefail
+#
+# nd-doctor — chequea las suposiciones que este setup hace sobre el Spin.
+#
+# La estrategia del entorno es "apoyarse en el Spin": varios servicios NO los
+# arrancamos nosotros, los arranca el Spin desde sus /usr/share/sway/config.d/*.conf,
+# y nuestros overrides ganan por mismo nombre de archivo. Si una versión futura del
+# Spin renombra o elimina esos archivos, las cosas dejan de funcionar EN SILENCIO (la
+# barra no aparece, el idle no bloquea, el override no aplica) sin ningún error.
+#
+# Este chequeo materializa esas suposiciones para detectar la deriva de un vistazo.
+# No arregla nada: reporta. Correr tras actualizar el sistema / subir de versión.
+
+ok=0
+fail=0
+
+# check_file <ruta> <por qué nos importa>
+check_file() {
+    local path="$1" why="$2"
+    if [[ -e "${path}" ]]; then
+        printf '  \033[0;32mOK  \033[0m %s\n' "${path}"
+        ((ok++))
+    else
+        printf '  \033[0;31mFALTA\033[0m %s\n      \033[0;33m↳ %s\033[0m\n' "${path}" "${why}"
+        ((fail++))
+    fi
+}
+
+echo "Archivos del Spin de los que depende este setup:"
+# layered-include: lo invoca el include de ~/.config/sway/config para encadenar
+# /usr/share → /etc → ~/.config. Sin él, nuestros overrides de config.d no cargan.
+check_file /usr/libexec/sway/layered-include \
+    " sway/config lo usa para el include en capas; sin esto NINGÚN override de config.d aplica"
+# Estos arrancan daemons que nuestra config asume corriendo (no los lanzamos nosotros).
+check_file /usr/share/sway/config.d/90-bar.conf \
+    "arranca waybar (swaybar_command); por eso no hay 'exec waybar' nuestro"
+check_file /usr/share/sway/config.d/90-swayidle.conf \
+    "consume \$lock_timeout/\$screen_timeout de sway/config; sin esto no hay lock por idle"
+check_file /usr/share/sway/config.d/95-autostart-policykit-agent.conf \
+    "arranca el agente polkit (lxqt-policykit); sin esto los prompts de privilegios fallan"
+
+echo
+if ((fail > 0)); then
+    printf '\033[0;31m%d suposición(es) rotas\033[0m, %d ok. Revisar README (sección \"apoyarse en el Spin\").\n' "${fail}" "${ok}"
+    exit 1
+fi
+printf '\033[0;32mTodo en orden\033[0m (%d/%d). El baseline del Spin es el esperado.\n' "${ok}" "${ok}"

@@ -20,7 +20,7 @@ agregar lo propio, de forma declarativa y versionada.
   autoritativa de paquetes dnf vive en `setup/packages.txt` (lo de abajo es un resumen
   conceptual del stack, no el manifiesto).
 - **Dotfiles:** GNU **stow** `--no-folding` symlinkea `dotfiles/{.bashrc.d,.config,.local}`
-  a `~`. Configs con valores variables se generan desde templates `.in`: `05-stow.sh`
+  a `~`. Configs con valores variables se generan desde templates `.in`: `04-stow.sh`
   los renderiza (sed/jq) con los valores de `vars.sh` ANTES de stowear, y el resultado
   queda git-ignorado; solo se versiona el `.in`.
 - **Config de Sway en capas:** usamos el `include` con `layered-include` del Spin. Los
@@ -46,6 +46,11 @@ agregar lo propio, de forma declarativa y versionada.
   muertas.
 - **waybar lo arranca el Spin** vía `swaybar_command waybar` en su `90-bar.conf`. Por
   eso no hay `exec waybar` en nuestra config, y está bien.
+- **Deriva del Spin:** como varios daemons (waybar, swayidle, agente polkit) y el
+  `include` en capas dependen de archivos del Spin que NO controlamos, si una versión
+  futura los renombra/elimina las cosas fallan en silencio. Correr **`nd-doctor`** (en
+  `~/.local/bin`, también al final del bootstrap) chequea que esas suposiciones sigan
+  válidas tras una actualización del sistema.
 - kanshi arranca por `exec_always` en `sway/config` (el `kanshi.service` está disabled).
 - **Multi-monitor:** `kanshi/config` y `sway/config` referencian outputs por nombre
   (`eDP-1`, `HDMI-A-1`). Si cambiás de monitor o de puerto, corré `swaymsg -t get_outputs`
@@ -105,7 +110,7 @@ agregar lo propio, de forma declarativa y versionada.
   se stowea porque es un archivo real que el sistema reescribe; se respetan los defaults
   ya presentes: chromium para http, nvim para text/plain).
 - **PWAs** vía `chromium --app=` (Spotify, Tidal, Teams, ChatGPT, Discord, WhatsApp,
-  Gmail) en `04-webapps.sh` — sin Electron.
+  Gmail) en `05-webapps.sh` — sin Electron.
 
 ### Apps que NO queremos
 - Se borran de forma declarativa: la lista vive en `setup/remove-packages.txt`, borrado

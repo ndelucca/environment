@@ -5,6 +5,9 @@ set -euo pipefail
 # shellcheck source=../vars.sh
 source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee REPO_DIR, GIT_NAME, GIT_EMAIL, GITHUB_USER
 
+# Scope --system (/etc/gitconfig) a propósito: soy el único usuario de mis máquinas y
+# quiero la MISMA identidad de git en todo repo y para todo usuario (incluido root),
+# sin depender de un ~/.gitconfig por cuenta. Un repo puede overridear con config local.
 sudo git config --system user.name "${GIT_NAME}"
 sudo git config --system user.email "${GIT_EMAIL}"
 sudo git config --system pull.rebase true

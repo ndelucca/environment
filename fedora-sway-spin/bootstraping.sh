@@ -13,8 +13,8 @@ STEPS=(
     "01-locale-datetime-keyboard.sh"
     "02-fonts-wallpaper-sddm-grub.sh"
     "03-apps.sh"
-    "04-webapps.sh"
-    "05-stow.sh"
+    "04-stow.sh"
+    "05-webapps.sh"
     "06-development.sh"
     "07-remove-unwanted.sh"
 )
@@ -52,6 +52,12 @@ log "===== Bootstrap summary ====="
 for s in "${OK_STEPS[@]:-}"; do [[ -n "${s}" ]] && log "  OK    ${s}"; done
 for s in "${FAILED_STEPS[@]:-}"; do [[ -n "${s}" ]] && log "  FAIL  ${s}"; done
 log "Full log: ${LOG_FILE}"
+
+# Chequeo de suposiciones sobre el Spin (informativo, no aborta el bootstrap). Se invoca
+# por ruta del repo porque ~/.local/bin puede no estar en PATH en esta shell todavía.
+echo
+log "===== Spin assumptions check (nd-doctor) ====="
+"${DOTFILES_DIR}/.local/bin/nd-doctor" 2>&1 | tee -a "${LOG_FILE}" || true
 
 if [[ ${#FAILED_STEPS[@]} -gt 0 ]]; then
     log "Some steps failed. Re-run ./fedora-sway-spin/bootstraping.sh to retry (steps are idempotent)."

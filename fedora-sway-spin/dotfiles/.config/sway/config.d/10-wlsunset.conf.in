@@ -1,4 +1,4 @@
-# Night light (wlsunset). GENERADO desde 10-wlsunset.conf.in por setup/05-stow.sh —
+# Night light (wlsunset). GENERADO desde 10-wlsunset.conf.in por setup/04-stow.sh —
 # los @LATITUDE@/@LONGITUDE@ vienen de vars.sh (única fuente de verdad). El
 # 10-wlsunset.conf generado está git-ignored; editá el template .in, no el output.
 #
