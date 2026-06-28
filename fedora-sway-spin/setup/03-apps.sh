@@ -3,82 +3,97 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee SETUP_DIR
 PKG_FILE="${SETUP_DIR}/packages.txt"
 
-# Some packages.txt entries aren't in Fedora's repos and ship from a COPR. Enable
-# them (idempotent) before the bulk install so the packages resolve:
+# Tipos MIME que abre Neovide. Fuente única: se usa tanto en el .desktop (como
+# línea MimeType, separada por ';') como en el xdg-mime de abajo (args sueltos).
+# Agregá un tipo acá una sola vez y queda reflejado en ambos lados.
+NEOVIDE_MIMES=(
+    text/plain text/markdown text/x-readme
+    application/json application/x-yaml text/x-yaml application/toml text/x-toml
+    text/x-shellscript application/x-shellscript
+    text/x-python text/x-lua text/x-go
+    text/x-csrc text/x-chdr text/x-c++src text/x-c++hdr
+    text/css application/xml text/xml text/x-sql text/x-makefile
+)
+
+# Algunas entradas de packages.txt no están en los repos de Fedora y vienen de un
+# COPR. Los habilitamos (idempotente) antes del install masivo para que resuelvan:
 #   jhuang6451/nerd-fonts  -> jetbrains-mono-nf (JetBrainsMono Nerd Font)
-#   erikreider/swayosd     -> swayosd (volume/brightness/caps-lock OSD)
+#   erikreider/swayosd     -> swayosd (OSD de volumen/brillo/caps-lock)
 COPRS=(
     "jhuang6451/nerd-fonts"
     "erikreider/swayosd"
 )
 for copr in "${COPRS[@]}"; do
     if ! sudo dnf copr list 2>/dev/null | grep -q "${copr}"; then
-        echo "Enabling COPR ${copr}..."
+        echo "Habilitando COPR ${copr}..."
         sudo dnf install -y dnf5-plugins
         sudo dnf copr enable -y "${copr}"
     fi
 done
 
-echo "Installing dnf packages from ${PKG_FILE}..."
+echo "Instalando paquetes dnf desde ${PKG_FILE}..."
 mapfile -t PACKAGES < <(grep -vE '^\s*(#|$)' "${PKG_FILE}")
 sudo dnf install -y "${PACKAGES[@]}"
 
 if command -v gh &>/dev/null; then
-    echo "GitHub CLI is already installed."
-    echo "Version: $(gh --version | head -n1)"
+    echo "GitHub CLI ya está instalado."
+    echo "Versión: $(gh --version | head -n1)"
 else
-    echo "Installing GitHub CLI from official repository..."
+    echo "Instalando GitHub CLI desde el repo oficial..."
 
     sudo dnf install -y dnf5-plugins
     sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
     sudo dnf install -y gh --repo gh-cli
 
-    echo "GitHub CLI installed successfully!"
-    echo "Version: $(gh --version | head -n1)"
+    echo "GitHub CLI instalado correctamente!"
+    echo "Versión: $(gh --version | head -n1)"
 fi
 
-# Zed via its official script. Not in dnf — the 'zed' dnf package is the unrelated
-# ZFS event daemon.
+# Zed vía su script oficial. No está en dnf: el paquete 'zed' de dnf es el demonio
+# de eventos de ZFS, sin relación.
 if command -v zed &>/dev/null; then
-    echo "Zed is already installed."
+    echo "Zed ya está instalado."
 else
-    echo "Installing Zed from zed.dev..."
+    echo "Instalando Zed desde zed.dev..."
     curl -f https://zed.dev/install.sh | sh
-    echo "Zed installed successfully!"
+    echo "Zed instalado correctamente!"
 fi
 
-# Neovide: GUI client for our Neovim. Not in dnf/COPR. The Flathub build runs nvim in
-# a sandbox (it wouldn't use our host nvim / LSPs / Go / Node), so we install the
-# official release binary into ~/.local/bin (same approach as Zed). It just drives our
-# existing nvim config (the submodule), so it's the GUI of our nvim, not a 3rd editor.
+# Neovide: cliente GUI de nuestro Neovim. No está en dnf/COPR. El build de Flathub
+# corre nvim en un sandbox (no usaría nuestro nvim / LSPs / Go / Node del host), así
+# que instalamos el binario oficial de release en ~/.local/bin (mismo enfoque que Zed).
+# Solo maneja nuestra config de nvim (el submódulo): es la GUI de nuestro nvim, no un
+# tercer editor.
 #
-# The binary is installed as `neovide-bin`; the launcher on PATH is the stowed wrapper
-# dotfiles/.local/bin/neovide, which falls back to software GL on old GPUs (Neovide
-# needs OpenGL >= 3.2). See that wrapper for details.
+# El binario se instala como `neovide-bin`; el lanzador en PATH es el wrapper stoweado
+# dotfiles/.local/bin/neovide, que cae a GL por software en GPUs viejas (Neovide
+# necesita OpenGL >= 3.2). Ver ese wrapper para detalles.
 if command -v neovide-bin &>/dev/null; then
-    echo "Neovide is already installed."
+    echo "Neovide ya está instalado."
 else
-    echo "Installing Neovide from GitHub release..."
+    echo "Instalando Neovide desde el release de GitHub..."
     NEOVIDE_TMP="$(mktemp -d)"
-    # Release asset is a plain .tar (not .tar.gz) containing the neovide binary.
+    # El asset de release es un .tar plano (no .tar.gz) con el binario neovide.
     curl -fL https://github.com/neovide/neovide/releases/latest/download/neovide-linux-x86_64.tar \
         -o "${NEOVIDE_TMP}/neovide.tar"
     tar -xf "${NEOVIDE_TMP}/neovide.tar" -C "${NEOVIDE_TMP}"
     NEOVIDE_BIN="$(find "${NEOVIDE_TMP}" -type f -name neovide | head -n1)"
-    [[ -n "${NEOVIDE_BIN}" ]] || { echo "ERROR: neovide binary not found in release tarball" >&2; exit 1; }
+    [[ -n "${NEOVIDE_BIN}" ]] || { echo "ERROR: no se encontró el binario neovide en el tarball" >&2; exit 1; }
     mkdir -p "${HOME}/.local/bin"
     install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide-bin"
 
-    # Desktop entry + icon so it shows up in rofi. Exec=neovide -> the stowed wrapper.
-    # Under Wayland the app_id is "neovide" (matched by sway's `assign ... workspace 3`).
+    # Entrada .desktop + icono para que aparezca en rofi. Exec=neovide -> el wrapper
+    # stoweado. Bajo Wayland el app_id es "neovide" (lo matchea el `assign ... workspace 3`
+    # de sway). La línea MimeType se arma desde NEOVIDE_MIMES (fuente única).
     mkdir -p "${HOME}/.local/share/icons/hicolor/scalable/apps"
     curl -fsL https://raw.githubusercontent.com/neovide/neovide/main/assets/neovide.svg \
         -o "${HOME}/.local/share/icons/hicolor/scalable/apps/neovide.svg" || true
     mkdir -p "${HOME}/.local/share/applications"
-    tee "${HOME}/.local/share/applications/neovide.desktop" >/dev/null <<'EOF'
+    neovide_mime_line="$(IFS=';'; echo "${NEOVIDE_MIMES[*]};")"
+    tee "${HOME}/.local/share/applications/neovide.desktop" >/dev/null <<EOF
 [Desktop Entry]
 Name=Neovide
 GenericName=Text Editor
@@ -89,31 +104,25 @@ Type=Application
 Categories=Utility;TextEditor;
 Terminal=false
 StartupWMClass=neovide
-MimeType=text/plain;text/markdown;text/x-readme;application/json;application/x-yaml;text/x-yaml;application/toml;text/x-toml;text/x-shellscript;application/x-shellscript;text/x-python;text/x-lua;text/x-go;text/x-csrc;text/x-chdr;text/x-c++src;text/x-c++hdr;text/css;application/xml;text/xml;text/x-sql;text/x-makefile;
+MimeType=${neovide_mime_line}
 EOF
 
     rm -rf "${NEOVIDE_TMP}"
-    echo "Neovide installed to ~/.local/bin/neovide"
+    echo "Neovide instalado en ~/.local/bin/neovide"
 fi
 
-# Default file handlers. ~/.config/mimeapps.list is a real file that the system and
-# apps rewrite, so it is NOT stowed (that would clash with stow's --no-folding and
-# clobber the browser/nvim defaults already there). We set only our handlers with
-# xdg-mime, which merges into that file idempotently and leaves the rest intact.
+# Handlers de archivos por defecto. ~/.config/mimeapps.list es un archivo real que el
+# sistema y las apps reescriben, así que NO se stowea (chocaría con el --no-folding de
+# stow y pisaría los defaults de navegador/nvim ya presentes). Seteamos solo nuestros
+# handlers con xdg-mime, que mergea en ese archivo de forma idempotente y deja el resto.
 if command -v xdg-mime &>/dev/null; then
-    echo "Setting default file handlers (images=Loupe, pdf=Papers, video=mpv)..."
+    echo "Seteando handlers por defecto (imágenes=Loupe, pdf=Papers, video=mpv)..."
     xdg-mime default org.gnome.Loupe.desktop \
         image/png image/jpeg image/gif image/webp image/bmp image/tiff image/svg+xml
     xdg-mime default org.gnome.Papers.desktop application/pdf
     xdg-mime default mpv.desktop \
         video/mp4 video/x-matroska video/webm video/quicktime video/x-msvideo
     xdg-mime default thunar.desktop inode/directory
-    # Text/code files open in Neovide (GUI nvim) instead of nvim-in-a-terminal.
-    xdg-mime default neovide.desktop \
-        text/plain text/markdown text/x-readme \
-        application/json application/x-yaml text/x-yaml application/toml text/x-toml \
-        text/x-shellscript application/x-shellscript \
-        text/x-python text/x-lua text/x-go \
-        text/x-csrc text/x-chdr text/x-c++src text/x-c++hdr \
-        text/css application/xml text/xml text/x-sql text/x-makefile
+    # Archivos de texto/código abren en Neovide (GUI nvim) en vez de nvim-en-terminal.
+    xdg-mime default neovide.desktop "${NEOVIDE_MIMES[@]}"
 fi

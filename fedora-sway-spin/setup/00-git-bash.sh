@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides REPO_DIR, GIT_NAME, GIT_EMAIL, GITHUB_USER
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee REPO_DIR, GIT_NAME, GIT_EMAIL, GITHUB_USER
 
 sudo git config --system user.name "${GIT_NAME}"
 sudo git config --system user.email "${GIT_EMAIL}"

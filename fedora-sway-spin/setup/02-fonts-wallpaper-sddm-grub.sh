@@ -3,18 +3,21 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides SETUP_DIR
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee SETUP_DIR
 
-echo "Updating system wallpaper"
+echo "Actualizando wallpaper del sistema"
 sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/wallpaper.png
 sudo cp "${SETUP_DIR}/wallpaper-swaylock.png" /usr/share/backgrounds/wallpaper-swaylock.png
 
-echo "SDDM configuration"
-echo "Updating sddm wallpaper"
-sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.bak
+echo "Configuración de SDDM"
+echo "Actualizando wallpaper de sddm"
+# Backup del default original SOLO la primera vez: en re-corridas default.jxl ya es
+# nuestro wallpaper, así que sin este guard el .bak terminaría pisando el original.
+sudo test -f /usr/share/backgrounds/default.jxl.bak \
+    || sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.bak
 sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
 
-echo "Creating sddm configuration file"
+echo "Creando archivo de configuración de sddm"
 sudo tee /etc/sddm.conf.d/ndelucca.conf >/dev/null <<'EOF'
 [Autologin]
 # User=ndelucca
@@ -25,7 +28,7 @@ EnableHiDPI=true
 EnableAvatars=false
 EOF
 
-echo "Configuring GRUB2"
+echo "Configurando GRUB2"
 
 if [ -d /sys/firmware/efi ]; then
     GRUB_CFG="/boot/efi/EFI/fedora/grub.cfg"
@@ -34,10 +37,12 @@ else
 fi
 THEME_DIR="/boot/grub2/themes/breeze"
 THEME_FILE="${THEME_DIR}/theme.txt"
-TMP_DIR="$(mktemp -d)"
 REPO_URL="https://github.com/gustawho/grub2-theme-breeze.git"
 
 if ! sudo test -f "${THEME_FILE}"; then
+    # El tmpdir se crea solo en el camino de instalación, así no queda basura en
+    # /tmp cuando el tema ya está y este paso es no-op.
+    TMP_DIR="$(mktemp -d)"
     sudo git clone --depth=1 "${REPO_URL}" "${TMP_DIR}/repo"
     sudo mkdir -p /boot/grub2/themes
     sudo rm -rf "${THEME_DIR}"
@@ -53,7 +58,7 @@ if ! sudo test -f "${THEME_FILE}"; then
     sudo grub2-mkconfig -o "${GRUB_CFG}"
     sudo rm -rf "${TMP_DIR}"
 else
-    echo "Theme already installed at ${THEME_FILE}"
+    echo "Tema ya instalado en ${THEME_FILE}"
 fi
 
 # Rofi se configura por completo vía dotfiles (~/.config/rofi/, tema nd-dark

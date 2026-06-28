@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides TIMEZONE, KEYMAP, KEYMAP_X11
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee TIMEZONE, KEYMAP, KEYMAP_X11
 
 LOCALE="en_US.UTF-8"
 
@@ -29,7 +29,7 @@ LAYOUT_LINE="xkb_layout ${RAW_LAYOUT:-us}"
 VARIANT_LINE=$([[ -n "$RAW_VARIANT" && "$RAW_VARIANT" != "n/a" ]] && echo "xkb_variant $RAW_VARIANT" || echo "")
 
 sudo tee /usr/share/sway/config.d/10-keyboard.conf > /dev/null <<EOF
-# Auto-generated from system settings
+# Autogenerado desde la configuración del sistema
 input * {
     ${LAYOUT_LINE}
     ${VARIANT_LINE}

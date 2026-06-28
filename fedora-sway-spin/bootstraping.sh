@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/vars.sh"   # provides REPO_DIR, SETUP_DIR, ...
+source "$(dirname "${BASH_SOURCE[0]}")/vars.sh"   # provee REPO_DIR, SETUP_DIR, ...
 LOG_FILE="${HOME}/.cache/bootstrap-$(date +%Y%m%d-%H%M%S).log"
 
 mkdir -p "$(dirname "${LOG_FILE}")"

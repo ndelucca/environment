@@ -12,16 +12,16 @@ set $screen_timeout 300
 # Modos, combi, iconos, matching y tema viven en ~/.config/rofi/config.rasi
 set $menu rofi -show drun
 
-# Autostart. `pkill -x` guards make exec_always idempotent across `reload`
-# (otherwise every reload spawns a duplicate daemon).
-# wlsunset (night light) lives in the generated config.d/10-wlsunset.conf so its
-# coordinates come from vars.sh (LATITUDE/LONGITUDE) instead of being hardcoded.
+# Autostart. Los guardas `pkill -x` hacen idempotente a exec_always ante `reload`
+# (si no, cada reload levantaría un daemon duplicado).
+# wlsunset (night light) vive en el generado config.d/10-wlsunset.conf para que sus
+# coordenadas vengan de vars.sh (LATITUDE/LONGITUDE) en vez de estar hardcodeadas.
 exec_always pkill -x swaync;         exec swaync
-exec_always pkill -x kanshi;         exec kanshi          # output profiles (~/.config/kanshi/config)
-exec_always pkill -x swayosd-server; exec swayosd-server  # OSD for volume/brightness/caps (see config.d binds)
+exec_always pkill -x kanshi;         exec kanshi          # perfiles de output (~/.config/kanshi/config)
+exec_always pkill -x swayosd-server; exec swayosd-server  # OSD de volumen/brillo/caps (ver binds en config.d)
 
-# Clipboard history (cliphist). `exec` (not exec_always) so reload doesn't add
-# duplicate watchers that would double-store every copy.
+# Historial de portapapeles (cliphist). `exec` (no exec_always) para que el reload no
+# agregue watchers duplicados que guardarían dos veces cada copia.
 exec wl-paste --type text  --watch cliphist store
 exec wl-paste --type image --watch cliphist store
 
@@ -35,8 +35,8 @@ smart_borders on
 workspace_auto_back_and_forth yes
 focus_on_window_activation focus
 
-# Match the Wayland cursor to the GTK theme (Adwaita 24). XWayland apps read the
-# same values from ~/.config/environment.d/cursor.conf.
+# Hace que el cursor de Wayland coincida con el tema GTK (Adwaita 24). Las apps
+# XWayland leen los mismos valores desde ~/.config/environment.d/cursor.conf.
 seat seat0 xcursor_theme Adwaita 24
 
 # swaymsg -t get_outputs
@@ -51,9 +51,9 @@ input type:touchpad {
     middle_emulation enabled
 }
 
-# Output arrangement (hotplug/dock) is handled declaratively by kanshi
-# (~/.config/kanshi/config + the kanshi user service). Lid state is not visible
-# to kanshi, so handle it here: disable the internal panel when the lid closes.
+# La disposición de outputs (hotplug/dock) la maneja kanshi de forma declarativa
+# (~/.config/kanshi/config + el servicio de usuario de kanshi). El estado de la tapa
+# no es visible para kanshi, así que se maneja acá: desactiva el panel interno al cerrar.
 bindswitch --reload --locked lid:on  output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
@@ -62,7 +62,7 @@ bindsym $mod+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+Escape exec loginctl lock-session
-# Clipboard history picker (cliphist + rofi)
+# Selector del historial de portapapeles (cliphist + rofi)
 bindsym $mod+v exec cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy
 
 floating_modifier $mod normal
@@ -107,38 +107,19 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# Sway has a "scratchpad", which is a bag of holding for windows.
-# You can send windows there and get them back later.
-# Move the currently focused window to the scratchpad
+# Sway tiene un "scratchpad", una especie de bolsa para guardar ventanas.
+# Podés mandar ventanas ahí y recuperarlas más tarde.
+# Mueve la ventana enfocada al scratchpad
 bindsym $mod+Shift+minus move scratchpad
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
+# Muestra la siguiente ventana del scratchpad u oculta la enfocada del scratchpad.
+# Si hay varias ventanas en el scratchpad, este comando va ciclando entre ellas.
 bindsym $mod+minus scratchpad show
 
-# Include configs from 3 locations:
-#  - /usr/share/sway/config.d
-#  - /etc/sway/config.d
-#  - $XDG_CONFIG_HOME/sway/config.d ($HOME/.config/sway/config.d)
-#
-# If multiple directories contain the files with the same name, the later
-# directory takes precedence; `$XDG_CONFIG_HOME/sway/config.d/20-swayidle.conf`
-# will always be loaded instead of `/usr/share/sway/config.d/20-swayidle.conf`
-# or `/etc/sway/config.d/20-swayidle.conf`
-#
-# This mechanism permits overriding our default configuration per-system
-# (/etc) or per-user ($XDG_CONFIG_HOME) basis. Just create the file you
-# want to modify/override in the higher-level directory.
-#
-# For example, to disable the default bar from Fedora configs, you'll need to
-#     $ echo -n > "$HOME/.config/sway/config.d/90-bar.conf"
-#
-# Note the quoting, the $() and the arguments quoting. All the parts are equally
-# important to make the magic work. And if you want to learn the secret behind
-# the trick, it's all in the `wordexp(3)`.
-#
+# Include en capas del Spin (/usr/share → /etc → ~/.config). Ante mismo nombre de
+# archivo gana el directorio más específico: así overrideamos sin forkear el sistema.
 include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf")'
 
-# Workspace assignment
+# Asignación de workspaces
 
 workspace 7 output eDP-1 HDMI-A-1
 workspace 1 output HDMI-A-1 eDP-1
@@ -154,10 +135,10 @@ workspace 10 output HDMI-A-1 eDP-1
 assign [app_id="dev.zed.Zed"]  workspace 3
 assign [app_id="neovide"]      workspace 3
 
-# Chromium web-apps report a URL-derived app_id of the form
-# `chrome-<host>__-Default` (same for Chromium and Google Chrome PWAs), not the
-# --class value, so match them by host. Anchored to not overlap the browser rule
-# below, so matching is independent of rule order.
+# Las web-apps de Chromium reportan un app_id derivado de la URL con la forma
+# `chrome-<host>__-Default` (igual para PWAs de Chromium y Google Chrome), no el
+# valor de --class, así que se matchean por host. Anclado para no solaparse con la
+# regla del navegador de abajo, así el matching es independiente del orden de reglas.
 assign [app_id="^chrome-open\.spotify\.com"]    workspace 6
 assign [app_id="^chrome-discord\.com"]          workspace 8
 assign [app_id="^chrome-teams\.microsoft\.com"] workspace 8
@@ -166,11 +147,11 @@ assign [app_id="^chrome-mail\.google\.com"]     workspace 10
 
 assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
-# Real browser windows (not the web-apps). Exact app_id so they never collide
-# with the chrome-<host> web-app ids above.
+# Ventanas reales del navegador (no las web-apps). app_id exacto para que nunca
+# colisionen con los ids chrome-<host> de las web-apps de arriba.
 assign [app_id="^(chromium-browser|google-chrome|google-chrome-stable)$"] workspace 2
 assign [app_id="^firefox$"] workspace 2
-# Modes
+# Modos
 
 mode "resize" {
     bindsym $left resize shrink width 10px

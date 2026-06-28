@@ -1,42 +1,42 @@
 #!/usr/bin/env bash
 #
-# Single source of truth for the repo layout and for values that would
-# otherwise be duplicated across setup scripts and templates.
+# Única fuente de verdad (SSOT) para el layout del repo y para valores que de otra
+# forma quedarían duplicados entre los scripts de setup y los templates.
 #
-# Sourced (not executed). Because it derives paths from its OWN location via
-# BASH_SOURCE, every script that sources it shares the same paths — no need to
-# repeat the discovery recipe in each script. Consumers only need:
+# Se hace source (no se ejecuta). Como deriva las rutas desde su PROPIA ubicación vía
+# BASH_SOURCE, todo script que lo haga source comparte las mismas rutas — no hace falta
+# repetir la receta de descubrimiento en cada script. Los consumidores solo necesitan:
 #     source "$(dirname "${BASH_SOURCE[0]}")/<...>/vars.sh"
 
-# --- Repo layout (discovered once, here) ---
+# --- Layout del repo (descubierto una sola vez, acá) ---
 SWAY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # fedora-sway-spin/
-REPO_DIR="$(cd "${SWAY_DIR}/.." && pwd)"                    # repo root
+REPO_DIR="$(cd "${SWAY_DIR}/.." && pwd)"                    # raíz del repo
 SETUP_DIR="${SWAY_DIR}/setup"
 DOTFILES_DIR="${SWAY_DIR}/dotfiles"
 
-# --- User / deployment values (versioned on purpose, defined once) ---
+# --- Valores de usuario / deployment (versionados a propósito, definidos una vez) ---
 TIMEZONE="America/Argentina/Buenos_Aires"
 
-# Keyboard layout (alternative the user switches to: "latam"). KEYMAP is the console
-# keymap; KEYMAP_X11 the Wayland/X11 layout. Consumed by 01-locale-datetime-keyboard.sh.
+# Layout de teclado (la alternativa a la que cambia el usuario: "latam"). KEYMAP es el
+# keymap de consola; KEYMAP_X11 el layout de Wayland/X11. Lo consume 01-locale-datetime-keyboard.sh.
 KEYMAP="us-euro"
 KEYMAP_X11="eu"
 
-# Geolocation for wlsunset (night light). Rendered into the generated
-# sway/config.d/10-wlsunset.conf by 05-stow.sh. Buenos Aires.
+# Geolocalización para wlsunset (luz nocturna). Se renderiza en el generado
+# sway/config.d/10-wlsunset.conf por 05-stow.sh. Buenos Aires.
 LATITUDE="-34.6"
 LONGITUDE="-58.4"
 
-# X offset (px) of the internal panel in kanshi's `docked` profile: it equals the
-# width of the external monitor placed to its LEFT (HDMI-A-1). kanshi can't do
-# arithmetic or relative positioning, so the value lives here instead of being
-# hardcoded in kanshi/config. Adjust if the external monitor's width differs.
+# Offset X (px) del panel interno en el perfil `docked` de kanshi: equivale al
+# ancho del monitor externo ubicado a su IZQUIERDA (HDMI-A-1). kanshi no puede hacer
+# aritmética ni posicionamiento relativo, así que el valor vive acá en lugar de estar
+# hardcodeado en kanshi/config. Ajustar si el ancho del monitor externo difiere.
 DOCK_LEFT_WIDTH="1920"
 
 GIT_NAME="ndelucca"
 GIT_EMAIL="ndelucca@protonmail.com"
 
-# GitHub account that owns this repo's origin remote (used by 00-git-bash.sh to switch
-# origin to SSH). Separate from GIT_NAME because commit-author name and account handle
-# are different facts, even if they coincide today.
+# Cuenta de GitHub dueña del remote origin de este repo (la usa 00-git-bash.sh para pasar
+# origin a SSH). Separada de GIT_NAME porque el nombre de autor de commits y el handle de
+# la cuenta son hechos distintos, aunque hoy coincidan.
 GITHUB_USER="ndelucca"

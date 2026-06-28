@@ -1,19 +1,19 @@
-# Single source of truth for dnf packages installed by the bootstrap.
-# Consumed once by 03-apps.sh. One package per line; blank lines and lines
-# starting with '#' are ignored.
+# Fuente única de verdad de los paquetes dnf que instala el bootstrap.
+# Lo consume una vez 03-apps.sh. Un paquete por línea; líneas vacías y las que
+# empiezan con '#' se ignoran.
 #
-# Things NOT here (they have their own install logic):
-#   - gh                 -> 03-apps.sh (third-party repo)
-#   - Zed                -> 03-apps.sh (official install script)
-#   - c-development      -> 06-development.sh (dnf group)
+# Lo que NO está acá (tiene su propia lógica de instalación):
+#   - gh                 -> 03-apps.sh (repo de terceros)
+#   - Zed                -> 03-apps.sh (script de instalación oficial)
+#   - c-development      -> 06-development.sh (grupo de dnf)
 
 # Desktop / Wayland / Sway
 SwayNotificationCenter
 swappy
 brightnessctl
-# Referenced by the sway/waybar config but otherwise only provided implicitly by
-# the Spin — declared here so the env is reproducible on a minimal base.
-# waybar is launched by the Spin's /usr/share/sway/config.d/90-bar.conf.
+# Lo referencia el config de sway/waybar pero, fuera de eso, el Spin solo lo provee
+# de forma implícita — declarado acá para que el entorno sea reproducible sobre una
+# base minimal. A waybar lo arranca el /usr/share/sway/config.d/90-bar.conf del Spin.
 waybar
 rofi
 grim
@@ -27,17 +27,18 @@ swayidle
 kanshi
 wlsunset
 cliphist
-# On-screen display for volume/brightness/caps-lock. Not in Fedora's repos; comes
-# from the COPR erikreider/swayosd, which 03-apps.sh enables before this install.
+# OSD (on-screen display) de volumen/brillo/caps-lock. No está en los repos de Fedora;
+# viene del COPR erikreider/swayosd, que 03-apps.sh habilita antes de este install.
 swayosd
 
-# Browsers
+# Navegadores
 chromium
 firefox
 
 # GUI apps + handlers de archivos. Algunos los arrastra el Spin de forma implícita;
 # declarados acá para que un rebuild minimal sea fiel. Los defaults de mime
-# (imagen/pdf/video/dir) viven en dotfiles/.config/mimeapps.list.
+# (imagen/pdf/video/dir) se setean con xdg-mime en 03-apps.sh; no hay
+# mimeapps.list versionado (es un archivo real que el sistema reescribe).
 #   loupe   -> visor de imágenes GTK4/Adwaita (reemplaza al viejo eog)
 #   papers  -> visor de PDF GTK4 (antes Evince); evita abrir PDFs en Chromium
 #   mpv     -> reproductor de video
@@ -52,7 +53,7 @@ Thunar
 # Wayland. Config declarativa en dotfiles/.config/qt6ct + environment.d/qt.conf.
 qt6ct
 
-# CLI tools
+# Herramientas CLI
 # glxinfo (glx-utils): usado por el wrapper de Neovide para detectar la versión de
 # OpenGL y caer a render por software en GPUs viejas (GL < 3.2).
 glx-utils
@@ -69,25 +70,25 @@ cowsay
 fortune-mod
 tmux
 
-# Fonts (Nerd-patched — needed for the icon glyphs in waybar/foot/prompt).
-# JetBrainsMono Nerd Font isn't in Fedora's repos; it comes from the COPR
-# jhuang6451/nerd-fonts, which 03-apps.sh enables before this install.
+# Fuentes (parcheadas Nerd — necesarias para los glifos de íconos en waybar/foot/prompt).
+# JetBrainsMono Nerd Font no está en los repos de Fedora; viene del COPR
+# jhuang6451/nerd-fonts, que 03-apps.sh habilita antes de este install.
 jetbrains-mono-nf
 
-# Editors
+# Editores
 neovim
 python3-neovim
 
-# Languages / development. Fedora has no bare 'nodejs' package — only versioned
-# streams — so the major version is pinned explicitly.
+# Lenguajes / desarrollo. Fedora no tiene un paquete 'nodejs' pelado — solo streams
+# versionados — así que la versión mayor se fija explícitamente.
 golang
 nodejs24
 nodejs24-npm
 uv
 python3-pip
 
-# Automation
+# Automatización
 ansible
 
-# Linting / quality
+# Linting / calidad
 ShellCheck

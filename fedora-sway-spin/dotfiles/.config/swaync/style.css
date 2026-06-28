@@ -1,12 +1,12 @@
-/* SwayNotificationCenter theme. Matches foot/waybar/swaylock/swayosd:
- * bg #121212 / #1a1a1a, green accent #225D42, JetBrainsMono Nerd Font. */
+/* Tema de SwayNotificationCenter. Coincide con foot/waybar/swaylock/swayosd:
+ * bg #121212 / #1a1a1a, acento verde #225D42, JetBrainsMono Nerd Font. */
 
 * {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 14px;
 }
 
-/* ----- Notification popups ------------------------------------------------ */
+/* ----- Popups de notificaciones ------------------------------------------- */
 .notification-row {
     outline: none;
 }
@@ -50,7 +50,7 @@
     background-color: #225D42;
 }
 
-/* Inline action buttons */
+/* Botones de accion en linea */
 .notification-default-action,
 .notification-action {
     color: #ffffff;
@@ -68,7 +68,7 @@
     background-color: #225D42;
 }
 
-/* ----- Control center ----------------------------------------------------- */
+/* ----- Centro de control -------------------------------------------------- */
 .control-center {
     margin: 6px;
     padding: 10px;
@@ -99,7 +99,7 @@
     background-color: #225D42;
 }
 
-/* Do-Not-Disturb / DND toggle */
+/* Interruptor No molestar / DND */
 .widget-dnd {
     margin: 4px;
     color: #ffffff;
@@ -115,7 +115,7 @@
     background-color: #225D42;
 }
 
-/* Empty-state label */
+/* Etiqueta de estado vacio */
 .control-center .notification-group-empty,
 .control-center-empty {
     color: #6e6e6e;

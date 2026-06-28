@@ -3,13 +3,14 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provides DOTFILES_DIR, TIMEZONE
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee DOTFILES_DIR, TIMEZONE
 STOW_DIR="${DOTFILES_DIR}"
 
-# --- Render templated configs before stowing -------------------------------
-# Several configs are generated from a `.in` template so machine-specific or
-# duplicated values come from vars.sh (single source of truth) instead of being
-# hardcoded. Every generated output is git-ignored; only the `.in` is tracked.
+# --- Renderizar configs con template antes de stowear ----------------------
+# Varios configs se generan desde un template `.in` para que los valores
+# específicos de la máquina o duplicados vengan de vars.sh (única fuente de
+# verdad) en lugar de estar hardcodeados. Todo output generado está git-ignored;
+# solo el `.in` se versiona.
 resolve_hwmon() {
     local want d name f
     for want in k10temp coretemp; do
@@ -22,13 +23,13 @@ resolve_hwmon() {
             fi
         done
     done
-    # Fallback: first temperature input available on the system.
+    # Fallback: primer input de temperatura disponible en el sistema.
     find /sys/class/hwmon/hwmon*/ -maxdepth 1 -name 'temp*_input' 2>/dev/null | sort | head -n1
 }
 
 # render TEMPLATE OUTPUT 'sed-expr' ['sed-expr' ...]
-# Applies the given sed -e expressions to TEMPLATE, writing OUTPUT. No-op (with a
-# notice) if the template is missing, so renames don't break the bootstrap.
+# Aplica las expresiones sed -e dadas a TEMPLATE, escribiendo OUTPUT. No hace nada
+# (con un aviso) si falta el template, así los renames no rompen el bootstrap.
 render() {
     local template="$1" output="$2"; shift 2
     if [[ ! -f "${template}" ]]; then
@@ -42,34 +43,35 @@ render() {
 
 CONFIG_DIR="${STOW_DIR}/.config"
 
-# waybar: timezone from vars.sh; temperature sensor path resolved by sensor name
-# instead of a fragile fixed hwmon index.
+# waybar: timezone desde vars.sh; ruta del sensor de temperatura resuelta por nombre
+# del sensor en lugar de un índice hwmon fijo y frágil.
 HWMON_PATH="$(resolve_hwmon)"
 echo "Rendering waybar config (timezone=${TIMEZONE}, hwmon=${HWMON_PATH:-none})"
 render "${CONFIG_DIR}/waybar/config.jsonc.in" "${CONFIG_DIR}/waybar/config.jsonc" \
     "s|@TIMEZONE@|${TIMEZONE}|g" \
     "s|@HWMON_PATH@|${HWMON_PATH}|g"
 
-# wlsunset (night light): geolocation from vars.sh.
+# wlsunset (luz nocturna): geolocalización desde vars.sh.
 echo "Rendering sway night-light config (lat=${LATITUDE}, lon=${LONGITUDE})"
 render "${CONFIG_DIR}/sway/config.d/10-wlsunset.conf.in" "${CONFIG_DIR}/sway/config.d/10-wlsunset.conf" \
     "s|@LATITUDE@|${LATITUDE}|g" \
     "s|@LONGITUDE@|${LONGITUDE}|g"
 
-# kanshi: docked-profile panel offset from vars.sh.
+# kanshi: offset del panel del perfil docked desde vars.sh.
 echo "Rendering kanshi config (dock left width=${DOCK_LEFT_WIDTH})"
 render "${CONFIG_DIR}/kanshi/config.in" "${CONFIG_DIR}/kanshi/config" \
     "s|@DOCK_LEFT_WIDTH@|${DOCK_LEFT_WIDTH}|g"
 
-# Zed rewrites settings.json at runtime (e.g. appends ssh_connections when you open
-# a remote project), so tracking it directly would churn the repo. We track only
-# settings.json.in and generate the git-ignored settings.json from it; since the
-# generated file is the symlink target, Zed's runtime edits land in the ignored
-# copy and stay out of git. jq's `*` deep-merges the template OVER the previously
-# generated file (template wins), so curated settings are always applied while keys
-# only Zed wrote (ssh_connections, UI tweaks) survive across runs. Both files must
-# be plain JSON (no comments) for jq; if the generated file ever isn't valid JSON,
-# we fall back to overwriting it from the template instead of aborting the bootstrap.
+# Zed reescribe settings.json en runtime (p. ej. agrega ssh_connections cuando abrís
+# un proyecto remoto), así que versionarlo directo ensuciaría el repo. Versionamos solo
+# settings.json.in y generamos el settings.json (git-ignored) a partir de él; como el
+# archivo generado es el target del symlink, las ediciones en runtime de Zed caen en la
+# copia ignorada y quedan fuera de git. El `*` de jq hace deep-merge del template POR
+# ENCIMA del archivo generado previo (gana el template), así los settings curados se
+# aplican siempre mientras que las claves que solo escribió Zed (ssh_connections, ajustes
+# de UI) sobreviven entre corridas. Ambos archivos deben ser JSON plano (sin comentarios)
+# para jq; si alguna vez el archivo generado no es JSON válido, caemos en sobrescribirlo
+# desde el template en lugar de abortar el bootstrap.
 ZED_DIR="${STOW_DIR}/.config/zed"
 if [[ -f "${ZED_DIR}/settings.json.in" ]]; then
     echo "Rendering zed settings.json (jq deep-merge template over generated)"
@@ -85,10 +87,10 @@ if [[ -f "${ZED_DIR}/settings.json.in" ]]; then
     fi
 fi
 
-# --- Clean stale symlinks left by renamed/removed dotfiles ------------------
-# stow -R does not remove links whose source no longer exists in the package
-# (e.g. a renamed .bashrc.d file). Drop any broken symlink that points back
-# into this repo so renames/removals are reflected.
+# --- Limpiar symlinks obsoletos dejados por dotfiles renombrados/eliminados -
+# stow -R no elimina los links cuyo origen ya no existe en el paquete
+# (p. ej. un archivo .bashrc.d renombrado). Borra cualquier symlink roto que
+# apunte de vuelta a este repo para que los renames/eliminaciones se reflejen.
 for pkg in .bashrc.d .config .local; do
     [[ -d "${HOME}/${pkg}" ]] || continue
     while IFS= read -r link; do
@@ -100,10 +102,11 @@ for pkg in .bashrc.d .config .local; do
     done < <(find "${HOME}/${pkg}" -type l)
 done
 
-# --- Stow dotfiles ----------------------------------------------------------
-# --no-folding symlinks files individually (real dirs) instead of folding whole
-# directories — so files apps write into ~/.config stay out of the repo.
-# -R (restow) re-applies cleanly on an already-configured machine.
+# --- Stow de los dotfiles ---------------------------------------------------
+# --no-folding symlinkea los archivos individualmente (dirs reales) en lugar de
+# foldear directorios enteros — así los archivos que las apps escriben en
+# ~/.config quedan fuera del repo.
+# -R (restow) reaplica limpio en una máquina ya configurada.
 for pkg in .bashrc.d .config .local; do
     mkdir -p "${HOME}/${pkg}"
     stow -R --no-folding -d "${STOW_DIR}" -t "${HOME}/${pkg}" "${pkg}"

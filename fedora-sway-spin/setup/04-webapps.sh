@@ -16,11 +16,11 @@ declare -A WEBAPPS=(
 )
 
 CHROMIUM_BIN="${CHROMIUM_BIN:-chromium-browser}"
-# Per-app logos shipped in the repo and deployed via stow to this path
-# (dotfiles/.local/share/icons/webapps/<Name>.png). The default GTK/Adwaita
-# theme has no per-service icons, so we reference the PNGs by absolute path.
-# Fallback to the chromium icon (named chromium-browser on Fedora, NOT chromium)
-# if a logo is missing.
+# Logos por app que vienen en el repo y se despliegan vía stow a esta ruta
+# (dotfiles/.local/share/icons/webapps/<Name>.png). El tema GTK/Adwaita por
+# defecto no tiene íconos por servicio, así que referenciamos los PNG por ruta
+# absoluta. Si falta un logo, fallback al ícono de chromium (llamado
+# chromium-browser en Fedora, NO chromium).
 ICON_DIR="$HOME/.local/share/icons/webapps"
 FALLBACK_ICON="chromium-browser"
 
@@ -33,10 +33,10 @@ create_webapp() {
     [ -f "$icon" ] || icon="$FALLBACK_ICON"
 
     echo "Creating or updating: $name"
-    # NOTE: under Wayland, Chromium derives the app_id from the URL
-    # (chrome-<host>__-Default) and ignores --class for matching, so Sway's
-    # `assign` rules in ~/.config/sway/config match by host, not by this name.
-    # --class only affects the WM_CLASS used under XWayland.
+    # NOTA: bajo Wayland, Chromium deriva el app_id desde la URL
+    # (chrome-<host>__-Default) e ignora --class para el matcheo, así que las
+    # reglas `assign` de Sway en ~/.config/sway/config matchean por host, no por
+    # este nombre. --class solo afecta al WM_CLASS usado bajo XWayland.
     tee "$desktop_file" >/dev/null <<EOF
 [Desktop Entry]
 Name=${name}

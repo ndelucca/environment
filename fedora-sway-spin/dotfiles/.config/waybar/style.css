@@ -84,12 +84,12 @@ button:hover {
     background-color: #225D42;
 }
 
-/* If workspaces is the leftmost module, omit left margin */
+/* Si workspaces es el modulo mas a la izquierda, omitir margen izquierdo */
 .modules-left>widget:first-child>#workspaces {
     margin-left: 0;
 }
 
-/* If workspaces is the rightmost module, omit right margin */
+/* Si workspaces es el modulo mas a la derecha, omitir margen derecho */
 .modules-right>widget:last-child>#workspaces {
     margin-right: 0;
 }

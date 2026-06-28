@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Display network configuration in a table format
+# Muestra la configuración de red en formato de tabla.
 show_network_config() {
     local title="$1"
     echo "=== $title ==="
@@ -16,10 +16,10 @@ show_network_config() {
     echo ""
 }
 
-# Validate IP address format
+# Valida el formato de una dirección IP.
 validate_ip() {
     local ip="$1"
-    # Remove CIDR notation if present
+    # Quita la notación CIDR si está presente.
     local ip_only="${ip%%/*}"
 
     if [[ "$ip_only" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
@@ -33,7 +33,7 @@ validate_ip() {
     return 1
 }
 
-# Configure a single interface
+# Configura una sola interfaz.
 configure_iface() {
     local iface="$1"
     local type="$2"
@@ -41,7 +41,7 @@ configure_iface() {
     echo ""
     echo "Detected interface ($type): $iface"
 
-    # Get and validate static IP
+    # Pide y valida la IP estática.
     local static_ip
     while true; do
         read -rp "Enter static IP (e.g., 192.168.0.50/24): " static_ip
@@ -51,7 +51,7 @@ configure_iface() {
             continue
         fi
 
-        # Add /24 netmask if user didn't include it
+        # Agrega la máscara /24 si el usuario no la incluyó.
         if [[ ! "$static_ip" =~ / ]]; then
             echo "No netmask specified, using /24 by default"
             static_ip="${static_ip}/24"
@@ -64,7 +64,7 @@ configure_iface() {
         fi
     done
 
-    # Get and validate gateway
+    # Pide y valida el gateway.
     local gateway
     while true; do
         read -rp "Enter gateway (e.g., 192.168.0.1): " gateway
@@ -81,7 +81,7 @@ configure_iface() {
         fi
     done
 
-    # Get DNS or use gateway as default
+    # Pide el DNS o usa el gateway por defecto.
     local dns1
     read -rp "Enter primary DNS (e.g., 192.168.0.1) [Press Enter to use gateway]: " dns1
 
@@ -93,7 +93,7 @@ configure_iface() {
         dns1="$gateway"
     fi
 
-    # Get or create connection
+    # Obtiene o crea la conexión.
     local con_name
     con_name=$(nmcli -t -f NAME,DEVICE connection show | awk -F: -v d="$iface" '$2==d {print $1}')
 
@@ -110,34 +110,34 @@ configure_iface() {
         nmcli connection modify "$con_name" ipv4.dns "$dns1"
     fi
 
-    # Restart connection
+    # Reinicia la conexión.
     echo "Activating connection..."
     nmcli connection down "$con_name" 2>/dev/null || true
     nmcli connection up "$con_name"
     echo "Configuration applied successfully!"
 }
 
-# Main script
+# Script principal
 show_network_config "Current Network Configuration"
 
 echo "=== Configure Static IP (NetworkManager) ==="
 
-# Detect connected interfaces
+# Detecta las interfaces conectadas.
 mapfile -t wired_ifaces < <(nmcli device status | awk '$2=="ethernet" && $3=="connected" {print $1}')
 mapfile -t wifi_ifaces < <(nmcli device status | awk '$2=="wifi" && $3=="connected" {print $1}')
 
-# Check if there are any connected interfaces
+# Verifica si hay alguna interfaz conectada.
 if [[ ${#wired_ifaces[@]} -eq 0 && ${#wifi_ifaces[@]} -eq 0 ]]; then
     echo "No connected interfaces found. Please connect an interface first."
     exit 1
 fi
 
-# Configure wired interfaces
+# Configura las interfaces cableadas.
 for iface in "${wired_ifaces[@]}"; do
     configure_iface "$iface" "ethernet"
 done
 
-# Configure Wi-Fi interfaces
+# Configura las interfaces Wi-Fi.
 for iface in "${wifi_ifaces[@]}"; do
     configure_iface "$iface" "wifi"
 done

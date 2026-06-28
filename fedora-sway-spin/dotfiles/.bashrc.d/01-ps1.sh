@@ -1,57 +1,64 @@
 #!/usr/bin/env bash
 
-# If not running interactively, don't do anything.
+# Si no es interactiva, no hacer nada.
 [[ $- != *i* ]] && return
 
-# SHELL OPTIONS
+# OPCIONES DE SHELL
 {
 
-    # Prepend cd to directory names automatically.
+    # Anteponer cd a los nombres de directorio automáticamente.
     shopt -s autocd
 
-    # Correct spelling errors during tab-completion.
+    # Corregir errores de tipeo durante el tab-completion.
     shopt -s dirspell
 
-    # Correct spelling errors in arguments supplied to cd.
+    # Corregir errores de tipeo en los argumentos de cd.
     shopt -s cdspell
 
-    # Turn on recursive globbing (enables ** to recurse all directories).
+    # Activar globbing recursivo (habilita ** para recorrer todos los directorios).
     shopt -s globstar
 
-    # Update window size after every command.
+    # Actualizar el tamaño de ventana después de cada comando.
     shopt -s checkwinsize
 
-    # Append to the history file, don't overwrite.
+    # Agregar al final del historial, no sobrescribir.
     shopt -s histappend
 
-    # Save multi-line commands as one command in the history.
+    # Guardar comandos multilínea como un solo comando en el historial.
     shopt -s cmdhist
 
 } &>>/dev/null
 
-# Enable history expansion with space
-# E.g. typing !!<space> will replace the !! with your last command.
+# Habilitar la expansión de historial con espacio.
+# Ej: tipear !!<espacio> reemplaza el !! por el último comando.
 bind Space:magic-space
 
-# Perform file completion in a case insensitive fashion.
+# Completar archivos sin distinguir mayúsculas/minúsculas.
 bind "set completion-ignore-case on"
 
-# Display matches for ambiguous patterns at first tab press.
+# Mostrar las coincidencias de patrones ambiguos al primer tab.
 bind "set show-all-if-ambiguous on"
 bind "set show-all-if-unmodified on"
 
-# Immediately add a trailing slash when autocompleting symlinks to directories.
+# Agregar la barra final al instante al autocompletar symlinks a directorios.
 bind "set mark-symlinked-directories on"
 
-# Prettier completitions
+# Completions más lindas.
 bind "set colored-stats on"
 bind "set colored-completion-prefix on"
 bind "set visible-stats on"
-# The maximum length in characters of the common prefix of a list of possible completions that is displayed without modification.
+# Largo máximo (en caracteres) del prefijo común de una lista de completions que se
+# muestra sin modificar.
 bind "set completion-prefix-display-length 7"
 
-# PS1
-source "${HOME}/.bashrc.d/git_prompt.sh"
+# PS1: usamos el git-prompt.sh que ya trae Fedora (paquete git-core) en vez de
+# vendorear una copia. El fallback cubre una eventual ruta distinta.
+for _gp in \
+    /usr/share/git-core/contrib/completion/git-prompt.sh \
+    /etc/bash_completion.d/git-prompt.sh; do
+    [[ -f "${_gp}" ]] && { source "${_gp}"; break; }
+done
+unset _gp
 
 export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWDIRTYSTATE=true
@@ -76,30 +83,29 @@ GITB="${C_GITB}\`__git_ps1\`${M_END}"
 
 export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_ed25519"
 
-# Automatically trim long paths in the prompt.
+# Recortar automáticamente rutas largas en el prompt.
 # export PROMPT_DIRTRIM=2
 
-# Use PROMPT_COMMAND (not PS1) to get color output (see git-prompt.sh for more)
+# Usar PROMPT_COMMAND (no PS1) para tener salida con color (ver git-prompt.sh).
 export PROMPT_COMMAND="__git_ps1 \"${RUTA}\" \"${FIRSTLINE}${SIMB} \""
 export PS1=''
 
-# HISTORY
+# HISTORIAL
 
-# Append to history after finishing any command.
+# Agregar al historial al terminar cualquier comando.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
 
-# Big history.
+# Historial grande.
 export HISTSIZE=500000
 export HISTFILESIZE=100000
 
-# Avoid duplicate entries.
+# Evitar entradas duplicadas.
 export HISTCONTROL="erasedups:ignoreboth"
 
-# Don't record some commands.
+# No registrar algunos comandos.
 export HISTIGNORE="exit:ls:history:clear:pwd"
 
-# Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d
-# %T equivalent to %H:%M:%S (24-hours format)
+# Timestamp estándar ISO 8601.
+# %F equivale a %Y-%m-%d
+# %T equivale a %H:%M:%S (formato 24 horas)
 export HISTTIMEFORMAT='%F %T '
-

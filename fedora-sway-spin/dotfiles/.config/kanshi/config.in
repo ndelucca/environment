@@ -1,27 +1,27 @@
-# kanshi — declarative output profiles, applied automatically on hotplug/dock.
-# Started from sway/config (`exec_always ... kanshi`), alongside swaync/wlsunset.
+# kanshi — perfiles de output declarativos, aplicados automáticamente al hotplug/dock.
+# Se arranca desde sway/config (`exec_always ... kanshi`), junto a swaync/wlsunset.
 #
-# GENERATED from config.in by setup/05-stow.sh — @DOCK_LEFT_WIDTH@ comes from
-# vars.sh (single source of truth). The generated `config` is git-ignored; edit
-# the .in template, not the output.
+# GENERADO desde config.in por setup/05-stow.sh — @DOCK_LEFT_WIDTH@ viene de
+# vars.sh (única fuente de verdad). El `config` generado está git-ignored; editá
+# el template .in, no el output.
 #
-# Profiles match on the SET of connected outputs (names as in
-# `swaymsg -t get_outputs`). Lid state is not visible to kanshi — that is
-# handled in sway/config via `bindswitch lid:on/off`.
+# Los perfiles matchean sobre el CONJUNTO de outputs conectados (nombres como en
+# `swaymsg -t get_outputs`). El estado de la tapa no es visible para kanshi — eso
+# se maneja en sway/config vía `bindswitch lid:on/off`.
 
-# Laptop only (no external display).
+# Solo laptop (sin pantalla externa).
 profile laptop {
     output eDP-1 enable position 0,0
 }
 
-# Docked: external monitor on the LEFT, laptop panel to its right. The panel's X
-# offset equals the external monitor's width (DOCK_LEFT_WIDTH in vars.sh).
+# Docked: monitor externo a la IZQUIERDA, panel de la laptop a su derecha. El offset
+# X del panel equivale al ancho del monitor externo (DOCK_LEFT_WIDTH en vars.sh).
 profile docked {
     output HDMI-A-1 enable position 0,0
     output eDP-1 enable position @DOCK_LEFT_WIDTH@,0
 }
 
-# External monitor only (e.g. lid closed and docked — eDP not present/disabled).
+# Solo monitor externo (ej. tapa cerrada y docked — eDP ausente/deshabilitado).
 profile external {
     output HDMI-A-1 enable position 0,0
 }

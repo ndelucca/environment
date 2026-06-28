@@ -43,7 +43,7 @@ remapear solo lo mínimo.
   smartcase find, relative line numbers, highlight on yank.
 - IA y telemetría **desactivadas** (`disable_ai`, `telemetry` off).
 - Tema **Dracula** (auto-instala la extensión), icon theme Material.
-- Fuente de buffer **Cascadia Code NF** 14, ligaduras (`calt`), `ss01`.
+- Fuente de buffer **JetBrainsMono Nerd Font** 14, ligaduras (`calt`).
 - `format_on_save` on, trailing whitespace + final newline on save
   (excepto Markdown y Git Commit), `autosave` off.
 - `wrap_guides: [100]`, `tab_size: 4` (YAML 2), minimap off, inlay hints off.
