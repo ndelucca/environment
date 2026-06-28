@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee DOTFILES_DIR, TIMEZONE
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee DOTFILES_DIR + valores de los templates (TIMEZONE, LAT/LON, KEYMAP_X11*, DOCK_LEFT_WIDTH)
 STOW_DIR="${DOTFILES_DIR}"
 
 # --- Renderizar configs con template antes de stowear ----------------------
@@ -56,6 +56,18 @@ echo "Rendering sway night-light config (lat=${LATITUDE}, lon=${LONGITUDE})"
 render "${CONFIG_DIR}/sway/config.d/10-wlsunset.conf.in" "${CONFIG_DIR}/sway/config.d/10-wlsunset.conf" \
     "s|@LATITUDE@|${LATITUDE}|g" \
     "s|@LONGITUDE@|${LONGITUDE}|g"
+
+# teclado: layout/variante de Wayland desde vars.sh. La línea xkb_variant se omite por
+# completo si KEYMAP_X11_VARIANT está vacío (un xkb_variant vacío sería inválido).
+if [[ -n "${KEYMAP_X11_VARIANT}" ]]; then
+    variant_expr="s|@KEYMAP_VARIANT_LINE@|xkb_variant ${KEYMAP_X11_VARIANT}|"
+else
+    variant_expr="/@KEYMAP_VARIANT_LINE@/d"
+fi
+echo "Rendering sway keyboard config (layout=${KEYMAP_X11}, variant=${KEYMAP_X11_VARIANT:-none})"
+render "${CONFIG_DIR}/sway/config.d/10-keyboard.conf.in" "${CONFIG_DIR}/sway/config.d/10-keyboard.conf" \
+    "s|@KEYMAP_X11@|${KEYMAP_X11}|g" \
+    "${variant_expr}"
 
 # kanshi: offset del panel del perfil docked desde vars.sh.
 echo "Rendering kanshi config (dock left width=${DOCK_LEFT_WIDTH})"

@@ -2,5 +2,6 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-alias myip='printf "external: " && curl ifconfig.me && echo && printf "local: " && hostname -I'
+# IP pública vía nd-public-ip (única fuente de la lista de servicios) + IP local.
+alias myip='printf "external: %s\nlocal:    %s\n" "$(nd-public-ip show)" "$(hostname -I)"'
 

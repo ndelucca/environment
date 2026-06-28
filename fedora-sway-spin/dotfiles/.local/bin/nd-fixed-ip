@@ -23,10 +23,14 @@ validate_ip() {
     local ip_only="${ip%%/*}"
 
     if [[ "$ip_only" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        local octet
         local IFS='.'
-        local -a octets=($ip_only)
+        local -a octets
+        read -ra octets <<< "$ip_only"
         for octet in "${octets[@]}"; do
-            ((octet > 255)) && return 1
+            # 10# fuerza base 10: sin esto un octeto con cero a la izquierda (p.ej. 010)
+            # se interpretaría como octal en la aritmética y rompería bajo `set -e`.
+            ((10#$octet > 255)) && return 1
         done
         return 0
     fi

@@ -23,9 +23,13 @@ TIMEZONE="America/Argentina/Buenos_Aires"
 LOCALE="en_US.UTF-8"
 
 # Layout de teclado (la alternativa a la que cambia el usuario: "latam"). KEYMAP es el
-# keymap de consola; KEYMAP_X11 el layout de Wayland/X11. Lo consume 01-locale-datetime-keyboard.sh.
+# keymap de consola (lo consume 01-locale-datetime-keyboard.sh vía localectl). KEYMAP_X11
+# es el layout de Wayland/XWayland: lo consume tanto localectl (default del sistema) como
+# el generado sway/config.d/10-keyboard.conf (override de la sesión) renderizado por
+# 05-stow.sh. KEYMAP_X11_VARIANT es la variante xkb opcional (vacío = sin variante).
 KEYMAP="us-euro"
 KEYMAP_X11="eu"
+KEYMAP_X11_VARIANT=""
 
 # Geolocalización para wlsunset (luz nocturna). Se renderiza en el generado
 # sway/config.d/10-wlsunset.conf por 05-stow.sh. Buenos Aires.

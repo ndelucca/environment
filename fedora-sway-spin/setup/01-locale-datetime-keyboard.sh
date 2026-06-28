@@ -18,19 +18,12 @@ localectl status | grep "System Locale" || true
 localectl status | grep -E 'Keymap|Layout' || true
 timedatectl | grep "Time zone" || true
 
-echo "Setting up Sway keyboard"
-
-RAW_LAYOUT=$(localectl status | awk '/X11 Layout/ {print $3}')
-RAW_VARIANT=$(localectl status | awk '/X11 Variant/ {print $3}')
-
-LAYOUT_LINE="xkb_layout ${RAW_LAYOUT:-us}"
-VARIANT_LINE=$([[ -n "$RAW_VARIANT" && "$RAW_VARIANT" != "n/a" ]] && echo "xkb_variant $RAW_VARIANT" || echo "")
-
-sudo tee /usr/share/sway/config.d/10-keyboard.conf > /dev/null <<EOF
-# Autogenerado desde la configuración del sistema
-input * {
-    ${LAYOUT_LINE}
-    ${VARIANT_LINE}
-}
-EOF
+# El layout de teclado de la SESIÓN sway se genera como override en ~/.config
+# (sway/config.d/10-keyboard.conf, desde KEYMAP_X11 en vars.sh) por 05-stow.sh — acá
+# solo seteamos el default del sistema con localectl, sin tocar /usr/share.
+#
+# Migración: versiones anteriores escribían ese override en el árbol del sistema
+# (/usr/share/sway/config.d/10-keyboard.conf). Lo borramos para no dejar un archivo
+# root-owned stale que compita con el de ~/.config.
+sudo rm -f /usr/share/sway/config.d/10-keyboard.conf
 

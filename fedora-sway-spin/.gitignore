@@ -10,6 +10,10 @@ dotfiles/.config/zed/settings.json
 # vars.sh). Only the .in template is tracked.
 dotfiles/.config/sway/config.d/10-wlsunset.conf
 
+# Generated from 10-keyboard.conf.in by setup/05-stow.sh (keyboard layout/variant
+# from vars.sh). Only the .in template is tracked.
+dotfiles/.config/sway/config.d/10-keyboard.conf
+
 # Generated from config.in by setup/05-stow.sh (docked-profile offset from
 # vars.sh). Only the .in template is tracked.
 dotfiles/.config/kanshi/config

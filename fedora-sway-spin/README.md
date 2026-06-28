@@ -60,6 +60,15 @@ agregar lo propio, de forma declarativa y versionada.
   (`QT_QPA_PLATFORM=wayland;xcb`, `QT_QPA_PLATFORMTHEME=qt6ct`) + `qt6ct/qt6ct.conf`
   (Fusion + paleta oscura + diálogos GTK). Así cualquier app Qt (incluido el diálogo de
   polkit) sale dark + Wayland. No reemplazamos el agente polkit del Spin.
+- **Paletas (3, a propósito):** el toolkit (GTK/Adwaita-dark) es el baseline, pero el
+  color de acento se divide en tres dominios deliberados, no por descuido:
+  1. **Desktop** (waybar, rofi, swaync, swayosd, swaylock) → verde `#225D42`.
+  2. **Terminal** (foot, tmux, prompt bash) → verde más brillante `#4a9d4a` (ver
+     `rofi/nd-dark.rasi`).
+  3. **Editores** (nvim + Zed) → **Dracula** (púrpura), igual en ambos para que el editor
+     sea su propia superficie de foco, consistente entre sí aunque distinta del escritorio.
+  Hoy cada dominio replica sus hex a mano en cada config (no hay SSOT de color); es deuda
+  conocida y aceptada (cada herramienta usa una sintaxis distinta).
 
 ### Login / sesión
 - **SDDM lo trae el Spin** (`reason: Group`); nosotros **solo lo configuramos**

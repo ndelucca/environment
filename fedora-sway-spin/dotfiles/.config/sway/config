@@ -141,10 +141,13 @@ assign [app_id="neovide"]      workspace 3
 # valor de --class, así que se matchean por host. Anclado para no solaparse con la
 # regla del navegador de abajo, así el matching es independiente del orden de reglas.
 assign [app_id="^chrome-open\.spotify\.com"]    workspace 6
+assign [app_id="^chrome-listen\.tidal\.com"]    workspace 6
 assign [app_id="^chrome-discord\.com"]          workspace 8
 assign [app_id="^chrome-teams\.microsoft\.com"] workspace 8
 assign [app_id="^chrome-web\.whatsapp\.com"]    workspace 8
 assign [app_id="^chrome-mail\.google\.com"]     workspace 10
+# ChatGPT (otra PWA de 04-webapps.sh) NO se asigna a propósito: es una herramienta que se
+# invoca contextualmente, así que se queda en el workspace activo en vez de tener uno fijo.
 
 assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
