@@ -72,7 +72,51 @@ if (Test-Path $nvimSrc) {
     }
 }
 
-# 4) git: incluir la config portable del repo desde ~/.gitconfig (idempotente, no pisa).
+# 4) Zed: deep-merge del template sobre el settings.json de %APPDATA%\Zed (espejo del
+# render de Fedora). Zed reescribe settings.json en runtime (p. ej. wsl_connections),
+# por eso NO se symlinkea: se mergea el template POR ENCIMA del existente para que el
+# estado de runtime sobreviva y la config versionada gane sobre los defaults. keymap.json
+# no lo reescribe Zed, asi que ese si va por symlink (Set-Config).
+function Merge-ZedSettings {
+    param([string]$Template, [string]$Dst)
+    New-Item -ItemType Directory -Force -Path (Split-Path $Dst -Parent) | Out-Null
+
+    # Primera corrida (sin settings previo) o sin jq: el template ES la config.
+    if ((-not (Test-Path $Dst)) -or (-not (Get-Command jq -ErrorAction SilentlyContinue))) {
+        Copy-Item -Path $Template -Destination $Dst -Force
+        Write-Host "  zed settings.json (copiado del template)"
+        return
+    }
+
+    # Zed escribe settings.json como JSONC y jq no parsea comentarios: limpiamos las
+    # lineas que son solo comentario (patron de Zed) antes del merge.
+    $tmpIn  = [System.IO.Path]::GetTempFileName()
+    $tmpOut = [System.IO.Path]::GetTempFileName()
+    (Get-Content $Dst) | Where-Object { $_ -notmatch '^\s*//' } | Set-Content $tmpIn -Encoding utf8
+
+    # deep-merge: el template (.[1]) gana sobre lo existente (.[0]); las claves que solo
+    # existen en el archivo de runtime (wsl_connections, etc.) se preservan.
+    & jq -s '.[0] * .[1]' $tmpIn $Template > $tmpOut 2>$null
+    if ($LASTEXITCODE -eq 0 -and (Get-Item $tmpOut).Length -gt 0) {
+        Move-Item -Path $tmpOut -Destination $Dst -Force
+        Write-Host "  zed settings.json (jq deep-merge)"
+    } else {
+        # Si el merge falla (JSON invalido), caemos en sobrescribir con el template.
+        Copy-Item -Path $Template -Destination $Dst -Force
+        Remove-Item -Path $tmpOut -Force -ErrorAction SilentlyContinue
+        Write-Warning "  zed: jq fallo; settings.json sobrescrito con el template"
+    }
+    Remove-Item -Path $tmpIn -Force -ErrorAction SilentlyContinue
+}
+
+$zedSrc = Join-Path $Dotfiles 'zed'
+$zedDst = Join-Path $env:APPDATA 'Zed'
+if (Test-Path (Join-Path $zedSrc 'settings.json.in')) {
+    Merge-ZedSettings -Template (Join-Path $zedSrc 'settings.json.in') -Dst (Join-Path $zedDst 'settings.json')
+    Set-Config -Target (Join-Path $zedDst 'keymap.json') -Source (Join-Path $zedSrc 'keymap.json')
+}
+
+# 5) git: incluir la config portable del repo desde ~/.gitconfig (idempotente, no pisa).
 $repoGitconfig = ((Join-Path $Dotfiles 'git\gitconfig') -replace '\\', '/')
 $included = @(git config --global --get-all include.path 2>$null)
 if ($included -notcontains $repoGitconfig) {

@@ -16,6 +16,7 @@ declarativa de paquetes y configs versionadas.
 | foot (`foot.ini`)                | Windows Terminal (`settings.json`)                    |
 | tmux                             | paneles de Windows Terminal (sin sesiones persistentes) |
 | nvim (submodulo)                 | el mismo submodulo, linkeado a `%LOCALAPPDATA%\nvim`  |
+| Zed (`settings.json.in` + jq merge) | igual: `dotfiles\zed` mergeado a `%APPDATA%\Zed`    |
 
 ## Setup
 

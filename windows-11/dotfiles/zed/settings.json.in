@@ -1,0 +1,49 @@
+{
+  "disable_ai": true,
+  "telemetry": { "diagnostics": false, "metrics": false },
+
+  "auto_install_extensions": { "dracula": true, "material-icon-theme": true },
+  "theme": "Dracula",
+  "icon_theme": "Material Icon Theme",
+
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 14,
+  "buffer_font_features": { "calt": true },
+  "ui_font_size": 15,
+
+  "vim_mode": true,
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "toggle_relative_line_numbers": true,
+    "highlight_on_yank_duration": 150
+  },
+
+  "relative_line_numbers": true,
+  "tab_size": 4,
+  "hard_tabs": false,
+  "soft_wrap": "none",
+  "wrap_guides": [100],
+  "show_wrap_guides": true,
+  "vertical_scroll_margin": 15,
+  "cursor_blink": false,
+  "current_line_highlight": "all",
+  "scrollbar": { "show": "auto" },
+  "minimap": { "show": "never" },
+  "inlay_hints": { "enabled": false },
+
+  "format_on_save": "on",
+  "remove_trailing_whitespace_on_save": true,
+  "ensure_final_newline_on_save": true,
+  "autosave": "off",
+
+  "git": { "inline_blame": { "enabled": true } },
+
+  "diagnostics": { "inline": { "enabled": true } },
+
+  "languages": {
+    "YAML": { "tab_size": 2 },
+    "Markdown": { "remove_trailing_whitespace_on_save": false },
+    "Git Commit": { "remove_trailing_whitespace_on_save": false }
+  }
+}

@@ -16,6 +16,7 @@
         { "PackageIdentifier": "GitHub.cli" },
         { "PackageIdentifier": "Starship.Starship" },
         { "PackageIdentifier": "Neovim.Neovim" },
+        { "PackageIdentifier": "ZedIndustries.Zed" },
         { "PackageIdentifier": "Google.Chrome" }
       ]
     }

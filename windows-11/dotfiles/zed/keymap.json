@@ -1,0 +1,36 @@
+// Keymaps de Zed. Filosofia: solo lo esencial; el resto se apoya en los bindings
+// nativos de Zed (que ya cubren los flujos de la config de nvim de Naza).
+//
+// Equivalencias nativas a los flujos mas usados del nvim (no hace falta remapear):
+//   - "space space" / "ctrl-p"  -> file finder        (≈ <leader>ff)
+//   - "ctrl-shift-f"            -> project search/grep (≈ <leader>fg)
+//   - "-"                       -> file explorer        (≈ "-" de mini.files)
+//   - LSP: "g d" definicion, "g r" referencias, "f12"/"c d" rename, "g ." code actions
+//
+// Multicursor nativo (≈ multicursor.nvim):
+//   - "g l" / "g L"  -> cursor en siguiente/anterior ocurrencia  (≈ <C-n>)
+//   - "g >" / "g <"  -> saltear la coincidencia actual           (≈ <C-q> skip)
+//   - "g a"          -> seleccionar todas las ocurrencias
+//   - "ctrl-v" + movimiento + I/A -> insercion en columna
+//
+// Para paridad exacta con nvim, descomentar el segundo bloque de abajo.
+[
+  // jk / jj para salir a normal (como muchos setups vim)
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j k": "vim::NormalBefore",
+      "j j": "vim::NormalBefore"
+    }
+  }
+
+  // --- Opcional: paridad exacta de multicursor con nvim (<C-n>/<C-j>/<C-k>) ---
+  // {
+  //   "context": "Editor && vim_mode == normal",
+  //   "bindings": {
+  //     "ctrl-n": "editor::SelectNext",
+  //     "ctrl-j": "editor::AddSelectionBelow",
+  //     "ctrl-k": "editor::AddSelectionAbove"
+  //   }
+  // }
+]
