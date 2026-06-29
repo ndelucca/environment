@@ -1,0 +1,10 @@
+[Unit]
+Description=Dispara el chequeo de IP pública al iniciar sesión y cada hora
+
+[Timer]
+# Al iniciar sesión (relativo al arranque del systemd --user) y luego cada hora.
+OnStartupSec=1min
+OnUnitActiveSec=1h
+
+[Install]
+WantedBy=timers.target

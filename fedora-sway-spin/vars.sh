@@ -36,10 +36,17 @@ KEYMAP_X11_VARIANT=""
 LATITUDE="-34.6"
 LONGITUDE="-58.4"
 
+# Nombres de los outputs como los reporta `swaymsg -t get_outputs`. Única fuente para
+# sway (asignación de workspaces + lid switch) y kanshi (perfiles de output): si cambiás
+# de monitor o de puerto, actualizá acá los dos valores y ambos configs se regeneran al
+# correr 04-stow.sh. INTERNAL = panel de la laptop; EXTERNAL = monitor externo del dock.
+OUTPUT_INTERNAL="eDP-1"
+OUTPUT_EXTERNAL="HDMI-A-1"
+
 # Offset X (px) del panel interno en el perfil `docked` de kanshi: equivale al
-# ancho del monitor externo ubicado a su IZQUIERDA (HDMI-A-1). kanshi no puede hacer
-# aritmética ni posicionamiento relativo, así que el valor vive acá en lugar de estar
-# hardcodeado en kanshi/config. Ajustar si el ancho del monitor externo difiere.
+# ancho del monitor externo ubicado a su IZQUIERDA (OUTPUT_EXTERNAL). kanshi no puede
+# hacer aritmética ni posicionamiento relativo, así que el valor vive acá en lugar de
+# estar hardcodeado en kanshi/config. Ajustar si el ancho del monitor externo difiere.
 DOCK_LEFT_WIDTH="1920"
 
 GIT_NAME="ndelucca"

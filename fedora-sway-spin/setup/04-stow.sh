@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=../vars.sh
-source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee DOTFILES_DIR + valores de los templates (TIMEZONE, LAT/LON, KEYMAP_X11*, DOCK_LEFT_WIDTH)
+source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee DOTFILES_DIR + valores de los templates (TIMEZONE, LAT/LON, KEYMAP_X11*, DOCK_LEFT_WIDTH, OUTPUT_INTERNAL/EXTERNAL)
 STOW_DIR="${DOTFILES_DIR}"
 
 # --- Renderizar configs con template antes de stowear ----------------------
@@ -69,10 +69,18 @@ render "${CONFIG_DIR}/sway/config.d/10-keyboard.conf.in" "${CONFIG_DIR}/sway/con
     "s|@KEYMAP_X11@|${KEYMAP_X11}|g" \
     "${variant_expr}"
 
-# kanshi: offset del panel del perfil docked desde vars.sh.
-echo "Rendering kanshi config (dock left width=${DOCK_LEFT_WIDTH})"
+# sway: nombres de output (workspaces + lid switch) desde vars.sh.
+echo "Rendering sway config (internal=${OUTPUT_INTERNAL}, external=${OUTPUT_EXTERNAL})"
+render "${CONFIG_DIR}/sway/config.in" "${CONFIG_DIR}/sway/config" \
+    "s|@OUTPUT_INTERNAL@|${OUTPUT_INTERNAL}|g" \
+    "s|@OUTPUT_EXTERNAL@|${OUTPUT_EXTERNAL}|g"
+
+# kanshi: offset del panel del perfil docked + nombres de output desde vars.sh.
+echo "Rendering kanshi config (dock left width=${DOCK_LEFT_WIDTH}, internal=${OUTPUT_INTERNAL}, external=${OUTPUT_EXTERNAL})"
 render "${CONFIG_DIR}/kanshi/config.in" "${CONFIG_DIR}/kanshi/config" \
-    "s|@DOCK_LEFT_WIDTH@|${DOCK_LEFT_WIDTH}|g"
+    "s|@DOCK_LEFT_WIDTH@|${DOCK_LEFT_WIDTH}|g" \
+    "s|@OUTPUT_INTERNAL@|${OUTPUT_INTERNAL}|g" \
+    "s|@OUTPUT_EXTERNAL@|${OUTPUT_EXTERNAL}|g"
 
 # Zed reescribe settings.json en runtime (p. ej. agrega ssh_connections cuando abrís
 # un proyecto remoto), así que versionarlo directo ensuciaría el repo. Versionamos solo

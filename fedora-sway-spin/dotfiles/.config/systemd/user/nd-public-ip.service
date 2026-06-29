@@ -1,0 +1,8 @@
+[Unit]
+Description=Chequeo de cambios de IP pública (notifica por escritorio si cambió)
+# Necesita red; en un user manager esto es best-effort, no bloquea el login.
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/nd-public-ip check

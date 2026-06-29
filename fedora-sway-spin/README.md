@@ -52,9 +52,11 @@ agregar lo propio, de forma declarativa y versionada.
   `~/.local/bin`, también al final del bootstrap) chequea que esas suposiciones sigan
   válidas tras una actualización del sistema.
 - kanshi arranca por `exec_always` en `sway/config` (el `kanshi.service` está disabled).
-- **Multi-monitor:** `kanshi/config` y `sway/config` referencian outputs por nombre
-  (`eDP-1`, `HDMI-A-1`). Si cambiás de monitor o de puerto, corré `swaymsg -t get_outputs`
-  para ver los nombres reales y actualizá ambos (más `DOCK_LEFT_WIDTH` en `vars.sh`).
+- **Multi-monitor:** los nombres de output viven en `vars.sh`
+  (`OUTPUT_INTERNAL`/`OUTPUT_EXTERNAL`, única fuente de verdad); tanto `sway/config` como
+  `kanshi/config` se generan desde ahí. Si cambiás de monitor o de puerto, corré
+  `swaymsg -t get_outputs` para ver los nombres reales y actualizá esos dos valores en
+  `vars.sh` (más `DOCK_LEFT_WIDTH`), luego re-corré `04-stow.sh`.
 
 ### Toolkit y theming
 - Familia **GTK / Adwaita-dark** en todo (GTK3 + GTK4 coordinados, cursor Adwaita 24
@@ -88,6 +90,23 @@ agregar lo propio, de forma declarativa y versionada.
   `pulseaudio` de waybar usa la capa de compat — es lo correcto.
 - Red = NetworkManager (`nmcli`, script `nd-fixed-ip`).
 
+### Tareas croneadas (systemd user)
+- Las tareas personales recurrentes corren como **systemd *user* units**, no atadas al
+  arranque de la shell. Las units viven versionadas en `dotfiles/.config/systemd/user/` y
+  las symlinkea **stow** junto con el resto de `.config`.
+- Habilitarlas (crear los symlinks en `timers.target.wants/`) es trabajo de `systemctl`,
+  no de stow: lo hace `setup/08-systemd-user.sh` después del stow, con
+  `daemon-reload` + `enable --now`. **Convención:** habilita cualquier `nd-*.timer` del
+  directorio. Agregar una tarea = soltar su `.service` + `.timer` con prefijo `nd-` y
+  re-correr el bootstrap.
+- No usa `loginctl enable-linger`: alcanza con la sesión gráfica activa. El paso de setup
+  saltea sin romper si corre sin user manager (bootstrap headless).
+- **`nd-public-ip`**: chequea la IP pública al iniciar sesión y cada hora
+  (`nd-public-ip.timer` → `.service` → `nd-public-ip check`). Si cambió, avisa por
+  **notificación de escritorio** (`notify-send`/dunst); ya no muestra alerta en la
+  terminal. Aceptar la IP nueva con `nd-public-ip update`. El alias `myip` sigue usando
+  `nd-public-ip show`.
+
 ### Fuentes
 - **Regla: solo JetBrainsMono Nerd Font** en toda la UI (terminal, GTK, barras,
   launcher, lock). La trae el COPR `jhuang6451/nerd-fonts` (`jetbrains-mono-nf`).
@@ -109,8 +128,9 @@ agregar lo propio, de forma declarativa y versionada.
   `xdg-mime` al final de `03-apps.sh` (escriben en `~/.config/mimeapps.list`, que **no**
   se stowea porque es un archivo real que el sistema reescribe; se respetan los defaults
   ya presentes: chromium para http, nvim para text/plain).
-- **PWAs** vía `chromium --app=` (Spotify, Tidal, Teams, ChatGPT, Discord, WhatsApp,
-  Gmail) en `05-webapps.sh` — sin Electron.
+- **PWAs** vía `chromium --app=` (Spotify, ChatGPT, WhatsApp, Gmail) en `05-webapps.sh`
+  — sin Electron. La lista vive en el array `WEBAPPS`; sacar un servicio de ahí borra su
+  lanzador en la próxima corrida (prune declarativo).
 
 ### Apps que NO queremos
 - Se borran de forma declarativa: la lista vive en `setup/remove-packages.txt`, borrado

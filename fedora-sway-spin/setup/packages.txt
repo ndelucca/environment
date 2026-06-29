@@ -30,15 +30,12 @@ cliphist
 # OSD (on-screen display) de volumen/brillo/caps-lock. No está en los repos de Fedora;
 # viene del COPR erikreider/swayosd, que 03-apps.sh habilita antes de este install.
 swayosd
-# Portales xdg-desktop-portal: backend de screenshare (Chromium/Meet/Discord) y file
+# Portales xdg-desktop-portal: backend de screenshare (Chromium/Meet) y file
 # pickers bajo Wayland. -wlr expone el screencast en compositores wlroots como sway; -gtk
 # cubre file chooser y settings. El Spin los arrastra implícito; declarados para que un
 # rebuild minimal mantenga screenshare/pickers funcionando.
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
-# Lo consume el módulo "power-profiles-daemon" de waybar/config.jsonc. Sin el daemon ese
-# módulo queda inerte, así que se declara explícito (no lo arrastra el Spin).
-power-profiles-daemon
 
 # Navegadores
 chromium

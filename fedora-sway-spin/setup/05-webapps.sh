@@ -7,10 +7,7 @@ mkdir -p "$WEBAPPS_DIR"
 
 declare -A WEBAPPS=(
     [Spotify]="https://open.spotify.com"
-    [Tidal]="https://listen.tidal.com"
-    [Teams]="https://teams.microsoft.com"
     [ChatGPT]="https://chat.openai.com"
-    [Discord]="https://discord.com/app"
     [WhatsApp]="https://web.whatsapp.com"
     [Gmail]="https://mail.google.com"
 )
@@ -51,4 +48,14 @@ for app in "${!WEBAPPS[@]}"; do
     create_webapp "$app" "${WEBAPPS[$app]}"
 done
 
-update-desktop-database "$WEBAPPS_DIR" >/dev/null 2>&1 || true
+# Prune declarativo: borra los .desktop de webapps que ya no están en WEBAPPS (p. ej. al
+# sacar un servicio del array), así el dir refleja exactamente la lista y no quedan
+# lanzadores muertos en rofi. WEBAPPS_DIR es exclusivo de este script, así que es seguro.
+for desktop_file in "$WEBAPPS_DIR"/*.desktop; do
+    [ -e "$desktop_file" ] || continue
+    name="$(basename "$desktop_file" .desktop)"
+    if [[ -z "${WEBAPPS[$name]+x}" ]]; then
+        echo "Removing stale webapp: $name"
+        rm -f "$desktop_file"
+    fi
+done

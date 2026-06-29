@@ -1,9 +1,9 @@
 # kanshi — perfiles de output declarativos, aplicados automáticamente al hotplug/dock.
 # Se arranca desde sway/config (`exec_always ... kanshi`), junto a swaync/wlsunset.
 #
-# GENERADO desde config.in por setup/04-stow.sh — @DOCK_LEFT_WIDTH@ viene de
-# vars.sh (única fuente de verdad). El `config` generado está git-ignored; editá
-# el template .in, no el output.
+# GENERADO desde config.in por setup/04-stow.sh — @DOCK_LEFT_WIDTH@ y los nombres de
+# output (@OUTPUT_INTERNAL@/@OUTPUT_EXTERNAL@) vienen de vars.sh (única fuente de verdad,
+# compartida con sway). El `config` generado está git-ignored; editá el template .in.
 #
 # Los perfiles matchean sobre el CONJUNTO de outputs conectados (nombres como en
 # `swaymsg -t get_outputs`). El estado de la tapa no es visible para kanshi — eso
@@ -11,17 +11,17 @@
 
 # Solo laptop (sin pantalla externa).
 profile laptop {
-    output eDP-1 enable position 0,0
+    output @OUTPUT_INTERNAL@ enable position 0,0
 }
 
 # Docked: monitor externo a la IZQUIERDA, panel de la laptop a su derecha. El offset
 # X del panel equivale al ancho del monitor externo (DOCK_LEFT_WIDTH en vars.sh).
 profile docked {
-    output HDMI-A-1 enable position 0,0
-    output eDP-1 enable position @DOCK_LEFT_WIDTH@,0
+    output @OUTPUT_EXTERNAL@ enable position 0,0
+    output @OUTPUT_INTERNAL@ enable position @DOCK_LEFT_WIDTH@,0
 }
 
 # Solo monitor externo (ej. tapa cerrada y docked — eDP ausente/deshabilitado).
 profile external {
-    output HDMI-A-1 enable position 0,0
+    output @OUTPUT_EXTERNAL@ enable position 0,0
 }

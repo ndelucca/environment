@@ -33,7 +33,8 @@ no re-chequear:
 - Apps por defecto: foot, rofi, Loupe (img), Papers (pdf), mpv (video), Thunar (files),
   firefox/chromium. Handlers seteados con `xdg-mime` en `03-apps.sh` (NO se stowea
   `mimeapps.list`: es archivo real que el sistema reescribe).
-- PWAs vía `chromium --app=` (no Electron).
+- PWAs vía `chromium --app=` (no Electron): Spotify, ChatGPT, WhatsApp, Gmail
+  (array `WEBAPPS` en `05-webapps.sh`; sacar uno borra su lanzador en la próxima corrida).
 - Apps no deseadas → `setup/remove-packages.txt` + `setup/07-remove-unwanted.sh`.
 
 ## Convenciones

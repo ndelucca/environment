@@ -1,3 +1,8 @@
+# GENERADO desde config.in por setup/04-stow.sh — los nombres de output
+# (@OUTPUT_INTERNAL@/@OUTPUT_EXTERNAL@) vienen de vars.sh (única fuente de verdad,
+# compartida con kanshi). El `config` generado está git-ignored; editá el template
+# .in, no el output.
+
 set $mod Mod4
 set $left h
 set $down j
@@ -55,8 +60,8 @@ input type:touchpad {
 # La disposición de outputs (hotplug/dock) la maneja kanshi de forma declarativa
 # (~/.config/kanshi/config + el servicio de usuario de kanshi). El estado de la tapa
 # no es visible para kanshi, así que se maneja acá: desactiva el panel interno al cerrar.
-bindswitch --reload --locked lid:on  output eDP-1 disable
-bindswitch --reload --locked lid:off output eDP-1 enable
+bindswitch --reload --locked lid:on  output @OUTPUT_INTERNAL@ disable
+bindswitch --reload --locked lid:off output @OUTPUT_INTERNAL@ enable
 
 bindsym $mod+Return exec $term
 bindsym $mod+q kill
@@ -122,16 +127,16 @@ include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "
 
 # Asignación de workspaces
 
-workspace 7 output eDP-1 HDMI-A-1
-workspace 1 output HDMI-A-1 eDP-1
-workspace 2 output HDMI-A-1 eDP-1
-workspace 3 output HDMI-A-1 eDP-1
-workspace 4 output HDMI-A-1 eDP-1
-workspace 5 output HDMI-A-1 eDP-1
-workspace 6 output HDMI-A-1 eDP-1
-workspace 8 output HDMI-A-1 eDP-1
-workspace 9 output HDMI-A-1 eDP-1
-workspace 10 output HDMI-A-1 eDP-1
+workspace 7 output @OUTPUT_INTERNAL@ @OUTPUT_EXTERNAL@
+workspace 1 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 2 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 3 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 4 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 5 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 6 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 8 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 9 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
+workspace 10 output @OUTPUT_EXTERNAL@ @OUTPUT_INTERNAL@
 
 assign [app_id="dev.zed.Zed"]  workspace 3
 assign [app_id="neovide"]      workspace 3
@@ -141,15 +146,10 @@ assign [app_id="neovide"]      workspace 3
 # valor de --class, así que se matchean por host. Anclado para no solaparse con la
 # regla del navegador de abajo, así el matching es independiente del orden de reglas.
 assign [app_id="^chrome-open\.spotify\.com"]    workspace 6
-assign [app_id="^chrome-listen\.tidal\.com"]    workspace 6
-assign [app_id="^chrome-discord\.com"]          workspace 8
-assign [app_id="^chrome-teams\.microsoft\.com"] workspace 8
 assign [app_id="^chrome-web\.whatsapp\.com"]    workspace 8
 assign [app_id="^chrome-mail\.google\.com"]     workspace 10
 # ChatGPT (otra PWA de 05-webapps.sh) NO se asigna a propósito: es una herramienta que se
 # invoca contextualmente, así que se queda en el workspace activo en vez de tener uno fijo.
-
-assign [app_id="net.thunderbird.Thunderbird"] workspace 10
 
 # Ventanas reales del navegador (no las web-apps). app_id exacto para que nunca
 # colisionen con los ids chrome-<host> de las web-apps de arriba.
