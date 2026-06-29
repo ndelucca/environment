@@ -9,3 +9,7 @@ gnome-text-editor
 # eog: visor de imágenes viejo (GTK3) de GNOME. Lo reemplazamos por Loupe (GTK4),
 # que es el handler de imágenes en 03-apps.sh. Nada lo requiere.
 eog
+
+# direnv: estuvo en packages.txt pero nunca se hookeó en bashrc.d (eval "$(direnv hook
+# bash)"), así que no hacía nada. Sacado del set; se desinstala para no dejar peso muerto.
+direnv

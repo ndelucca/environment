@@ -71,7 +71,6 @@ fd-find
 jq
 tree
 htop
-direnv
 cowsay
 fortune-mod
 tmux

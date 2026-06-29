@@ -15,6 +15,9 @@ echo "Actualizando wallpaper de sddm"
 # nuestro wallpaper, así que sin este guard el .bak terminaría pisando el original.
 sudo test -f /usr/share/backgrounds/default.jxl.bak \
     || sudo cp /usr/share/backgrounds/default.jxl /usr/share/backgrounds/default.jxl.bak
+# Copiamos un PNG sobre el nombre default.jxl (el que referencia el tema de SDDM del
+# Spin). Funciona porque el loader Qt de SDDM detecta el formato por contenido, no por
+# la extensión: el .jxl es solo el nombre del archivo, el contenido sigue siendo PNG.
 sudo cp "${SETUP_DIR}/wallpaper.png" /usr/share/backgrounds/default.jxl
 
 echo "Creando archivo de configuración de sddm"

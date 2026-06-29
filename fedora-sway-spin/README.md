@@ -74,9 +74,10 @@ agregar lo propio, de forma declarativa y versionada.
   2. **Editores** (nvim + Zed) → **Dracula** (púrpura), igual en ambos para que el editor
      sea su propia superficie de foco, consistente entre sí aunque distinta del escritorio.
   Cada herramienta replica el hex a mano en su config (no hay SSOT de color); es deuda
-  conocida y aceptada (cada herramienta usa una sintaxis distinta). Los verdes *semánticos
-  de estado* en waybar (batería cargando `#06863b`, privacy audio-in `#1ca000`, texto
-  pulseaudio muteado `#2a5c45`) se mantienen aparte del acento a propósito.
+  conocida y aceptada (cada herramienta usa una sintaxis distinta). waybar además usa
+  unos pocos colores *semánticos de estado* (cargando, screenshare, muteado, etc.),
+  aparte del acento a propósito; sus valores viven en el `@define-color` de
+  `waybar/style.css` (no se enumeran acá para que esta nota no quede desactualizada).
 
 ### Login / sesión
 - **SDDM lo trae el Spin** (`reason: Group`); nosotros **solo lo configuramos**
@@ -129,8 +130,9 @@ agregar lo propio, de forma declarativa y versionada.
 - Terminal foot · launcher rofi · imágenes **Loupe** · PDF **Papers** · video **mpv** ·
   archivos **Thunar** · navegadores firefox/chromium. Los handlers se setean con
   `xdg-mime` al final de `03-apps.sh` (escriben en `~/.config/mimeapps.list`, que **no**
-  se stowea porque es un archivo real que el sistema reescribe; se respetan los defaults
-  ya presentes: chromium para http, nvim para text/plain).
+  se stowea porque es un archivo real que el sistema reescribe; lo que no seteamos —p. ej.
+  http→chromium— se respeta como esté). Los archivos de texto/código (text/plain incluido,
+  ver `NEOVIDE_MIMES`) abren en **Neovide**, no en nvim-en-terminal.
 - **PWAs** vía `chromium --app=` (Spotify, ChatGPT, WhatsApp, Gmail) en `05-webapps.sh`
   — sin Electron. La lista vive en el array `WEBAPPS`; sacar un servicio de ahí borra su
   lanzador en la próxima corrida (prune declarativo).
