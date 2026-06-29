@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+#
+# nd-screenshot — captura a ARCHIVO (~/Pictures/Screenshots), además la copia al
+# portapapeles y avisa por notificación con la ruta. Complementa los binds de
+# 60-bindings-screenshot.conf (swappy / clipboard), que NO guardan a disco.
+#
+# Uso:
+#   nd-screenshot full     - pantalla completa (output enfocado)
+#   nd-screenshot region   - región seleccionada con slurp
+
+OUTDIR="${HOME}/Pictures/Screenshots"
+mkdir -p "$OUTDIR"
+file="${OUTDIR}/$(date +%Y%m%d-%H%M%S).png"
+
+case "${1:-}" in
+    full)
+        out="$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')"
+        grim -o "$out" "$file"
+        ;;
+    region)
+        geom="$(slurp)" || exit 0          # cancelado con Esc
+        grim -g "$geom" "$file"
+        ;;
+    *)
+        echo "Uso: $0 [full|region]" >&2; exit 1 ;;
+esac
+
+wl-copy < "$file"                          # además, al portapapeles
+command -v notify-send >/dev/null 2>&1 && \
+    notify-send "Screenshot" "Guardada: ${file}" 2>/dev/null || true

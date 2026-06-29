@@ -46,6 +46,13 @@ agregar lo propio, de forma declarativa y versionada.
   muertas.
 - **waybar lo arranca el Spin** vía `swaybar_command waybar` en su `90-bar.conf`. Por
   eso no hay `exec waybar` en nuestra config, y está bien.
+- **Teclas de medios vs. volumen/brillo (no confundir):** las *de medios*
+  (play/pause/next/prev → `playerctl`) **las provee el Spin tal cual**
+  (`/usr/share/sway/config.d/60-bindings-media.conf`) y **NO** las override-amos: no hay
+  un `60-bindings-media.conf` nuestro, a propósito. Las de *volumen* y *brillo* sí: las
+  override-amos por mismo nombre de archivo para enrutarlas por **swayosd** (OSD en
+  pantalla). Si las media keys dejaran de andar, es deriva del Spin → lo chequea
+  `nd-doctor`.
 - **Deriva del Spin:** como varios daemons (waybar, swayidle, agente polkit) y el
   `include` en capas dependen de archivos del Spin que NO controlamos, si una versión
   futura los renombra/elimina las cosas fallan en silencio. Correr **`nd-doctor`** (en

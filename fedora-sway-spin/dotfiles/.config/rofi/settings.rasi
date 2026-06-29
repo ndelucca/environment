@@ -1,9 +1,9 @@
 /*
- * settings — menú angosto centrado (3 opciones). Toda la base en menu.rasi.
+ * settings — menú angosto centrado (4 opciones). Toda la base en menu.rasi.
  */
 
 @import "menu"
 
 listview {
-    lines: 3;
+    lines: 4;
 }

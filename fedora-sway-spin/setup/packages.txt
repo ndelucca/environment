@@ -18,6 +18,12 @@ waybar
 rofi
 grim
 slurp
+# Screencast: wf-recorder (encode por CPU, en repos de Fedora). El wrapper nd-screenrec
+# prefiere wl-screenrec (encode por HW) si está presente, pero ese NO está en repos —es
+# opt-in—, así que acá va wf-recorder, que siempre funciona. libva-utils provee `vainfo`,
+# que el wrapper usa para detectar si la GPU soporta encode por HW.
+wf-recorder
+libva-utils
 playerctl
 pavucontrol
 blueman

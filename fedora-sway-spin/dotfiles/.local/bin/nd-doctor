@@ -51,6 +51,11 @@ check_grep /usr/share/sway/config.d/90-swayidle.conf swayidle \
     "consume \$lock_timeout/\$screen_timeout de sway/config; sin esto no hay lock por idle"
 check_grep /usr/share/sway/config.d/95-autostart-policykit-agent.conf lxqt-policykit-agent \
     "arranca el agente polkit (lxqt-policykit); sin esto los prompts de privilegios fallan"
+# Media keys: las bindea el Spin (no nosotros, a diferencia de volumen/brillo que sí
+# override-amos por swayosd). Si el Spin renombra/saca este archivo, play/next/prev
+# dejan de andar en silencio.
+check_grep /usr/share/sway/config.d/60-bindings-media.conf playerctl \
+    "provee las teclas de medios (play/next/prev → playerctl); no las bindeamos nosotros"
 
 echo
 if ((fail > 0)); then

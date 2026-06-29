@@ -6,6 +6,7 @@ set -euo pipefail
 options="\
   Audio
   Bluetooth
+  Network
   Notifications"
 
 chosen="$(printf '%s' "$options" | rofi -dmenu -i \
@@ -15,6 +16,7 @@ chosen="$(printf '%s' "$options" | rofi -dmenu -i \
 case "$chosen" in
     *Audio)         exec pavucontrol ;;
     *Bluetooth)     exec blueman-manager ;;
+    *Network)       exec nm-connection-editor ;;
     *Notifications) exec swaync-client -t -sw ;;
     *)              exit 0 ;;
 esac

@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+#
+# nd-screenrec — graba la pantalla. Elige backend en runtime, con el mismo espíritu que
+# el wrapper de Neovide (detectar la capacidad del hardware y degradar con gracia):
+# prefiere wl-screenrec (encode por HW vía VA-API) SOLO si el binario existe Y la GPU
+# expone un entrypoint de encode; si no, cae a wf-recorder (encode por CPU), que siempre
+# funciona. En GPUs sin VA-API encode (p.ej. Intel Ironlake) usa wf-recorder.
+# wl-screenrec NO lo instala el bootstrap (no está en repos Fedora): es opt-in; si algún
+# día está presente en una máquina con encode por HW, el wrapper lo prefiere solo.
+#
+# Uso:
+#   nd-screenrec toggle   - inicia grabación de pantalla completa (output enfocado);
+#                           si ya hay una corriendo, la frena
+#   nd-screenrec region   - igual pero seleccionando una región con slurp
+#
+# Una sola grabación a la vez (pidfile en $XDG_RUNTIME_DIR). Frenar = SIGINT al backend,
+# para que el muxer cierre el contenedor limpio. Salida en ~/Videos.
+
+PIDFILE="${XDG_RUNTIME_DIR:-/tmp}/nd-screenrec.pid"
+FILEREF="${PIDFILE}.file"
+OUTDIR="${HOME}/Videos"
+
+notify() { command -v notify-send >/dev/null 2>&1 && notify-send "$@" 2>/dev/null || true; }
+
+# Si hay grabación activa, frenarla y avisar (devuelve 0). Si no, limpia un pidfile
+# huérfano y devuelve 1 para que el caller arranque una nueva.
+stop_recording() {
+    if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+        local pid file
+        pid="$(cat "$PIDFILE")"
+        file="$(cat "$FILEREF" 2>/dev/null || true)"
+        kill -INT "$pid" 2>/dev/null || true
+        rm -f "$PIDFILE" "$FILEREF"
+        notify "Screencast" "Grabación guardada${file:+: $file}"
+        return 0
+    fi
+    rm -f "$PIDFILE" "$FILEREF"
+    return 1
+}
+
+pick_backend() {
+    if command -v wl-screenrec >/dev/null 2>&1 \
+       && vainfo 2>/dev/null | grep -q VAEntrypointEncSlice; then
+        echo wl-screenrec
+    else
+        echo wf-recorder
+    fi
+}
+
+start_recording() {
+    local mode="$1" geom="" out=""
+    if [[ "$mode" == region ]]; then
+        geom="$(slurp)" || exit 0          # cancelado con Esc
+    else
+        out="$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')"
+    fi
+    mkdir -p "$OUTDIR"
+    local file backend
+    file="${OUTDIR}/screencast-$(date +%Y%m%d-%H%M%S).mp4"
+    backend="$(pick_backend)"
+
+    # Ambos backends comparten -o <output>, -g <geometría> y -f <archivo>.
+    if [[ -n "$geom" ]]; then
+        "$backend" -g "$geom" -f "$file" &
+    else
+        "$backend" -o "$out" -f "$file" &
+    fi
+    echo $! > "$PIDFILE"
+    echo "$file" > "$FILEREF"
+    notify "Screencast" "Grabando (${backend})… repetí el atajo para frenar."
+}
+
+case "${1:-}" in
+    toggle) stop_recording || start_recording full ;;
+    region) stop_recording || start_recording region ;;
+    *) echo "Uso: $0 [toggle|region]" >&2; exit 1 ;;
+esac
