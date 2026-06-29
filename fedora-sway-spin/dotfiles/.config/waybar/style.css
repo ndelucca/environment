@@ -1,3 +1,17 @@
+/* ── Paleta ──────────────────────────────────────────────────────────────
+   Derivada del verde de acento de tmux (#387838) y los grises oscuros.
+   Las alertas usan tonos apagados, en familia con el acento: diferencian
+   bien (rojo/ambar/azul/naranja) sin romper la cohesion oscura. */
+@define-color background rgba(10, 10, 10, 0.8); /* fondo de la barra */
+@define-color muted      #5c5c5c;               /* texto inactivo (tab apagado) */
+@define-color accent     #387838;               /* verde — activo / ok */
+@define-color positive   #4a8c4a;               /* verde claro — charging / captura activa */
+@define-color warning    #c89a3c;               /* ambar — avisos / notificaciones */
+@define-color critical   #b8453c;               /* rojo ladrillo — error / urgente / critico */
+@define-color info       #3f6e9c;               /* azul apagado — audio out / info */
+@define-color caution    #bd6a30;               /* naranja apagado — screenshare */
+@define-color surface    #4a4a4a;               /* gris neutro — estado silenciado */
+
 * {
     border: none;
     border-radius: 0;
@@ -6,7 +20,7 @@
 }
 
 window#waybar {
-    background-color: rgba(10, 10, 10, 0.8);
+    background-color: @background;
     border-bottom: 3px solid rgba(110, 110, 110, 0.6);
     color: #ffffff;
     transition-property: background-color;
@@ -32,7 +46,7 @@ button:hover {
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: #5c5c5c;
+    color: @muted;
 }
 
 #workspaces button:hover {
@@ -41,17 +55,17 @@ button:hover {
 
 #workspaces button.focused {
     background-color: transparent;
-    color: #387838;
+    color: @accent;
     font-weight: bold;
-    box-shadow: inset 0 -3px #387838;
+    box-shadow: inset 0 -3px @accent;
 }
 
 #workspaces button.urgent {
-    background-color: #eb4d4b;
+    background-color: @critical;
 }
 
 #mode {
-    background-color: #387838;
+    background-color: @accent;
     box-shadow: inset 0 -3px #ffffff;
 }
 
@@ -78,12 +92,12 @@ button:hover {
 }
 
 #custom-notification.notification {
-    color: #f5c842;
+    color: @warning;
 }
 
 #custom-notification.dnd-none,
 #custom-notification.dnd-notification {
-    background-color: #387838;
+    background-color: @accent;
 }
 
 /* Si workspaces es el modulo mas a la izquierda, omitir margen izquierdo */
@@ -98,7 +112,7 @@ button:hover {
 
 #battery.charging {
     color: #ffffff;
-    background-color: #06863b;
+    background-color: @positive;
 }
 
 @keyframes blink {
@@ -109,7 +123,7 @@ button:hover {
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
+    background-color: @critical;
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -123,16 +137,16 @@ button:hover {
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+    background-color: @critical;
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+    background-color: @surface;
+    color: #cfcfcf;
 }
 
 #temperature.critical {
-    background-color: #eb4d4b;
+    background-color: @critical;
 }
 
 #tray>.passive {
@@ -141,7 +155,7 @@ button:hover {
 
 #tray>.needs-attention {
     -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
+    background-color: @critical;
 }
 
 #scratchpad {
@@ -162,13 +176,13 @@ button:hover {
 }
 
 #privacy-item.screenshare {
-    background-color: #cf5700;
+    background-color: @caution;
 }
 
 #privacy-item.audio-in {
-    background-color: #1ca000;
+    background-color: @positive;
 }
 
 #privacy-item.audio-out {
-    background-color: #0069d4;
+    background-color: @info;
 }
