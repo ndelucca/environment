@@ -1,34 +1,9 @@
 /*
- * settings — override de geometría sobre nd-dark para un menú angosto y centrado.
- * Mismo patrón que powermenu.rasi; solo cambia el alto (3 opciones).
+ * settings — menú angosto centrado (3 opciones). Toda la base en menu.rasi.
  */
 
-@import "nd-dark"
-
-window {
-    width:    320px;
-    location: center;
-}
-
-mainbox {
-    children: [ inputbar, listview ];
-}
+@import "menu"
 
 listview {
-    lines:        3;
-    fixed-height: true;
-    scrollbar:    false;
-    dynamic:      false;
-}
-
-inputbar {
-    children: [ prompt ];
-}
-
-prompt {
-    text-color: @accent;
-}
-
-element {
-    padding: 9px 12px;
+    lines: 3;
 }

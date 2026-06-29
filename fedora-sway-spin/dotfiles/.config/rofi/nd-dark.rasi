@@ -8,7 +8,7 @@
  */
 
 * {
-    bg:         #121212f2;   /* fondo base, ~95% opaco (matchea foot alpha) */
+    bg:         #121212eb;   /* fondo base, ~92% opaco — igual que foot (alpha=0.92) */
     bg-alt:     #1a1a1aff;   /* fila alterna / inputbar */
     bg-sel:     #387838ff;   /* acento: selección y prompt */
     fg:         #ffffffff;

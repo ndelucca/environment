@@ -1,0 +1,30 @@
+/*
+ * menu — base compartida de los menús angostos y centrados (settings, powermenu).
+ * Importa la paleta/estilo de nd-dark y fija la geometría común; cada menú concreto
+ * solo ajusta listview.lines. El prompt ya hereda @accent de nd-dark.
+ */
+
+@import "nd-dark"
+
+window {
+    width:    320px;
+    location: center;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    children: [ prompt ];
+}
+
+listview {
+    fixed-height: true;
+    scrollbar:    false;
+    dynamic:      false;
+}
+
+element {
+    padding: 9px 12px;
+}
