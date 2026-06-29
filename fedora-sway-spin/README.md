@@ -156,6 +156,26 @@ agregar lo propio, de forma declarativa y versionada.
   — sin Electron. La lista vive en el array `WEBAPPS`; sacar un servicio de ahí borra su
   lanzador en la próxima corrida (prune declarativo).
 
+### Navegador / Chromium
+- Chromium se configura de forma declarativa vía **enterprise policies** (JSON en
+  `/etc/chromium/policies/`). Es el único mecanismo overwrite-safe que expone: el perfil
+  (`Preferences`/`Local State`) lo reescribe en runtime, así que **no** se stowea ni
+  versiona. Fuente versionada: `setup/chromium-policies/{managed,recommended}.json`;
+  las despliega `09-chromium-policies.sh` con sudo (como la conf de SDDM), validando con
+  `jq` antes de copiar (un JSON inválido lo ignora Chromium **en silencio**).
+- Dos niveles: **`managed/`** = forzado y grisado en `chrome://settings` (privacidad /
+  anti-nag: telemetría off, sin tab promocional, sin nag de navegador por defecto, sign-in
+  prompts off). **`recommended/`** = defaults que el usuario puede cambiar en la UI (inicio
+  = restaurar sesión, botón home, y barra de bookmarks en off → **visible solo en la
+  pestaña nueva vacía**, comportamiento nativo de Chromium).
+- Instalamos en un archivo propio (`nd-policies.json`) para **coexistir** con el
+  `disable-ai.json` que trae el RPM de Fedora (no lo tocamos).
+- **Sync de cuenta Google: imposible en Chromium.** Google deshabilitó las APIs de
+  Sync/Sign-in para todos los builds de Chromium en 2021. Gmail/Drive/etc. andan como webs
+  normales (la PWA de Gmail sigue funcionando); solo el sync de bookmarks/passwords/historial
+  a la cuenta requeriría sumar Google Chrome aparte.
+- Verificar lo aplicado en `chrome://policy` (botón *Reload policies*).
+
 ### Apps que NO queremos
 - Se borran de forma declarativa: la lista vive en `setup/remove-packages.txt`, borrado
   idempotente por `setup/07-remove-unwanted.sh` (cableado en `bootstraping.sh`).

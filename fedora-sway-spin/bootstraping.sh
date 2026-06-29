@@ -18,6 +18,7 @@ STEPS=(
     "06-development.sh"
     "07-remove-unwanted.sh"
     "08-systemd-user.sh"
+    "09-chromium-policies.sh"
 )
 
 declare -a OK_STEPS=()
