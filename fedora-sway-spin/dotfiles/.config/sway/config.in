@@ -72,7 +72,6 @@ bindsym $mod+Shift+Escape exec loginctl lock-session
 bindsym $mod+v exec cliphist list | rofi -dmenu -p "Clipboard" | cliphist decode | wl-copy
 
 floating_modifier $mod normal
-# bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -113,12 +112,8 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# Sway tiene un "scratchpad", una especie de bolsa para guardar ventanas.
-# Podés mandar ventanas ahí y recuperarlas más tarde.
-# Mueve la ventana enfocada al scratchpad
+# Scratchpad: mandar la ventana enfocada / mostrar-ocultar (cicla si hay varias).
 bindsym $mod+Shift+minus move scratchpad
-# Muestra la siguiente ventana del scratchpad u oculta la enfocada del scratchpad.
-# Si hay varias ventanas en el scratchpad, este comando va ciclando entre ellas.
 bindsym $mod+minus scratchpad show
 
 # Include en capas del Spin (/usr/share → /etc → ~/.config). Ante mismo nombre de

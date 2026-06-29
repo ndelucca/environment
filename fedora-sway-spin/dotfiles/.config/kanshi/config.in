@@ -21,7 +21,8 @@ profile docked {
     output @OUTPUT_INTERNAL@ enable position @DOCK_LEFT_WIDTH@,0
 }
 
-# Solo monitor externo (ej. tapa cerrada y docked — eDP ausente/deshabilitado).
+# Solo monitor externo: el eDP físicamente ausente (no por tapa cerrada — al cerrar la
+# tapa el output sigue conectado, solo lo desactiva sway, y kanshi seguiría en `docked`).
 profile external {
     output @OUTPUT_EXTERNAL@ enable position 0,0
 }

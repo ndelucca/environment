@@ -37,18 +37,6 @@ remapear solo lo mínimo.
 
 - `j k` / `j j` (en modo insert) → volver a normal (`vim::NormalBefore`).
 
-## Settings destacados (`settings.json.in`)
-
-- **vim_mode** on; clipboard del sistema siempre (`use_system_clipboard: always`),
-  smartcase find, relative line numbers, highlight on yank.
-- IA y telemetría **desactivadas** (`disable_ai`, `telemetry` off).
-- Tema **Dracula** (auto-instala la extensión), icon theme Material.
-- Fuente de buffer **JetBrainsMono Nerd Font** 14, ligaduras (`calt`).
-- `format_on_save` on, trailing whitespace + final newline on save
-  (excepto Markdown y Git Commit), `autosave` off.
-- `wrap_guides: [100]`, `tab_size: 4` (YAML 2), minimap off, inlay hints off.
-- Git inline blame on; diagnostics inline on.
-
 ## Nota sobre el versionado
 
 `settings.json` se genera de `settings.json.in` por `setup/04-stow.sh` (deep-merge

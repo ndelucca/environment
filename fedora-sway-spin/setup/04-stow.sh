@@ -43,8 +43,10 @@ render() {
 
 CONFIG_DIR="${STOW_DIR}/.config"
 
-# waybar: timezone desde vars.sh; ruta del sensor de temperatura resuelta por nombre
-# del sensor en lugar de un índice hwmon fijo y frágil.
+# waybar: timezone desde vars.sh; ruta del sensor de temperatura resuelta por NOMBRE de
+# sensor (k10temp/coretemp) en tiempo de stow. Ojo: el resultado sigue siendo una ruta
+# hwmonN, y el kernel puede reasignar ese índice entre reboots — si la temperatura lee
+# mal tras un arranque, re-correr 04-stow.sh la vuelve a resolver.
 HWMON_PATH="$(resolve_hwmon)"
 echo "Rendering waybar config (timezone=${TIMEZONE}, hwmon=${HWMON_PATH:-none})"
 render "${CONFIG_DIR}/waybar/config.jsonc.in" "${CONFIG_DIR}/waybar/config.jsonc" \

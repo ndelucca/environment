@@ -94,9 +94,9 @@ export PS1=''
 # Agregar al historial al terminar cualquier comando.
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a;"
 
-# Historial grande.
+# Historial grande. HISTFILESIZE >= HISTSIZE para no truncar el archivo al guardar.
 export HISTSIZE=500000
-export HISTFILESIZE=100000
+export HISTFILESIZE=500000
 
 # Evitar entradas duplicadas.
 export HISTCONTROL="erasedups:ignoreboth"
