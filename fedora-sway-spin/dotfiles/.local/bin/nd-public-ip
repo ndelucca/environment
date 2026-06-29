@@ -6,7 +6,7 @@ set -euo pipefail
 #
 # El chequeo lo dispara el systemd user timer nd-public-ip.timer (al iniciar
 # sesión y cada hora). Al detectar un cambio avisa por notificación de
-# escritorio (notify-send/dunst); ya no hay alerta de terminal.
+# escritorio (notify-send/dunst).
 #
 # Uso:
 #   nd-public-ip          - Chequea IP y notifica si cambió
@@ -93,9 +93,15 @@ case "${1:-check}" in
         last_ip=$(cat "$LAST_IP_FILE")
 
         if [[ "$current_ip" != "$last_ip" ]]; then
+            # Notificar solo cuando la IP nueva no es la que ya habíamos registrado como
+            # pendiente: si no, cada disparo horario apila otra notificación critical
+            # idéntica (dunst/mako no cierran las critical) hasta que se haga `update`.
+            prev_new="$(cat "$NEW_IP_FILE" 2>/dev/null || true)"
             echo "$current_ip" > "$NEW_IP_FILE"
             echo "IP cambió: $last_ip -> $current_ip"
-            notify_change "$last_ip" "$current_ip"
+            if [[ "$current_ip" != "$prev_new" ]]; then
+                notify_change "$last_ip" "$current_ip"
+            fi
         else
             echo "IP sin cambios: $current_ip"
         fi

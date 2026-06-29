@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 #
 # nd-doctor — chequea las suposiciones que este setup hace sobre el Spin.
 #
@@ -15,34 +15,47 @@ set -uo pipefail
 ok=0
 fail=0
 
-# check_file <ruta> <por qué nos importa>
+# Colores solo si la salida es un terminal: nd-doctor se tee-a a un log en el bootstrap
+# y los escapes ANSI ensuciarían ese archivo.
+if [[ -t 1 ]]; then
+    C_OK=$'\033[0;32m'; C_BAD=$'\033[0;31m'; C_WHY=$'\033[0;33m'; C_OFF=$'\033[0m'
+else
+    C_OK=''; C_BAD=''; C_WHY=''; C_OFF=''
+fi
+
+pass() { printf '  %sOK  %s %s\n' "${C_OK}" "${C_OFF}" "$1"; ((++ok)); }
+miss() { printf '  %sFALTA%s %s\n      %s↳ %s%s\n' "${C_BAD}" "${C_OFF}" "$1" "${C_WHY}" "$2" "${C_OFF}"; ((++fail)); }
+
+# check_file <ruta> <por qué nos importa> — basta con que exista.
 check_file() {
-    local path="$1" why="$2"
-    if [[ -e "${path}" ]]; then
-        printf '  \033[0;32mOK  \033[0m %s\n' "${path}"
-        ((ok++))
-    else
-        printf '  \033[0;31mFALTA\033[0m %s\n      \033[0;33m↳ %s\033[0m\n' "${path}" "${why}"
-        ((fail++))
-    fi
+    if [[ -e "$1" ]]; then pass "$1"; else miss "$1" "$2"; fi
+}
+
+# check_grep <ruta> <token> <por qué> — además de existir, debe CONTENER el token. Para
+# archivos del Spin que arrancan algo: si una versión futura mantiene el nombre pero le
+# saca lo que asumimos (el comando que lanza el daemon), check_file daría un falso OK.
+check_grep() {
+    if grep -qs -- "$2" "$1"; then pass "$1 ($2)"; else miss "$1" "$3"; fi
 }
 
 echo "Archivos del Spin de los que depende este setup:"
 # layered-include: lo invoca el include de ~/.config/sway/config para encadenar
 # /usr/share → /etc → ~/.config. Sin él, nuestros overrides de config.d no cargan.
 check_file /usr/libexec/sway/layered-include \
-    " sway/config lo usa para el include en capas; sin esto NINGÚN override de config.d aplica"
-# Estos arrancan daemons que nuestra config asume corriendo (no los lanzamos nosotros).
-check_file /usr/share/sway/config.d/90-bar.conf \
+    "sway/config lo usa para el include en capas; sin esto NINGÚN override de config.d aplica"
+# Estos arrancan daemons que nuestra config asume corriendo (no los lanzamos nosotros):
+# chequeamos el token clave, no solo la existencia.
+check_grep /usr/share/sway/config.d/90-bar.conf swaybar_command \
     "arranca waybar (swaybar_command); por eso no hay 'exec waybar' nuestro"
-check_file /usr/share/sway/config.d/90-swayidle.conf \
+check_grep /usr/share/sway/config.d/90-swayidle.conf swayidle \
     "consume \$lock_timeout/\$screen_timeout de sway/config; sin esto no hay lock por idle"
-check_file /usr/share/sway/config.d/95-autostart-policykit-agent.conf \
+check_grep /usr/share/sway/config.d/95-autostart-policykit-agent.conf lxqt-policykit-agent \
     "arranca el agente polkit (lxqt-policykit); sin esto los prompts de privilegios fallan"
 
 echo
 if ((fail > 0)); then
-    printf '\033[0;31m%d suposición(es) rotas\033[0m, %d ok. Revisar README (sección \"apoyarse en el Spin\").\n' "${fail}" "${ok}"
+    printf '%s%d suposición(es) rotas%s, %d ok. Revisar README (sección "apoyarse en el Spin").\n' \
+        "${C_BAD}" "${fail}" "${C_OFF}" "${ok}"
     exit 1
 fi
-printf '\033[0;32mTodo en orden\033[0m (%d/%d). El baseline del Spin es el esperado.\n' "${ok}" "${ok}"
+printf '%sTodo en orden%s (%d/%d). El baseline del Spin es el esperado.\n' "${C_OK}" "${C_OFF}" "${ok}" "${ok}"
