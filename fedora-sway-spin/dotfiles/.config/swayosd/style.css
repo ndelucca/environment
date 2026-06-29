@@ -38,5 +38,5 @@ window#osd trough {
 window#osd progress {
     min-height: 8px;
     border-radius: 999px;
-    background-color: #225D42;
+    background-color: #387838;
 }

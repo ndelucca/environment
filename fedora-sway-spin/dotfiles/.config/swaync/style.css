@@ -47,7 +47,7 @@
 }
 
 .close-button:hover {
-    background-color: #225D42;
+    background-color: #387838;
 }
 
 /* Botones de accion en linea */
@@ -65,7 +65,7 @@
 }
 
 .notification-action:hover {
-    background-color: #225D42;
+    background-color: #387838;
 }
 
 /* ----- Centro de control -------------------------------------------------- */
@@ -96,7 +96,7 @@
 }
 
 .widget-title > button:hover {
-    background-color: #225D42;
+    background-color: #387838;
 }
 
 /* Interruptor No molestar / DND */
@@ -112,7 +112,7 @@
 }
 
 .widget-dnd > switch:checked {
-    background-color: #225D42;
+    background-color: #387838;
 }
 
 /* Etiqueta de estado vacio */

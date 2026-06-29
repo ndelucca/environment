@@ -40,7 +40,7 @@ button:hover {
 }
 
 #workspaces button.focused {
-    background-color: #225D42;
+    background-color: #387838;
     box-shadow: inset 0 -3px #ffffff;
 }
 
@@ -49,7 +49,7 @@ button:hover {
 }
 
 #mode {
-    background-color: #225D42;
+    background-color: #387838;
     box-shadow: inset 0 -3px #ffffff;
 }
 
@@ -81,7 +81,7 @@ button:hover {
 
 #custom-notification.dnd-none,
 #custom-notification.dnd-notification {
-    background-color: #225D42;
+    background-color: #387838;
 }
 
 /* Si workspaces es el modulo mas a la izquierda, omitir margen izquierdo */
@@ -96,7 +96,7 @@ button:hover {
 
 #battery.charging {
     color: #ffffff;
-    background-color: #06863B;
+    background-color: #06863b;
 }
 
 @keyframes blink {
