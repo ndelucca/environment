@@ -49,6 +49,10 @@ OUTPUT_EXTERNAL="HDMI-A-1"
 # estar hardcodeado en kanshi/config. Ajustar si el ancho del monitor externo difiere.
 DOCK_LEFT_WIDTH="1920"
 
+# Filtra una lista de paquetes (un nombre por línea), salteando comentarios y líneas en
+# blanco. Fuente única del patrón, compartida por 03-apps.sh y 07-remove-unwanted.sh.
+read_pkg_list() { grep -vE '^[[:space:]]*(#|$)' "$1"; }
+
 GIT_NAME="ndelucca"
 GIT_EMAIL="ndelucca@protonmail.com"
 

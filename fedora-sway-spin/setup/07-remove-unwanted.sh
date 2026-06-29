@@ -6,8 +6,8 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/../vars.sh"   # provee SETUP_DIR
 REMOVE_FILE="${SETUP_DIR}/remove-packages.txt"
 
-# Leer la lista de paquetes a sacar (saltea comentarios/líneas en blanco).
-mapfile -t WANTED_GONE < <(grep -vE '^\s*(#|$)' "${REMOVE_FILE}")
+# Leer la lista de paquetes a sacar (read_pkg_list saltea comentarios/líneas en blanco).
+mapfile -t WANTED_GONE < <(read_pkg_list "${REMOVE_FILE}")
 
 # Actuar solo sobre paquetes realmente instalados, así esto es idempotente y dnf no
 # falla con los que ya no están.

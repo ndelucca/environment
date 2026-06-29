@@ -29,16 +29,21 @@ COPRS=(
 # dnf5-plugins aporta los subcomandos `copr` y `config-manager` (este último lo usa la
 # sección de gh más abajo). Se instala una sola vez acá para no repetirlo en cada uso.
 sudo dnf install -y dnf5-plugins
+enabled_coprs="$(sudo dnf copr list 2>/dev/null || true)"   # listar una vez, no por COPR
 for copr in "${COPRS[@]}"; do
-    if ! sudo dnf copr list 2>/dev/null | grep -q "${copr}"; then
+    if ! grep -Fq "${copr}" <<<"${enabled_coprs}"; then
         echo "Habilitando COPR ${copr}..."
         sudo dnf copr enable -y "${copr}"
     fi
 done
 
 echo "Instalando paquetes dnf desde ${PKG_FILE}..."
-mapfile -t PACKAGES < <(grep -vE '^\s*(#|$)' "${PKG_FILE}")
-sudo dnf install -y "${PACKAGES[@]}"
+mapfile -t PACKAGES < <(read_pkg_list "${PKG_FILE}")
+if ((${#PACKAGES[@]})); then
+    sudo dnf install -y "${PACKAGES[@]}"
+else
+    echo "packages.txt no tiene paquetes; nada que instalar."
+fi
 
 if command -v gh &>/dev/null; then
     echo "GitHub CLI ya está instalado."
@@ -59,7 +64,7 @@ if command -v zed &>/dev/null; then
     echo "Zed ya está instalado."
 else
     echo "Instalando Zed desde zed.dev..."
-    curl -f https://zed.dev/install.sh | sh
+    curl -fsSL https://zed.dev/install.sh | sh
     echo "Zed instalado correctamente!"
 fi
 
@@ -95,8 +100,10 @@ if command -v neovide-bin &>/dev/null; then
     # de la API de GitHub; si no se puede determinar (red caída / rate-limit), dejamos la
     # instalada en paz en vez de re-bajar a ciegas.
     cur="$(neovide-bin --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)"
+    # `|| latest=""` desacopla del `set -e`: si curl falla (red caída / rate-limit de la
+    # API de GitHub), queremos latest vacío para dejar la instalada en paz, NO abortar.
     latest="$(curl -fsSL --max-time 10 https://api.github.com/repos/neovide/neovide/releases/latest 2>/dev/null \
-        | jq -r '.tag_name // empty' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)"
+        | jq -r '.tag_name // empty' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)" || latest=""
     if [[ -n "${latest}" && "${cur}" != "${latest}" ]]; then
         echo "Neovide ${cur:-?} -> ${latest}: actualizando."
         install_neovide_bin
