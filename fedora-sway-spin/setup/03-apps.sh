@@ -71,31 +71,56 @@ fi
 #
 # El binario se instala como `neovide-bin`; el lanzador en PATH es el wrapper stoweado
 # dotfiles/.local/bin/neovide, que cae a GL por software en GPUs viejas (Neovide
-# necesita OpenGL >= 3.2). Ver ese wrapper para detalles.
+# necesita OpenGL >= 3.2). Ver ese wrapper para detalles. Como no hay paquete que lo
+# actualice, re-correr el bootstrap re-baja el binario cuando el release más nuevo
+# difiere del instalado (abajo).
+
+# (Re)instala el binario de release más reciente en ~/.local/bin/neovide-bin.
+# El asset es un .tar plano (no .tar.gz) con el binario neovide adentro.
+install_neovide_bin() {
+    local tmp bin
+    tmp="$(mktemp -d)"
+    trap 'rm -rf "${tmp:-}"' RETURN
+    curl -fL https://github.com/neovide/neovide/releases/latest/download/neovide-linux-x86_64.tar \
+        -o "${tmp}/neovide.tar"
+    tar -xf "${tmp}/neovide.tar" -C "${tmp}"
+    bin="$(find "${tmp}" -type f -name neovide | head -n1)"
+    [[ -n "${bin}" ]] || { echo "ERROR: no se encontró el binario neovide en el tarball" >&2; return 1; }
+    mkdir -p "${HOME}/.local/bin"
+    install -m755 "${bin}" "${HOME}/.local/bin/neovide-bin"
+}
+
 if command -v neovide-bin &>/dev/null; then
-    echo "Neovide ya está instalado."
+    # Re-fetch solo si el release más nuevo difiere del instalado. La versión latest sale
+    # de la API de GitHub; si no se puede determinar (red caída / rate-limit), dejamos la
+    # instalada en paz en vez de re-bajar a ciegas.
+    cur="$(neovide-bin --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)"
+    latest="$(curl -fsSL --max-time 10 https://api.github.com/repos/neovide/neovide/releases/latest 2>/dev/null \
+        | jq -r '.tag_name // empty' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)"
+    if [[ -n "${latest}" && "${cur}" != "${latest}" ]]; then
+        echo "Neovide ${cur:-?} -> ${latest}: actualizando."
+        install_neovide_bin
+    else
+        echo "Neovide al día (${cur:-instalado})."
+    fi
 else
     echo "Instalando Neovide desde el release de GitHub..."
-    NEOVIDE_TMP="$(mktemp -d)"
-    trap 'rm -rf "${NEOVIDE_TMP:-}"' EXIT
-    # El asset de release es un .tar plano (no .tar.gz) con el binario neovide.
-    curl -fL https://github.com/neovide/neovide/releases/latest/download/neovide-linux-x86_64.tar \
-        -o "${NEOVIDE_TMP}/neovide.tar"
-    tar -xf "${NEOVIDE_TMP}/neovide.tar" -C "${NEOVIDE_TMP}"
-    NEOVIDE_BIN="$(find "${NEOVIDE_TMP}" -type f -name neovide | head -n1)"
-    [[ -n "${NEOVIDE_BIN}" ]] || { echo "ERROR: no se encontró el binario neovide en el tarball" >&2; exit 1; }
-    mkdir -p "${HOME}/.local/bin"
-    install -m755 "${NEOVIDE_BIN}" "${HOME}/.local/bin/neovide-bin"
+    install_neovide_bin
+fi
 
-    # Entrada .desktop + icono para que aparezca en rofi. Exec=neovide -> el wrapper
-    # stoweado. Bajo Wayland el app_id es "neovide" (lo matchea el `assign ... workspace 3`
-    # de sway). La línea MimeType se arma desde NEOVIDE_MIMES (fuente única).
-    mkdir -p "${HOME}/.local/share/icons/hicolor/scalable/apps"
+# Icono + entrada .desktop. El .desktop se REGENERA siempre (no solo en la primera
+# instalación) para que su línea MimeType refleje NEOVIDE_MIMES — fuente única — también
+# en re-corridas. El icono solo se baja si falta (no cambia). Exec=neovide -> el wrapper
+# stoweado; bajo Wayland el app_id es "neovide" (lo matchea el `assign ... workspace 3`).
+neovide_icon="${HOME}/.local/share/icons/hicolor/scalable/apps/neovide.svg"
+if [[ ! -f "${neovide_icon}" ]]; then
+    mkdir -p "$(dirname "${neovide_icon}")"
     curl -fsL https://raw.githubusercontent.com/neovide/neovide/main/assets/neovide.svg \
-        -o "${HOME}/.local/share/icons/hicolor/scalable/apps/neovide.svg" || true
-    mkdir -p "${HOME}/.local/share/applications"
-    neovide_mime_line="$(IFS=';'; echo "${NEOVIDE_MIMES[*]};")"
-    tee "${HOME}/.local/share/applications/neovide.desktop" >/dev/null <<EOF
+        -o "${neovide_icon}" || true
+fi
+mkdir -p "${HOME}/.local/share/applications"
+neovide_mime_line="$(IFS=';'; echo "${NEOVIDE_MIMES[*]};")"
+tee "${HOME}/.local/share/applications/neovide.desktop" >/dev/null <<EOF
 [Desktop Entry]
 Name=Neovide
 GenericName=Text Editor
@@ -108,9 +133,6 @@ Terminal=false
 StartupWMClass=neovide
 MimeType=${neovide_mime_line}
 EOF
-
-    echo "Neovide instalado en ~/.local/bin/neovide"
-fi
 
 # Handlers de archivos por defecto. ~/.config/mimeapps.list es un archivo real que el
 # sistema y las apps reescriben, así que NO se stowea (chocaría con el --no-folding de

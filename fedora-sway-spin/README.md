@@ -116,7 +116,9 @@ agregar lo propio, de forma declarativa y versionada.
 - **nvim** (terminal) + **Neovide** (GUI del *mismo* nvim) + **Zed**.
 - Neovide se instala desde el **binario oficial de release** a `~/.local/bin/neovide-bin`
   (en `03-apps.sh`), NO por flatpak (el flatpak corre nvim en sandbox y no usaría el
-  nvim / LSPs / toolchains del host). Comparte la config del submódulo nvim.
+  nvim / LSPs / toolchains del host). Comparte la config del submódulo nvim. Como no hay
+  paquete que lo actualice, re-correr el bootstrap re-baja el binario cuando el release
+  más nuevo (API de GitHub) difiere del instalado.
 - El comando `neovide` en PATH es un **wrapper** (`dotfiles/.local/bin/neovide`): Neovide
   necesita **OpenGL >= 3.2** y en GPUs viejas (este Aspire 5742 tiene Intel Ironlake, tope
   GL 2.1) el contexto GL falla (`EGL_BAD_MATCH`). El wrapper detecta la versión de GL con

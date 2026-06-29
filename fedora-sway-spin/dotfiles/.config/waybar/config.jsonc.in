@@ -19,10 +19,21 @@
         "battery"
     ],
     "modules-right": [
+        "privacy",
         "custom/notification",
         "tray",
         "clock"
     ],
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 14,
+        "transition-duration": 250,
+        "modules": [
+            { "type": "screenshare" },
+            { "type": "audio-in" },
+            { "type": "audio-out" }
+        ]
+    },
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
