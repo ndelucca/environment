@@ -6,7 +6,7 @@
 }
 
 window#waybar {
-    background-color: rgba(26, 26, 26, 0.8);
+    background-color: rgba(10, 10, 10, 0.8);
     border-bottom: 3px solid rgba(110, 110, 110, 0.6);
     color: #ffffff;
     transition-property: background-color;
@@ -32,7 +32,7 @@ button:hover {
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: #ffffff;
+    color: #5c5c5c;
 }
 
 #workspaces button:hover {
@@ -40,8 +40,10 @@ button:hover {
 }
 
 #workspaces button.focused {
-    background-color: #387838;
-    box-shadow: inset 0 -3px #ffffff;
+    background-color: transparent;
+    color: #387838;
+    font-weight: bold;
+    box-shadow: inset 0 -3px #387838;
 }
 
 #workspaces button.urgent {
