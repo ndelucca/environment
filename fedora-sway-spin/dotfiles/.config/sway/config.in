@@ -17,6 +17,9 @@ set $screen_timeout 300
 
 # Modos, combi, iconos, matching y tema viven en ~/.config/rofi/config.rasi
 set $menu rofi -show drun
+# Window switcher: salta a una ventana por nombre entre workspaces (modo `window` ya
+# configurado en config.rasi). Complementa a $menu (drun), que solo lanza apps.
+set $window rofi -show window
 
 # Autostart. Los guardas `pkill -x` hacen idempotente a exec_always ante `reload`
 # (si no, cada reload levantaría un daemon duplicado).
@@ -66,6 +69,7 @@ bindswitch --reload --locked lid:off output @OUTPUT_INTERNAL@ enable
 bindsym $mod+Return exec $term
 bindsym $mod+q kill
 bindsym $mod+d exec $menu
+bindsym $mod+Tab exec $window
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+Escape exec loginctl lock-session
 # Selector del historial de portapapeles (cliphist + rofi)

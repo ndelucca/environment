@@ -74,11 +74,32 @@ htop
 cowsay
 fortune-mod
 tmux
+# fzf: fuzzy finder. Reemplaza el Ctrl-R de bash por una búsqueda difusa a pantalla
+# completa sobre el historial (HISTSIZE grande) y agrega Ctrl-T/Alt-C/**<tab>. Se
+# integra con fd. Cableado en dotfiles/.bashrc.d/05-fzf.sh.
+fzf
+# eza: ls moderno (sucesor de exa). Íconos Nerd Font (ya tenemos la fuente), colores y
+# columna git. Repunta los alias ll/la/l en 00-aliases.sh; `ls` pelado queda como GNU ls.
+eza
+# bat: cat con resaltado de sintaxis y paginado. Suele entrar como dependencia débil;
+# se declara acá para reproducibilidad. NO se aliasa a `cat` a propósito (bat pagina y
+# decora; `cat` queda plano para scripts/pipes). Se usa como comando aparte.
+bat
+# git-delta: pager de diffs para git (core.pager). Hace git diff/show/log -p legibles
+# (sintaxis, números de línea). Solo cambia cómo se VEN los diffs; se configura en
+# 00-git-bash.sh (scope --system, igual que el resto de la identidad git).
+git-delta
 
 # Fuentes (parcheadas Nerd — necesarias para los glifos de íconos en waybar/foot/prompt).
 # JetBrainsMono Nerd Font no está en los repos de Fedora; viene del COPR
 # jhuang6451/nerd-fonts, que 03-apps.sh habilita antes de este install.
 jetbrains-mono-nf
+# Fallbacks de fontconfig (automáticos, sin config): JetBrainsMono no trae emoji a color
+# ni glifos CJK, así que sin esto web/chat con emoji o texto chino/japonés/coreano salen
+# como cajitas tofu. -color-emoji = emoji a color (no la variante monocromática);
+# -sans-cjk-vf = CJK en variable font (la moderna).
+google-noto-color-emoji-fonts
+google-noto-sans-cjk-vf-fonts
 
 # Editores
 neovim

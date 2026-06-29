@@ -112,6 +112,25 @@ agregar lo propio, de forma declarativa y versionada.
 ### Fuentes
 - **Regla: solo JetBrainsMono Nerd Font** en toda la UI (terminal, GTK, barras,
   launcher, lock). La trae el COPR `jhuang6451/nerd-fonts` (`jetbrains-mono-nf`).
+- **Fallbacks de fontconfig** (automáticos, sin config): `google-noto-color-emoji-fonts`
+  (emoji a color, no la monocromática) + `google-noto-sans-cjk-vf-fonts` (CJK). JetBrainsMono
+  no cubre emoji/CJK; sin estos, web/chat con emoji o texto no-latino sale como tofu.
+
+### Shell / CLI
+- **Listados con `eza`** (ls moderno): los alias `ll`/`la`/`l` apuntan a eza (íconos Nerd
+  Font + colores + dirs primero). `ls` pelado se deja como GNU ls a propósito (scripts y
+  memoria muscular). `tree` se mantiene aunque `eza --tree` lo cubra.
+- **`fzf`** cableado en `dotfiles/.bashrc.d/05-fzf.sh`: `Ctrl-R` (historial difuso a
+  pantalla completa), `Ctrl-T`/`Alt-C`/`**<tab>`. Usa `fd` como fuente y el acento verde
+  del dominio terminal. Se carga después de las completions (orden de glob de `bashrc.d`).
+- **`bat`** (cat con sintaxis): declarado en `packages.txt` para reproducibilidad. **No**
+  se aliasa a `cat` a propósito (`cat` queda plano para pipes/scripts); se usa como comando
+  aparte. Config en `dotfiles/.config/bat/config`: `--paging=never` (sin pager) y
+  `--style=plain` (cat coloreado: solo sintaxis, sin números/header/grid).
+- **`git-delta`** como `core.pager` (configurado en `00-git-bash.sh`, scope `--system`):
+  `git diff/show/log -p` legibles. Solo cambia cómo se VEN los diffs, no el comportamiento
+  de git. Tema de sintaxis **Dracula** (el código se colorea con la paleta del dominio
+  *editores*, aunque corra en la terminal).
 
 ### Editores
 - **nvim** (terminal) + **Neovide** (GUI del *mismo* nvim) + **Zed**.
